@@ -40,4 +40,10 @@ dependencies {
 }
 ```
 
-##### 详细用法请查看[Demo](https://github.com/bingoogolapple/BGARefreshLayout-Android/tree/master/demo):feet:
+#### Demo中使用到了另外三个库
+
+1.[Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner)
+2.[在AdapterView和RecyclerView中通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
+3.[带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
+
+#### 详细用法请查看[Demo](https://github.com/bingoogolapple/BGARefreshLayout-Android/tree/master/demo):feet:

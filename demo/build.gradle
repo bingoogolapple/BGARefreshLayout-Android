@@ -20,5 +20,6 @@ dependencies {
     compile 'cn.bingoogolapple:bga-adapter:1.0.0@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.0@aar'
 
-    compile project(':library')
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.0@aar'
+//    compile project(':library')
 }

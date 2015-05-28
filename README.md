@@ -4,13 +4,13 @@
 
 #### 目前已经实现了三种下拉刷新效果:
 
-1.新浪微博下拉刷新风格（可设置背景、各种状态是的文本）
-2.慕课网下拉刷新风格（使用时可设置其中的logo和颜色成自己公司的风格）
-3.类似qq好友列表黏性下拉刷新风格（三阶贝塞尔曲线没怎么调好，刚开始下拉时效果不太好）
+* 新浪微博下拉刷新风格（可设置背景、各种状态是的文本）
+* 慕课网下拉刷新风格（使用时可设置其中的logo和颜色成自己公司的风格）
+* 类似qq好友列表黏性下拉刷新风格（三阶贝塞尔曲线没怎么调好，刚开始下拉时效果不太好）
 
 #### 一种上拉加载更多效果
 
-1.新浪微博上拉加载更多（可设置背景、状态文本）
+* 新浪微博上拉加载更多（可设置背景、状态文本）
 
 `大家也可以继承BGARefreshViewHolder这个抽象类，实现相应地抽象方法做出格式各样的下拉刷新效果
 【例如实现handleScale(float scale, int moveYDistance)方法，根据scale实现各种下拉刷新动画】和上拉加载更多
@@ -18,8 +18,8 @@
 
 #### 目前存在的问题
 
-1.当自定义头部广告位可滚动时，内容区域和广告位还不能平滑过度。
-2.当RecyclerView的LayoutManager为StaggeredGridLayoutManager时，不知道怎样判断是否滚动到了顶部（处理下拉刷新）或者底部（处理上拉加载更多）。
+* 当配置自定义头部广告位可滚动时，内容区域和广告位还不能平滑过度。
+* 当RecyclerView的LayoutManager为StaggeredGridLayoutManager时，不知道怎样判断是否滚动到了顶部（处理下拉刷新）或者底部（处理上拉加载更多）。
 
 #### 效果图
 ![Image of GridView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/1.gif)
@@ -42,8 +42,8 @@ dependencies {
 
 #### Demo中使用到了另外三个库
 
-1.[Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner)
-2.[在AdapterView和RecyclerView中通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
-3.[带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
+* [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner)
+* [在AdapterView和RecyclerView中通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
+* [带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
 
 #### 详细用法请查看[Demo](https://github.com/bingoogolapple/BGARefreshLayout-Android/tree/master/demo):feet:

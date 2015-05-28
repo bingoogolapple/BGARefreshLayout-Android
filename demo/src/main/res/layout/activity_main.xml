@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToGridViewDemo"
+        android:text="GridView示例" />
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToNormalListViewDemo"
+        android:text="普通ListView示例" />
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToNormalRecyclerViewDemo"
+        android:text="普通RecyclerView示例" />
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToSwipeListViewDemo"
+        android:text="滑动ListView示例" />
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToSwipeRecyclerViewDemo"
+        android:text="滑动RecyclerView示例" />
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToScrollViewDemo"
+        android:text="ScrollView示例" />
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToNormalViewDemo"
+        android:text="NormalView示例" />
+
+
+</LinearLayout>

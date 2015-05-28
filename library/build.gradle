@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+    }
+}
+
+dependencies {
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+}
+
+apply from: 'android-artifacts.gradle'
+apply from: 'central-publish.gradle'
+apply from: 'bintray-publish.gradle'

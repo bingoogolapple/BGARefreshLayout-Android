@@ -1,0 +1,24 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+
+    compile 'cn.bingoogolapple:bga-banner:1.0.0@aar'
+    compile 'cn.bingoogolapple:bga-adapter:1.0.0@aar'
+    compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.0@aar'
+
+    compile project(':library')
+}

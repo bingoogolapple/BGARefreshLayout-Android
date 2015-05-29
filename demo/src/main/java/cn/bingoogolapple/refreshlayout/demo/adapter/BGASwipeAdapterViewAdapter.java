@@ -40,7 +40,7 @@ public class BGASwipeAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshMod
     }
 
     @Override
-    public void fillData(BGAViewHolderHelper viewHolderHelper, RefreshModel model, int position) {
+    public void fillData(BGAViewHolderHelper viewHolderHelper, int position, RefreshModel model) {
         closeOpenedSwipeItemLayoutWithAnim();
         viewHolderHelper.setText(R.id.tv_item_swipe_title, model.mTitle).setText(R.id.tv_item_swipe_detail, model.mDetail).setText(R.id.et_item_swipe_title, model.mTitle);
     }

@@ -17,7 +17,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
 
     compile 'cn.bingoogolapple:bga-banner:1.0.0@aar'
-    compile 'cn.bingoogolapple:bga-adapter:1.0.0@aar'
+    compile 'cn.bingoogolapple:bga-adapter:1.0.1@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.0@aar'
 
     compile 'cn.bingoogolapple:bga-refreshlayout:1.0.0@aar'

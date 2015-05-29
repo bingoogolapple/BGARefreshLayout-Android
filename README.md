@@ -31,7 +31,7 @@
 ![Image of NormalView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/7.gif)
 
 #### 用法
->添加以下依赖（提示：请依赖新版recyclerview。新版RecyclerView的addOnScrollListener比旧版的setOnScrollListener的扩展性更强。可以让最终的使用者更具项目需求再次添加自定义滚动监听器。这一点比ListView的设计好很多，在处理ListView时还得用反射获取最终使用者设置的自定义滚动监听器。）
+>添加以下依赖（提示：请依赖新版recyclerview。新版RecyclerView的addOnScrollListener比旧版的setOnScrollListener的扩展性更强。可以让最终的使用者根据项目需求再次添加自定义滚动监听器。这一点比ListView的设计好很多，在处理ListView时还得用反射获取最终使用者设置的自定义滚动监听器。）
 
 ```groovy
 dependencies {

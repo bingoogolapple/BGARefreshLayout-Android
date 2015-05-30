@@ -28,9 +28,9 @@
 ![Image of ScrollView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/6.gif)
 ![Image of NormalView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/7.gif)
 
-### 基本使用配置
+### 基本使用
 
-#### 添加Gradle依赖
+#### 1.添加Gradle依赖
 
 > 没有支持eclipse，建议还在用eclipse的小伙伴都开始转android studio吧
 
@@ -44,7 +44,7 @@ dependencies {
 }
 ```
 
-#### 在布局文件中添加BGARefreshLayout
+#### 2.在布局文件中添加BGARefreshLayout
 
 **注意：内容控件的高度请使用android:layout_height="0dp"和android:layout_weight="1"**
 
@@ -62,7 +62,7 @@ dependencies {
 </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 ```
 
-#### 在Activity或者Fragment中配置BGARefresh
+#### 2.在Activity或者Fragment中配置BGARefreshLayout
 
 ```java
 // 让activity或者fragment实现BGARefreshLayoutDelegate接口
@@ -125,7 +125,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 
 ### 更多详细用法请查看[Wiki](https://github.com/bingoogolapple/BGARefreshLayout-Android/wiki)或者[Demo](https://github.com/bingoogolapple/BGARefreshLayout-Android/tree/master/demo)
 
-#### Demo中使用到了我的另外三个库
+### Demo中使用到了我的另外三个库，欢迎大家Star :smile:
 
 * [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner)
 * [在AdapterView和RecyclerView中通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)

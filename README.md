@@ -1,5 +1,8 @@
 :running:BGARefreshLayout-Android v1.0.0:running:
 ============
+>关于我<br/>
+>微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
+
 开发者使用BGARefreshLayout-Android可以对所有控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
 ### 目前已经实现了三种下拉刷新效果:
@@ -98,10 +101,9 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
         refreshViewHolder.setRefreshViewBackgroundColorRes(refreshViewBackgroundColorRes);
         // 设置下拉刷新控件的背景drawable资源id
         refreshViewHolder.setRefreshViewBackgroundDrawableRes(refreshViewBackgroundDrawableRes);
-        // 可选配置  -------------END
-
         // 设置自定义头部视图（也可以不用设置）     参数1：自定义头部视图（例如广告位）， 参数2：上拉加载更多是否可用
         mRefreshLayout.setCustomHeaderView(mBanner, false);
+        // 可选配置  -------------END
     }
 
     @Override
@@ -130,3 +132,19 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 * [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner)
 * [对AdapterView和RecyclerView通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
 * [类似新浪微博消息列表，带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
+
+## License
+
+    Copyright 2015 bingoogolapple
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

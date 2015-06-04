@@ -42,6 +42,7 @@
 ```groovy
 dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
+    // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-refreshlayout:1.0.0@aar'
 }

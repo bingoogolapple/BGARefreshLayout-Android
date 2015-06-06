@@ -88,7 +88,7 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(MainActivity.LOADING_DURATION);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -111,7 +111,7 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(MainActivity.LOADING_DURATION);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -120,7 +120,7 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
                 mAdapter.addDatas(DataEngine.loadMoreData());
             }
         }.execute();

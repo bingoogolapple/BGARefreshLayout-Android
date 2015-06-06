@@ -14,6 +14,7 @@ import cn.bingoogolapple.refreshlayout.demo.R;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final int LOADING_DURATION = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -576,11 +576,11 @@ public class BGARefreshLayout extends LinearLayout {
                 float scale = 1 - paddingTop * 1.0f / mMinWholeHeaderViewPaddingTop;
                 /**
                  * 往下滑
-                 * paddingTop    mMinWholeHeaderViewPaddingTop ==> 0
-                 * scale         0 ==> 1
+                 * paddingTop    mMinWholeHeaderViewPaddingTop 到 0
+                 * scale         0 到 1
                  * 往上滑
-                 * paddingTop    0 ==> mMinWholeHeaderViewPaddingTop
-                 * scale         1 ==> 0
+                 * paddingTop    0 到 mMinWholeHeaderViewPaddingTop
+                 * scale         1 到 0
                  */
                 mRefreshViewHolder.handleScale(scale, refreshDiffY);
             }

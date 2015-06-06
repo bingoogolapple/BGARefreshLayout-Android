@@ -159,8 +159,8 @@ public class BGAStickinessRefreshView extends View {
             // 二阶贝塞尔曲线，第一个是控制点，第二个是终点
 //            mPath.quadTo(mTopBound.right - mTopSize / 8, mTopBound.bottom, mBottomBound.right, mBottomBound.bottom - mBottomBound.height() / 2);
 
-            // mCurrentBottomHeight   0 ==> mMaxBottomHeight
-            // scale                  0.2 ==> 1
+            // mCurrentBottomHeight   0 到 mMaxBottomHeight
+            // scale                  0.2 到 1
             float scale = Math.max(mCurrentBottomHeight * 1.0f / mMaxBottomHeight, 0.2f);
 
             float bottomControlXOffset = mTopSize * ((4 + (float) Math.pow(scale, 7) * 15) / 32);

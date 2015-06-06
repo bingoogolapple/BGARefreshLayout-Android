@@ -283,7 +283,7 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     private boolean shouldHandleAbsListViewLoadingMore() {
-        if (mIsLoadingMore || mLoadMoreFooterView == null || mDelegate == null || mAbsListView.getAdapter() == null || mAbsListView.getAdapter().getCount() == 0) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || mAbsListView.getAdapter() == null || mAbsListView.getAdapter().getCount() == 0) {
             return false;
         }
 
@@ -296,7 +296,7 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     private boolean shouldHandleRecyclerViewLoadingMore() {
-        if (mIsLoadingMore || mLoadMoreFooterView == null || mDelegate == null || mRecyclerView.getAdapter() == null || mRecyclerView.getAdapter().getItemCount() == 0) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || mRecyclerView.getAdapter() == null || mRecyclerView.getAdapter().getItemCount() == 0) {
             return false;
         }
 
@@ -323,7 +323,7 @@ public class BGARefreshLayout extends LinearLayout {
      * @return
      */
     private boolean shouldHandleLoadingMore() {
-        if (mIsLoadingMore || mLoadMoreFooterView == null || mDelegate == null) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null) {
             return false;
         }
 
@@ -360,29 +360,24 @@ public class BGARefreshLayout extends LinearLayout {
                 mInterceptTouchDownY = event.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mIsLoadingMore || (mCurrentRefreshStatus == RefreshStatus.REFRESHING)) {
-                    // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
-                    event.setAction(MotionEvent.ACTION_CANCEL);
-                    super.onInterceptTouchEvent(event);
-                    return true;
-                }
+                if (!mIsLoadingMore && (mCurrentRefreshStatus != RefreshStatus.REFRESHING)) {
+                    if (mInterceptTouchDownX == -1) {
+                        mInterceptTouchDownX = (int) event.getRawX();
+                    }
+                    if (mInterceptTouchDownY == -1) {
+                        mInterceptTouchDownY = (int) event.getRawY();
+                    }
 
-                if (mInterceptTouchDownX == -1) {
-                    mInterceptTouchDownX = (int) event.getRawX();
-                }
-                if (mInterceptTouchDownY == -1) {
-                    mInterceptTouchDownY = (int) event.getRawY();
-                }
+                    int interceptTouchMoveDistanceY = (int) (event.getRawY() - mInterceptTouchDownY);
+                    // 可以没有上拉加载更多，但是必须有下拉刷新，否则就不拦截事件
+                    if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null) {
+                        if ((interceptTouchMoveDistanceY > 0 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < 0 && shouldHandleLoadingMore()) || interceptTouchMoveDistanceY < 0 && !isWholeHeaderViewCompleteInvisible()) {
 
-                int interceptTouchMoveDistanceY = (int) (event.getRawY() - mInterceptTouchDownY);
-                // 可以没有上拉加载更多，但是必须有下拉刷新，否则就不拦截事件
-                if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null) {
-                    if ((interceptTouchMoveDistanceY > 0 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < 0 && shouldHandleLoadingMore()) || interceptTouchMoveDistanceY < 0 && !isWholeHeaderViewCompleteInvisible()) {
-
-                        // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
-                        event.setAction(MotionEvent.ACTION_CANCEL);
-                        super.onInterceptTouchEvent(event);
-                        return true;
+                            // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
+                            event.setAction(MotionEvent.ACTION_CANCEL);
+                            super.onInterceptTouchEvent(event);
+                            return true;
+                        }
                     }
                 }
                 break;
@@ -403,7 +398,7 @@ public class BGARefreshLayout extends LinearLayout {
      * @return
      */
     private boolean shouldHandleRefresh() {
-        if (mRefreshHeaderView == null) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mRefreshHeaderView == null || mDelegate == null) {
             return false;
         }
 
@@ -547,7 +542,7 @@ public class BGARefreshLayout extends LinearLayout {
      */
     private boolean handleActionMove(MotionEvent event) {
         if (mCurrentRefreshStatus == RefreshStatus.REFRESHING || mIsLoadingMore) {
-            return true;
+            return false;
         }
 
         if ((mCustomHeaderView == null || !mIsCustomHeaderViewScrollable) && mRefreshDownY == -1) {
@@ -701,18 +696,25 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     /**
-     * 结束下拉刷新和上拉加载更多
+     * 结束下拉刷新
      */
     public void endRefreshing() {
-        if (mIsLoadingMore) {
-            mIsLoadingMore = false;
-            hiddenLoadMoreFooterView();
-            mRefreshViewHolder.onEndLoadingMore();
-        } else {
+        if (mCurrentRefreshStatus == RefreshStatus.REFRESHING) {
             mCurrentRefreshStatus = RefreshStatus.IDLE;
             hiddenRefreshHeaderView();
             handleRefreshStatusChanged();
             mRefreshViewHolder.onEndRefreshing();
+        }
+    }
+
+    /**
+     * 结束上拉加载更多
+     */
+    public void endLoadingMore() {
+        if (mIsLoadingMore) {
+            mIsLoadingMore = false;
+            hiddenLoadMoreFooterView();
+            mRefreshViewHolder.onEndLoadingMore();
         }
     }
 

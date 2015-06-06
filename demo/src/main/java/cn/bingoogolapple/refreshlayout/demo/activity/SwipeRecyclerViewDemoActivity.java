@@ -74,7 +74,7 @@ public class SwipeRecyclerViewDemoActivity extends AppCompatActivity implements 
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(MainActivity.LOADING_DURATION);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -97,7 +97,7 @@ public class SwipeRecyclerViewDemoActivity extends AppCompatActivity implements 
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(MainActivity.LOADING_DURATION);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -106,7 +106,7 @@ public class SwipeRecyclerViewDemoActivity extends AppCompatActivity implements 
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
                 mAdapter.addDatas(DataEngine.loadMoreData());
             }
         }.execute();

@@ -57,7 +57,7 @@ public class ScrollViewDemoActivity extends AppCompatActivity implements BGARefr
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(MainActivity.LOADING_DURATION);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -79,7 +79,7 @@ public class ScrollViewDemoActivity extends AppCompatActivity implements BGARefr
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(MainActivity.LOADING_DURATION);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -88,7 +88,7 @@ public class ScrollViewDemoActivity extends AppCompatActivity implements BGARefr
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
                 Log.i(TAG, "上拉加载更多完成");
             }
         }.execute();

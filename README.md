@@ -130,7 +130,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 
 ### Demo中使用到了我的另外三个库，欢迎大家Star :smile:
 
-* [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner)
+* [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner-Android)
 * [对AdapterView和RecyclerView通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
 * [类似新浪微博消息列表，带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
 

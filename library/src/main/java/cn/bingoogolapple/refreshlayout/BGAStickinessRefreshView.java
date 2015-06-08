@@ -212,7 +212,11 @@ public class BGAStickinessRefreshView extends View {
             @Override
             public void onAnimationStart(Animator animation) {
                 mIsRefreshing = true;
-                mStickinessRefreshViewHolder.startChangeWholeHeaderViewPaddingTop(mCurrentBottomHeight);
+                if (mCurrentBottomHeight != 0) {
+                    mStickinessRefreshViewHolder.startChangeWholeHeaderViewPaddingTop(mCurrentBottomHeight);
+                } else {
+                    mStickinessRefreshViewHolder.startChangeWholeHeaderViewPaddingTop(-(mTopSize + getPaddingTop() + getPaddingBottom()));
+                }
             }
 
             @Override

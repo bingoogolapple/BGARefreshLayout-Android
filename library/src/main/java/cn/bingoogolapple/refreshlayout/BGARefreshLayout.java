@@ -239,7 +239,7 @@ public class BGARefreshLayout extends LinearLayout {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore()) {
-                        beginLoadingMore();
+                        changeToBeginLoadingMore();
                     }
                 }
             });
@@ -259,7 +259,7 @@ public class BGARefreshLayout extends LinearLayout {
                     @Override
                     public void onScrollStateChanged(AbsListView absListView, int scrollState) {
                         if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore()) {
-                            beginLoadingMore();
+                            changeToBeginLoadingMore();
                         }
 
                         if (onScrollListener != null) {
@@ -652,25 +652,12 @@ public class BGARefreshLayout extends LinearLayout {
         if (shouldHandleLoadingMore() && (diffY < 0 || (mScrollView != null && diffY == 0)) && !mIsLoadingMore) {
             // 处理上拉加载更多，需要返回true，自己消耗ACTION_UP事件
             isReturnTrue = true;
-            beginLoadingMore();
+            changeToBeginLoadingMore();
         }
 
         mWholeHeaderDownY = -1;
         mRefreshDownY = -1;
         return isReturnTrue;
-    }
-
-    /**
-     * 切换到正在刷新状态
-     */
-    private void changeToRefreshing() {
-        changeRefreshHeaderViewToZero();
-        mCurrentRefreshStatus = RefreshStatus.REFRESHING;
-        handleRefreshStatusChanged();
-
-        if (mDelegate != null) {
-            mDelegate.onBGARefreshLayoutBeginRefreshing();
-        }
     }
 
     /**
@@ -696,6 +683,28 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     /**
+     * 切换到正在刷新状态，会调用delegate的onBGARefreshLayoutBeginRefreshing方法
+     */
+    private void changeToRefreshing() {
+        if (mCurrentRefreshStatus != RefreshStatus.REFRESHING && mDelegate != null) {
+            mDelegate.onBGARefreshLayoutBeginRefreshing(this);
+        }
+
+        beginRefreshing();
+    }
+
+    /**
+     * 切换到正在刷新状态，不会调用delegate的onBGARefreshLayoutBeginRefreshing方法
+     */
+    public void beginRefreshing() {
+        if (mCurrentRefreshStatus != RefreshStatus.REFRESHING && mDelegate != null) {
+            changeRefreshHeaderViewToZero();
+            mCurrentRefreshStatus = RefreshStatus.REFRESHING;
+            handleRefreshStatusChanged();
+        }
+    }
+
+    /**
      * 结束下拉刷新
      */
     public void endRefreshing() {
@@ -704,17 +713,6 @@ public class BGARefreshLayout extends LinearLayout {
             hiddenRefreshHeaderView();
             handleRefreshStatusChanged();
             mRefreshViewHolder.onEndRefreshing();
-        }
-    }
-
-    /**
-     * 结束上拉加载更多
-     */
-    public void endLoadingMore() {
-        if (mIsLoadingMore) {
-            mIsLoadingMore = false;
-            hiddenLoadMoreFooterView();
-            mRefreshViewHolder.onEndLoadingMore();
         }
     }
 
@@ -751,39 +749,33 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     /**
-     * 隐藏上拉加载更多控件
+     * 开始上拉加载更多，会触发delegate的onBGARefreshLayoutBeginRefreshing方法
      */
-    private void hiddenLoadMoreFooterView() {
-        startHiddenLoadingMoreViewAnim();
+    private void changeToBeginLoadingMore() {
+        if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null) {
+            mDelegate.onBGARefreshLayoutBeginLoadingMore(this);
+        }
+
+        beginLoadingMore();
+
     }
 
     /**
-     * 开始上拉加载更多
+     * 开始上拉加载更多，不会触发delegate的onBGARefreshLayoutBeginRefreshing方法
      */
-    private void beginLoadingMore() {
+    public void beginLoadingMore() {
         if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null) {
             mIsLoadingMore = true;
 
             startShowLoadingMoreViewAnim();
 
             mRefreshViewHolder.changeToLoadingMore();
-            mDelegate.onBGARefreshLayoutBeginLoadingMore();
         }
     }
 
-    private void startHiddenLoadingMoreViewAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, -mLoadMoreFooterViewHeight);
-        animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int paddingBottom = (int) animation.getAnimatedValue();
-                mLoadMoreFooterView.setPadding(0, 0, 0, paddingBottom);
-            }
-        });
-        animator.start();
-    }
-
+    /**
+     * 显示上拉加载更多控件
+     */
     private void startShowLoadingMoreViewAnim() {
         ValueAnimator animator = ValueAnimator.ofInt(-mLoadMoreFooterViewHeight, 0);
         animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
@@ -817,6 +809,33 @@ public class BGARefreshLayout extends LinearLayout {
         animator.start();
     }
 
+    /**
+     * 结束上拉加载更多
+     */
+    public void endLoadingMore() {
+        if (mIsLoadingMore) {
+            mIsLoadingMore = false;
+            startHiddenLoadingMoreViewAnim();
+            mRefreshViewHolder.onEndLoadingMore();
+        }
+    }
+
+    /**
+     * 隐藏上拉加载更多控件
+     */
+    private void startHiddenLoadingMoreViewAnim() {
+        ValueAnimator animator = ValueAnimator.ofInt(0, -mLoadMoreFooterViewHeight);
+        animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int paddingBottom = (int) animation.getAnimatedValue();
+                mLoadMoreFooterView.setPadding(0, 0, 0, paddingBottom);
+            }
+        });
+        animator.start();
+    }
+
     public void setDelegate(BGARefreshLayoutDelegate delegate) {
         mDelegate = delegate;
     }
@@ -825,12 +844,12 @@ public class BGARefreshLayout extends LinearLayout {
         /**
          * 开始刷新
          */
-        void onBGARefreshLayoutBeginRefreshing();
+        void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout);
 
         /**
          * 开始加载更多
          */
-        void onBGARefreshLayoutBeginLoadingMore();
+        void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout);
     }
 
     public enum RefreshStatus {

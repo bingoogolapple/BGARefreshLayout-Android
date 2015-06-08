@@ -1,4 +1,4 @@
-:running:BGARefreshLayout-Android v1.0.1:running:
+:running:BGARefreshLayout-Android v1.0.2:running:
 ============
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
@@ -44,7 +44,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.1@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.2@aar'
 }
 ```
 
@@ -121,6 +121,18 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 
         // 加载完毕后在UI线程结束加载更多
         mRefreshLayout.endLoadingMore();
+    }
+
+    // 通过代码方式控制进入正在刷新状态。应用场景：某些应用在activity的onStart方法中调用，自动进入正在刷新状态获取最新数据
+    public void beginRefreshing() {
+        mRefreshLayout.beginRefreshing();
+        onBGARefreshLayoutBeginRefreshing(mRefreshLayout);
+    }
+
+    // 通过代码方式控制进入加载更多状态
+    public void beginLoadingMore() {
+        mRefreshLayout.beginLoadingMore();
+        onBGARefreshLayoutBeginLoadingMore(mRefreshLayout);
     }
 
 }

@@ -157,4 +157,14 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
         }
         return false;
     }
+
+    public void beginRefreshing(View v) {
+        mRefreshLayout.beginRefreshing();
+        onBGARefreshLayoutBeginRefreshing(mRefreshLayout);
+    }
+
+    public void beginLoadingMore(View v) {
+        mRefreshLayout.beginLoadingMore();
+        onBGARefreshLayoutBeginLoadingMore(mRefreshLayout);
+    }
 }

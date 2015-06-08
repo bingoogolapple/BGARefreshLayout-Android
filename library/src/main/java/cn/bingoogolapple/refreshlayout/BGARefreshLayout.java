@@ -757,7 +757,6 @@ public class BGARefreshLayout extends LinearLayout {
         }
 
         beginLoadingMore();
-
     }
 
     /**

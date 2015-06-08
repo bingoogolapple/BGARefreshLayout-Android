@@ -82,7 +82,7 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing() {
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -105,7 +105,7 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore() {
+    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override

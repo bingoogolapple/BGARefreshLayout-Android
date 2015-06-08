@@ -14,8 +14,8 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
@@ -45,8 +45,10 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
     private void initRefreshLayout() {
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_gridview_refresh);
         mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), false);
+//        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
+//        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(this, true));
+        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
+//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), true);
     }
 
     private void initListView() {
@@ -65,19 +67,20 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
         mDataGv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.i(TAG, "滚动状态变化");
+//                Log.i(TAG, "滚动状态变化");
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.i(TAG, "正在滚动");
+//                Log.i(TAG, "正在滚动");
             }
         });
 
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing() {
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        Log.i(TAG, "开始刷新");
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -100,7 +103,8 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore() {
+    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        Log.i(TAG, "开始加载更多");
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -146,5 +150,15 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
             return true;
         }
         return false;
+    }
+
+    public void beginRefreshing(View v) {
+        mRefreshLayout.beginRefreshing();
+        onBGARefreshLayoutBeginRefreshing(mRefreshLayout);
+    }
+
+    public void beginLoadingMore(View v) {
+        mRefreshLayout.beginLoadingMore();
+        onBGARefreshLayoutBeginLoadingMore(mRefreshLayout);
     }
 }

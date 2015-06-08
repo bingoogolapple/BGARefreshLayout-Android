@@ -87,7 +87,7 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing() {
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -110,7 +110,7 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore() {
+    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -156,5 +156,15 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
             return true;
         }
         return false;
+    }
+
+    public void beginRefreshing(View v) {
+        mRefreshLayout.beginRefreshing();
+        onBGARefreshLayoutBeginRefreshing(mRefreshLayout);
+    }
+
+    public void beginLoadingMore(View v) {
+        mRefreshLayout.beginLoadingMore();
+        onBGARefreshLayoutBeginLoadingMore(mRefreshLayout);
     }
 }

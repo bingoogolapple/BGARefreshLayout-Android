@@ -81,7 +81,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
         initRefreshLayout();
     }
 
-    private void initRefreshLayout(BGARefreshLayout refreshLayout) {
+    private void initRefreshLayout() {
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_modulename_refresh);
         // 为BGARefreshLayout设置代理
         mRefreshLayout.setDelegate(this);
@@ -116,7 +116,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore() {
+    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         // 在这里加载更多数据，或者更具产品需求实现上拉刷新也可以
 
         // 加载完毕后在UI线程结束加载更多

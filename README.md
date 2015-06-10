@@ -108,7 +108,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing() {
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         // 在这里加载最新数据
 
         // 加载完毕后在UI线程结束下拉刷新
@@ -116,7 +116,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore() {
+    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         // 在这里加载更多数据，或者更具产品需求实现上拉刷新也可以
 
         // 加载完毕后在UI线程结束加载更多

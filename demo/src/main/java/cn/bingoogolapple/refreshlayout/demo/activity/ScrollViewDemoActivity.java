@@ -83,7 +83,7 @@ public class ScrollViewDemoActivity extends AppCompatActivity implements BGARefr
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -108,6 +108,7 @@ public class ScrollViewDemoActivity extends AppCompatActivity implements BGARefr
                 Log.i(TAG, "上拉加载更多完成");
             }
         }.execute();
+        return true;
     }
 
 }

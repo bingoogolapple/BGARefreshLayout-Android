@@ -108,7 +108,7 @@ public class NormalListViewDemoActivity extends AppCompatActivity implements BGA
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -127,6 +127,7 @@ public class NormalListViewDemoActivity extends AppCompatActivity implements BGA
                 mAdapter.addDatas(DataEngine.loadMoreData());
             }
         }.execute();
+        return true;
     }
 
     @Override

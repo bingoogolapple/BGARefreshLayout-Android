@@ -14,8 +14,8 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
+import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
@@ -33,6 +33,8 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
     private GridView mDataGv;
     private NormalAdapterViewAdapter mAdapter;
 
+    private boolean mIsNetworkEnabled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +48,8 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_gridview_refresh);
         mRefreshLayout.setDelegate(this);
 //        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
-//        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(this, true));
-        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(this, true));
+//        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
 //        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), true);
     }
 
@@ -81,48 +83,72 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         Log.i(TAG, "开始刷新");
-        new AsyncTask<Void, Void, Void>() {
+        if (mIsNetworkEnabled) {
+            // 如果网络可用，则加载网络数据
+            new AsyncTask<Void, Void, Void>() {
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        Thread.sleep(MainActivity.LOADING_DURATION);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                mRefreshLayout.endRefreshing();
-                mDatas.addAll(0, DataEngine.loadNewData());
-                mAdapter.setDatas(mDatas);
-            }
-        }.execute();
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    mRefreshLayout.endRefreshing();
+                    mDatas.addAll(0, DataEngine.loadNewData());
+                    mAdapter.setDatas(mDatas);
+                }
+            }.execute();
+        } else {
+            // 网络不可用，结束下拉刷新
+            Toast.makeText(this, "网络不可用", Toast.LENGTH_SHORT).show();
+            mRefreshLayout.endRefreshing();
+        }
+        // 模拟网络可用不可用
+        mIsNetworkEnabled = !mIsNetworkEnabled;
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         Log.i(TAG, "开始加载更多");
-        new AsyncTask<Void, Void, Void>() {
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (mIsNetworkEnabled) {
+            // 如果网络可用，则异步加载网络数据，并返回true，显示正在加载更多
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        Thread.sleep(MainActivity.LOADING_DURATION);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                mRefreshLayout.endLoadingMore();
-                mAdapter.addDatas(DataEngine.loadMoreData());
-            }
-        }.execute();
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    // 加载完毕后在UI线程结束加载更多
+                    mRefreshLayout.endLoadingMore();
+                    mAdapter.addDatas(DataEngine.loadMoreData());
+                }
+            }.execute();
+            // 模拟网络可用不可用
+            mIsNetworkEnabled = !mIsNetworkEnabled;
+            return true;
+        } else {
+            // 模拟网络可用不可用
+            mIsNetworkEnabled = !mIsNetworkEnabled;
+
+            // 网络不可用，返回false，不显示正在加载更多
+            Toast.makeText(this, "网络不可用", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     @Override
@@ -154,11 +180,9 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
 
     public void beginRefreshing(View v) {
         mRefreshLayout.beginRefreshing();
-        onBGARefreshLayoutBeginRefreshing(mRefreshLayout);
     }
 
     public void beginLoadingMore(View v) {
         mRefreshLayout.beginLoadingMore();
-        onBGARefreshLayoutBeginLoadingMore(mRefreshLayout);
     }
 }

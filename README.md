@@ -81,7 +81,7 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
         initRefreshLayout();
     }
 
-    private void initRefreshLayout() {
+    private void initRefreshLayout(BGARefreshLayout refreshLayout) {
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_modulename_refresh);
         // 为BGARefreshLayout设置代理
         mRefreshLayout.setDelegate(this);

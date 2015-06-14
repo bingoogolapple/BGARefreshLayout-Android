@@ -1,4 +1,4 @@
-:running:BGARefreshLayout-Android v1.0.2:running:
+:running:BGARefreshLayout-Android v1.0.3:running:
 ============
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
@@ -44,7 +44,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.2@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.3@aar'
 }
 ```
 
@@ -111,28 +111,77 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         // 在这里加载最新数据
 
-        // 加载完毕后在UI线程结束下拉刷新
-        mRefreshLayout.endRefreshing();
+        if (mIsNetworkEnabled) {
+            // 如果网络可用，则加载网络数据
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        Thread.sleep(MainActivity.LOADING_DURATION);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    // 加载完毕后在UI线程结束下拉刷新
+                    mRefreshLayout.endRefreshing();
+                    mDatas.addAll(0, DataEngine.loadNewData());
+                    mAdapter.setDatas(mDatas);
+                }
+            }.execute();
+        } else {
+            // 网络不可用，结束下拉刷新
+            Toast.makeText(this, "网络不可用", Toast.LENGTH_SHORT).show();
+            mRefreshLayout.endRefreshing();
+        }
     }
 
     @Override
-    public void onBGARefreshLayoutBeginLoadingMore() {
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         // 在这里加载更多数据，或者更具产品需求实现上拉刷新也可以
 
-        // 加载完毕后在UI线程结束加载更多
-        mRefreshLayout.endLoadingMore();
+        if (mIsNetworkEnabled) {
+            // 如果网络可用，则异步加载网络数据，并返回true，显示正在加载更多
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        Thread.sleep(MainActivity.LOADING_DURATION);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    // 加载完毕后在UI线程结束加载更多
+                    mRefreshLayout.endLoadingMore();
+                    mAdapter.addDatas(DataEngine.loadMoreData());
+                }
+            }.execute();
+
+            return true;
+        } else {
+            // 网络不可用，返回false，不显示正在加载更多
+            Toast.makeText(this, "网络不可用", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     // 通过代码方式控制进入正在刷新状态。应用场景：某些应用在activity的onStart方法中调用，自动进入正在刷新状态获取最新数据
     public void beginRefreshing() {
         mRefreshLayout.beginRefreshing();
-        onBGARefreshLayoutBeginRefreshing(mRefreshLayout);
     }
 
     // 通过代码方式控制进入加载更多状态
     public void beginLoadingMore() {
         mRefreshLayout.beginLoadingMore();
-        onBGARefreshLayoutBeginLoadingMore(mRefreshLayout);
     }
 
 }

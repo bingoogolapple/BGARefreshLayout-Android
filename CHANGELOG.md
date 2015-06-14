@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.3 *(2014-6-14)*
+----------------------------
+
+- 修改beginRefreshing和beginLoadingMore方法，调用这两个方法时会触发delegate方法
+- 为delegate的onBGARefreshLayoutBeginLoadingMore方法添加boolean类型的返回参数。如果要开始加载更多则返回true，否则返回false。（返回false的场景：没有网络、一共只有x页数据并且已经加载了x页数据了）
+
 Version 1.0.2 *(2014-6-9)*
 ----------------------------
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,7 +240,7 @@ public class BGARefreshLayout extends LinearLayout {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore()) {
-                        changeToBeginLoadingMore();
+                        beginLoadingMore();
                     }
                 }
             });
@@ -259,7 +260,8 @@ public class BGARefreshLayout extends LinearLayout {
                     @Override
                     public void onScrollStateChanged(AbsListView absListView, int scrollState) {
                         if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore()) {
-                            changeToBeginLoadingMore();
+                            Log.i(TAG, "开始加载更多");
+                            beginLoadingMore();
                         }
 
                         if (onScrollListener != null) {
@@ -590,7 +592,8 @@ public class BGARefreshLayout extends LinearLayout {
             if (mRefreshViewHolder.canChangeToRefreshingStatus()) {
                 mWholeHeaderDownY = -1;
                 mRefreshDownY = -1;
-                changeToRefreshing();
+
+                beginRefreshing();
             }
 
             return true;
@@ -642,7 +645,7 @@ public class BGARefreshLayout extends LinearLayout {
             handleRefreshStatusChanged();
         } else if (mCurrentRefreshStatus == RefreshStatus.RELEASE_REFRESH) {
             // 处于松开进入刷新状态，松手时完全显示下拉刷新控件，进入正在刷新状态
-            changeToRefreshing();
+            beginRefreshing();
         }
 
         if (mRefreshDownY == -1) {
@@ -652,7 +655,7 @@ public class BGARefreshLayout extends LinearLayout {
         if (shouldHandleLoadingMore() && (diffY < 0 || (mScrollView != null && diffY == 0)) && !mIsLoadingMore) {
             // 处理上拉加载更多，需要返回true，自己消耗ACTION_UP事件
             isReturnTrue = true;
-            changeToBeginLoadingMore();
+            beginLoadingMore();
         }
 
         mWholeHeaderDownY = -1;
@@ -685,22 +688,12 @@ public class BGARefreshLayout extends LinearLayout {
     /**
      * 切换到正在刷新状态，会调用delegate的onBGARefreshLayoutBeginRefreshing方法
      */
-    private void changeToRefreshing() {
-        if (mCurrentRefreshStatus != RefreshStatus.REFRESHING && mDelegate != null) {
-            mDelegate.onBGARefreshLayoutBeginRefreshing(this);
-        }
-
-        beginRefreshing();
-    }
-
-    /**
-     * 切换到正在刷新状态，不会调用delegate的onBGARefreshLayoutBeginRefreshing方法
-     */
     public void beginRefreshing() {
         if (mCurrentRefreshStatus != RefreshStatus.REFRESHING && mDelegate != null) {
-            changeRefreshHeaderViewToZero();
             mCurrentRefreshStatus = RefreshStatus.REFRESHING;
+            changeRefreshHeaderViewToZero();
             handleRefreshStatusChanged();
+            mDelegate.onBGARefreshLayoutBeginRefreshing(this);
         }
     }
 
@@ -751,24 +744,11 @@ public class BGARefreshLayout extends LinearLayout {
     /**
      * 开始上拉加载更多，会触发delegate的onBGARefreshLayoutBeginRefreshing方法
      */
-    private void changeToBeginLoadingMore() {
-        if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null) {
-            mDelegate.onBGARefreshLayoutBeginLoadingMore(this);
-        }
-
-        beginLoadingMore();
-    }
-
-    /**
-     * 开始上拉加载更多，不会触发delegate的onBGARefreshLayoutBeginRefreshing方法
-     */
     public void beginLoadingMore() {
-        if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null) {
+        if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null && mDelegate.onBGARefreshLayoutBeginLoadingMore(this)) {
             mIsLoadingMore = true;
-
-            startShowLoadingMoreViewAnim();
-
             mRefreshViewHolder.changeToLoadingMore();
+            startShowLoadingMoreViewAnim();
         }
     }
 
@@ -814,8 +794,8 @@ public class BGARefreshLayout extends LinearLayout {
     public void endLoadingMore() {
         if (mIsLoadingMore) {
             mIsLoadingMore = false;
-            startHiddenLoadingMoreViewAnim();
             mRefreshViewHolder.onEndLoadingMore();
+            startHiddenLoadingMoreViewAnim();
         }
     }
 
@@ -846,9 +826,12 @@ public class BGARefreshLayout extends LinearLayout {
         void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout);
 
         /**
-         * 开始加载更多
+         * 开始加载更多。由于监听了ScrollView、RecyclerView、AbsListView滚动到底部的事件，所以这里采用返回boolean来处理是否加载更多。如果否则使用endLoadingMore方法会失效
+         *
+         * @param refreshLayout
+         * @return 如果要开始加载更多则返回true，否则返回false。（返回false的场景：没有网络、一共只有x页数据并且已经加载了x页数据了）
          */
-        void onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout);
+        boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout);
     }
 
     public enum RefreshStatus {

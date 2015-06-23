@@ -23,13 +23,13 @@
 * 当RecyclerView的LayoutManager为StaggeredGridLayoutManager时，不知道怎样判断是否滚动到了顶部（处理下拉刷新）或者底部（处理上拉加载更多）。
 
 ### 效果图
-![Image of GridView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/1.gif)
-![Image of 普通ListView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/2.gif)
-![Image of 普通RecyclerView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/3.gif)
-![Image of 滑动ListView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/4.gif)
-![Image of 滑动RecyclerView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/5.gif)
-![Image of ScrollView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/6.gif)
-![Image of NormalView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/master/screenshots/7.gif)
+![Image of GridView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/1.gif)
+![Image of 普通ListView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/2.gif)
+![Image of 普通RecyclerView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/3.gif)
+![Image of 滑动ListView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/4.gif)
+![Image of 滑动RecyclerView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/5.gif)
+![Image of ScrollView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/6.gif)
+![Image of NormalView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/7.gif)
 
 ### 基本使用
 

@@ -1,13 +1,22 @@
 package cn.bingoogolapple.refreshlayout.demo.engine;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.View;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.refreshlayout.demo.R;
+import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 
 /**
@@ -42,17 +51,30 @@ public class DataEngine {
     }
 
     public static View getCustomHeaderOrFooterView(Context context) {
-        List<View> datas = new ArrayList<>();
-        datas.add(View.inflate(context, R.layout.view_one, null));
-        datas.add(View.inflate(context,R.layout.view_two, null));
-        datas.add(View.inflate(context,R.layout.view_three, null));
-        datas.add(View.inflate(context,R.layout.view_four, null));
+        View headerView = View.inflate(context, R.layout.view_custom_header, null);
+        final BGABanner banner = (BGABanner) headerView.findViewById(R.id.banner);
+        final List<View> views = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            views.add(View.inflate(context, R.layout.view_image, null));
+        }
+        banner.setViews(views);
+        new AsyncHttpClient().get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/5item.json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
 
-        View customHeaderView = View.inflate(context, R.layout.view_custom_header, null);
-        BGABanner banner = (BGABanner) customHeaderView.findViewById(R.id.banner);
-        banner.setViewPagerViews(datas);
-
-        return customHeaderView;
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < views.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) views.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                banner.setTips(bannerModel.tips);
+            }
+        });
+        return headerView;
     }
 
 }

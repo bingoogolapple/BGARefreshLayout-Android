@@ -4,16 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        style="@style/MainBtn"
-        android:onClick="beginRefreshing"
-        android:text="开始刷新" />
-
-    <Button
-        style="@style/MainBtn"
-        android:onClick="beginLoadingMore"
-        android:text="开始加载更多" />
-
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
         android:id="@+id/rl_recyclerview_refresh"
         android:layout_width="match_parent"

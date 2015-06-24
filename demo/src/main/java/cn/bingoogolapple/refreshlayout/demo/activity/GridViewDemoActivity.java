@@ -50,7 +50,6 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
 //        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
         mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(this, true));
 //        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), true);
     }
 
     private void initListView() {

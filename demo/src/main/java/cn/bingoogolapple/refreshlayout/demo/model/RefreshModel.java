@@ -6,11 +6,14 @@ package cn.bingoogolapple.refreshlayout.demo.model;
  * 描述:
  */
 public class RefreshModel {
-    public String mTitle;
-    public String mDetail;
+    public String title;
+    public String detail;
+
+    public RefreshModel() {
+    }
 
     public RefreshModel(String title, String detail) {
-        mTitle = title;
-        mDetail = detail;
+        this.title = title;
+        this.detail = detail;
     }
 }

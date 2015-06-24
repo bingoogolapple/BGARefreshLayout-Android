@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,7 +49,6 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
 //        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
         mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(this, true));
 //        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), true);
     }
 
     private void initListView() {
@@ -85,25 +83,19 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
         Log.i(TAG, "开始刷新");
         if (mIsNetworkEnabled) {
             // 如果网络可用，则加载网络数据
-            new AsyncTask<Void, Void, Void>() {
-
+            DataEngine.loadNewData(new DataEngine.RefreshModelResponseHandler() {
                 @Override
-                protected Void doInBackground(Void... params) {
-                    try {
-                        Thread.sleep(MainActivity.LOADING_DURATION);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
+                public void onFailure() {
+                    mRefreshLayout.endRefreshing();
                 }
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
+                public void onSuccess(List<RefreshModel> refreshModels) {
                     mRefreshLayout.endRefreshing();
-                    mDatas.addAll(0, DataEngine.loadNewData());
+                    mDatas.addAll(0, refreshModels);
                     mAdapter.setDatas(mDatas);
                 }
-            }.execute();
+            });
         } else {
             // 网络不可用，结束下拉刷新
             Toast.makeText(this, "网络不可用", Toast.LENGTH_SHORT).show();
@@ -119,25 +111,18 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
 
         if (mIsNetworkEnabled) {
             // 如果网络可用，则异步加载网络数据，并返回true，显示正在加载更多
-            new AsyncTask<Void, Void, Void>() {
-
+            DataEngine.loadMoreData(new DataEngine.RefreshModelResponseHandler() {
                 @Override
-                protected Void doInBackground(Void... params) {
-                    try {
-                        Thread.sleep(MainActivity.LOADING_DURATION);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    // 加载完毕后在UI线程结束加载更多
+                public void onFailure() {
                     mRefreshLayout.endLoadingMore();
-                    mAdapter.addDatas(DataEngine.loadMoreData());
                 }
-            }.execute();
+
+                @Override
+                public void onSuccess(List<RefreshModel> refreshModels) {
+                    mRefreshLayout.endLoadingMore();
+                    mAdapter.addDatas(refreshModels);
+                }
+            });
             // 模拟网络可用不可用
             mIsNetworkEnabled = !mIsNetworkEnabled;
             return true;
@@ -153,12 +138,12 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "点击了条目 " + mAdapter.getItem(position).mTitle, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "点击了条目 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "长按了" + mAdapter.getItem(position).mTitle, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "长按了" + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -172,7 +157,7 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
     @Override
     public boolean onItemChildLongClick(View v, int position) {
         if (v.getId() == R.id.tv_item_normal_delete) {
-            Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).mTitle, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;

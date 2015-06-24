@@ -43,7 +43,7 @@ public class NormalViewDemoActivity extends AppCompatActivity implements BGARefr
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_normalview_refresh);
         mRefreshLayout.setDelegate(this);
         mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), false);
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), false);
     }
 
     @Override

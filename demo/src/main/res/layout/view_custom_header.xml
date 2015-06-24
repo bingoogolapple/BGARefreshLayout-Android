@@ -12,5 +12,5 @@
         app:banner_pointGravity="bottom|right"
         app:banner_pointTopBottomMargin="10dp"
         app:banner_tipTextSize="6sp"
-        app:banner_transitionEffect="accordion" />
+        app:banner_transitionEffect="zoomFade" />
 </LinearLayout>

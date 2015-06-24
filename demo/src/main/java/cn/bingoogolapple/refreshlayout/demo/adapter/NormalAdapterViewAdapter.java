@@ -26,6 +26,6 @@ public class NormalAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel
 
     @Override
     public void fillData(BGAViewHolderHelper viewHolderHelper, int position, RefreshModel model) {
-        viewHolderHelper.setText(R.id.tv_item_normal_title, model.mTitle).setText(R.id.tv_item_normal_detail, model.mDetail);
+        viewHolderHelper.setText(R.id.tv_item_normal_title, model.title).setText(R.id.tv_item_normal_detail, model.detail);
     }
 }

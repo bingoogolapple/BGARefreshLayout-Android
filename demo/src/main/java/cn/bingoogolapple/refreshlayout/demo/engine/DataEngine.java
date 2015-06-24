@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -25,6 +27,7 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
  * 描述:
  */
 public class DataEngine {
+    private static AsyncHttpClient sAsyncHttpClient = new AsyncHttpClient();
 
     public static List<RefreshModel> loadInitDatas() {
         List<RefreshModel> datas = new ArrayList<>();
@@ -34,23 +37,44 @@ public class DataEngine {
         return datas;
     }
 
-    public static List<RefreshModel> loadNewData() {
-        List<RefreshModel> datas = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            datas.add(new RefreshModel("newTitle" + i, "newDetail" + i));
-        }
-        return datas;
+    public static void loadNewData(final RefreshModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/api/newdata.json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                }.getType());
+                responseHandler.onSuccess(refreshModels);
+            }
+        });
     }
 
-    public static List<RefreshModel> loadMoreData() {
-        List<RefreshModel> datas = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            datas.add(new RefreshModel("moreTitle" + i, "moreDetail" + i));
-        }
-        return datas;
+    public static void loadMoreData(final RefreshModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/api/moredata.json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                }.getType());
+                responseHandler.onSuccess(refreshModels);
+            }
+        });
     }
 
-    public static View getCustomHeaderOrFooterView(Context context) {
+    public interface RefreshModelResponseHandler {
+        void onFailure();
+        void onSuccess(List<RefreshModel> refreshModels);
+    }
+
+    public static View getCustomHeaderView(Context context) {
         View headerView = View.inflate(context, R.layout.view_custom_header, null);
         final BGABanner banner = (BGABanner) headerView.findViewById(R.id.banner);
         final List<View> views = new ArrayList<>();
@@ -58,7 +82,7 @@ public class DataEngine {
             views.add(View.inflate(context, R.layout.view_image, null));
         }
         banner.setViews(views);
-        new AsyncHttpClient().get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/5item.json", new TextHttpResponseHandler() {
+        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/5item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }

@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +43,7 @@ public class SwipeRecyclerViewDemoActivity extends AppCompatActivity implements 
     private void initRefreshLayout() {
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_recyclerview_refresh);
         mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderOrFooterView(this), false);
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), false);
         mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(this, true));
     }
 
@@ -68,58 +67,46 @@ public class SwipeRecyclerViewDemoActivity extends AppCompatActivity implements 
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        new AsyncTask<Void, Void, Void>() {
-
+        DataEngine.loadNewData(new DataEngine.RefreshModelResponseHandler() {
             @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onFailure() {
+                mRefreshLayout.endRefreshing();
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
+            public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
-                mDatas.addAll(0, DataEngine.loadNewData());
+                mDatas.addAll(0, refreshModels);
                 mAdapter.setDatas(mDatas);
             }
-        }.execute();
+        });
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        new AsyncTask<Void, Void, Void>() {
-
+        DataEngine.loadMoreData(new DataEngine.RefreshModelResponseHandler() {
             @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
+            public void onFailure() {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addDatas(DataEngine.loadMoreData());
             }
-        }.execute();
+
+            @Override
+            public void onSuccess(List<RefreshModel> refreshModels) {
+                mRefreshLayout.endLoadingMore();
+                mAdapter.addDatas(refreshModels);
+            }
+        });
         return true;
     }
 
     @Override
     public void onRVItemClick(View v, int position) {
-        Toast.makeText(this, "点击了条目 " + mAdapter.getItem(position).mTitle, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "点击了条目 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onRVItemLongClick(View v, int position) {
-        Toast.makeText(this, "长按了条目 " + mAdapter.getItem(position).mTitle, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "长按了条目 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -133,7 +120,7 @@ public class SwipeRecyclerViewDemoActivity extends AppCompatActivity implements 
     @Override
     public boolean onItemChildLongClick(View v, int position) {
         if (v.getId() == R.id.tv_item_swipe_delete) {
-            Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).mTitle, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;

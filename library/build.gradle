@@ -11,10 +11,12 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.nineoldandroids:library:2.4.0'
 }
 
-apply from: 'android-artifacts.gradle'
-apply from: 'central-publish.gradle'
-apply from: 'bintray-publish.gradle'
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/android-artifacts.gradle'
+// 上传到Maven中央仓库  gradle -q uploadArchives
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/central-publish.gradle'
+// 上传到jCenter       gradle bintrayUpload
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/bintray-publish.gradle'

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import android.widget.ScrollView;
 import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.reflect.Field;
-
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -294,6 +294,7 @@ public class BGARefreshLayout extends LinearLayout {
             // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
             lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
         }
+//        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1;
         return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getHeight();
     }
 
@@ -756,11 +757,14 @@ public class BGARefreshLayout extends LinearLayout {
      * 显示上拉加载更多控件
      */
     private void startShowLoadingMoreViewAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(-mLoadMoreFooterViewHeight, 0);
+        ValueAnimator animator = ValueAnimator.ofInt(mLoadMoreFooterView.getPaddingBottom(), 0);
         animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                if (!mIsLoadingMore) {
+                    return;
+                }
                 int paddingBottom = (int) animation.getAnimatedValue();
                 mLoadMoreFooterView.setPadding(0, 0, 0, paddingBottom);
 
@@ -803,7 +807,7 @@ public class BGARefreshLayout extends LinearLayout {
      * 隐藏上拉加载更多控件
      */
     private void startHiddenLoadingMoreViewAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, -mLoadMoreFooterViewHeight);
+        ValueAnimator animator = ValueAnimator.ofInt(mLoadMoreFooterView.getPaddingBottom(), -mLoadMoreFooterViewHeight);
         animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -826,7 +830,7 @@ public class BGARefreshLayout extends LinearLayout {
         void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout);
 
         /**
-         * 开始加载更多。由于监听了ScrollView、RecyclerView、AbsListView滚动到底部的事件，所以这里采用返回boolean来处理是否加载更多。如果否则使用endLoadingMore方法会失效
+         * 开始加载更多。由于监听了ScrollView、RecyclerView、AbsListView滚动到底部的事件，所以这里采用返回boolean来处理是否加载更多。否则使用endLoadingMore方法会失效
          *
          * @param refreshLayout
          * @return 如果要开始加载更多则返回true，否则返回false。（返回false的场景：没有网络、一共只有x页数据并且已经加载了x页数据了）
@@ -836,5 +840,9 @@ public class BGARefreshLayout extends LinearLayout {
 
     public enum RefreshStatus {
         IDLE, PULL_DOWN, RELEASE_REFRESH, REFRESHING
+    }
+
+    public static int dp2px(Context context, int dpValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 }

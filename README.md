@@ -1,4 +1,4 @@
-:running:BGARefreshLayout-Android v1.0.3:running:
+:running:BGARefreshLayout-Android v1.0.4:running:
 ============
 
 [![Join the chat at https://gitter.im/bingoogolapple/BGARefreshLayout-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGARefreshLayout-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -43,10 +43,10 @@
 
 ```groovy
 dependencies {
-    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.3@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.4@aar'
 }
 ```
 

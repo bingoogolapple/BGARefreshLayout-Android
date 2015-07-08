@@ -75,7 +75,6 @@ public class GridViewDemoActivity extends AppCompatActivity implements BGARefres
 //                Log.i(TAG, "正在滚动");
             }
         });
-
     }
 
     @Override

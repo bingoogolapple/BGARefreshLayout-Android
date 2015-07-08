@@ -57,9 +57,12 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
     private void initRecyclerView() {
         mDataRv = (RecyclerView) findViewById(R.id.rv_recyclerview_data);
         mDataRv.addItemDecoration(new Divider(this));
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mDataRv.setLayoutManager(gridLayoutManager);
+
+//        mDataRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         mAdapter = new NormalRecyclerViewAdapter(this);
         mAdapter.setOnRVItemClickListener(this);

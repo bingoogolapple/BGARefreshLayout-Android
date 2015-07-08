@@ -102,8 +102,8 @@ public class BGAStickinessRefreshView extends View {
     }
 
     private void initSize() {
-        mEdge = UIUtil.dp2px(getContext(), 5);
-        mRotateDrawableSize = UIUtil.dp2px(getContext(), 30);
+        mEdge = BGARefreshLayout.dp2px(getContext(), 5);
+        mRotateDrawableSize = BGARefreshLayout.dp2px(getContext(), 30);
         mTopSize = mRotateDrawableSize + 2 * mEdge;
 
         mMaxBottomHeight = (int) (2.5f * mRotateDrawableSize);
@@ -292,4 +292,5 @@ public class BGAStickinessRefreshView extends View {
     public void setStickinessRefreshViewHolder(BGAStickinessRefreshViewHolder stickinessRefreshViewHolder) {
         mStickinessRefreshViewHolder = stickinessRefreshViewHolder;
     }
+
 }

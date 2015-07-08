@@ -19,12 +19,12 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.3@aar'
-//    compile project(':library')
+//    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.3@aar'
+    compile project(':library')
 
 
-    // 一下几个库是演示案例所使用到的
-    compile 'cn.bingoogolapple:bga-banner:2.0.0@aar'
+    // 以下几个库是演示案例所使用到的
+    compile 'cn.bingoogolapple:bga-banner:2.0.1@aar'
     compile 'cn.bingoogolapple:bga-adapter:1.0.2@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.0@aar'
     compile 'com.facebook.fresco:fresco:0.5.2'

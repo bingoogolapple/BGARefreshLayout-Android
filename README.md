@@ -1,4 +1,4 @@
-:running:BGARefreshLayout-Android v1.0.4:running:
+:running:BGARefreshLayout-Android v1.0.5:running:
 ============
 
 [![Join the chat at https://gitter.im/bingoogolapple/BGARefreshLayout-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGARefreshLayout-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -25,13 +25,13 @@
 * 当RecyclerView的LayoutManager为StaggeredGridLayoutManager时，不知道怎样判断是否滚动到了顶部（处理下拉刷新）或者底部（处理上拉加载更多）。
 
 ### 效果图
-![Image of GridView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/1.gif)
-![Image of 普通ListView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/2.gif)
-![Image of 普通RecyclerView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/3.gif)
-![Image of 滑动ListView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/4.gif)
-![Image of 滑动RecyclerView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/5.gif)
-![Image of ScrollView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/6.gif)
-![Image of NormalView示例](https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/screenshots/7.gif)
+![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/1.gif)
+![Image of 普通ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/2.gif)
+![Image of 普通RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/3.gif)
+![Image of 滑动ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/4.gif)
+![Image of 滑动RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/5.gif)
+![Image of ScrollView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/6.gif)
+![Image of NormalView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/7.gif)
 
 ### 基本使用
 
@@ -46,7 +46,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.4@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.5@aar'
 }
 ```
 

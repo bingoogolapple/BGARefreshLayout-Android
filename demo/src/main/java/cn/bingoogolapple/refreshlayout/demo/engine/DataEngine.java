@@ -38,7 +38,7 @@ public class DataEngine {
     }
 
     public static void loadNewData(final RefreshModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/api/newdata.json", new TextHttpResponseHandler() {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/newdata.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 responseHandler.onFailure();
@@ -54,7 +54,7 @@ public class DataEngine {
     }
 
     public static void loadMoreData(final RefreshModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/api/moredata.json", new TextHttpResponseHandler() {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/moredata.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 responseHandler.onFailure();

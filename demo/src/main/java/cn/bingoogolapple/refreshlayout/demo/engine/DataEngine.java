@@ -1,15 +1,15 @@
 package cn.bingoogolapple.refreshlayout.demo.engine;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.View;
+import android.widget.ImageView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 
@@ -71,6 +71,7 @@ public class DataEngine {
 
     public interface RefreshModelResponseHandler {
         void onFailure();
+
         void onSuccess(List<RefreshModel> refreshModels);
     }
 
@@ -90,10 +91,9 @@ public class DataEngine {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
-                SimpleDraweeView simpleDraweeView;
+                ImageLoader imageLoader = ImageLoader.getInstance();
                 for (int i = 0; i < views.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) views.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    imageLoader.displayImage(bannerModel.imgs.get(i), (ImageView) views.get(i));
                 }
                 banner.setTips(bannerModel.tips);
             }

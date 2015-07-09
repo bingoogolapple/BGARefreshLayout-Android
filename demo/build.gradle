@@ -24,7 +24,7 @@ dependencies {
     compile 'cn.bingoogolapple:bga-banner:2.0.1@aar'
     compile 'cn.bingoogolapple:bga-adapter:1.0.2@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.0@aar'
-    compile 'com.facebook.fresco:fresco:0.5.2'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.loopj.android:android-async-http:1.4.7'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 }

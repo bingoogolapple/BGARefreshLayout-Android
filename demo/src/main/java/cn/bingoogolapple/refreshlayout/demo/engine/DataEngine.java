@@ -20,6 +20,7 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -69,12 +70,6 @@ public class DataEngine {
         });
     }
 
-    public interface RefreshModelResponseHandler {
-        void onFailure();
-
-        void onSuccess(List<RefreshModel> refreshModels);
-    }
-
     public static View getCustomHeaderView(Context context) {
         View headerView = View.inflate(context, R.layout.view_custom_header, null);
         final BGABanner banner = (BGABanner) headerView.findViewById(R.id.banner);
@@ -83,7 +78,7 @@ public class DataEngine {
             views.add(View.inflate(context, R.layout.view_image, null));
         }
         banner.setViews(views);
-        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/5item.json", new TextHttpResponseHandler() {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/banner/api/5item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -101,4 +96,63 @@ public class DataEngine {
         return headerView;
     }
 
+    public static void loadDefaultStaggeredData(final StaggeredModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_default.json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                }.getType());
+                responseHandler.onSuccess(refreshModels);
+            }
+        });
+    }
+
+    public static void loadNewStaggeredData(int pageNumber, final StaggeredModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_new" + pageNumber + ".json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                }.getType());
+                responseHandler.onSuccess(refreshModels);
+            }
+        });
+    }
+
+    public static void loadMoreStaggeredData(int pageNumber, final StaggeredModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_more" + pageNumber + ".json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                }.getType());
+                responseHandler.onSuccess(refreshModels);
+            }
+        });
+    }
+
+    public interface RefreshModelResponseHandler {
+        void onFailure();
+
+        void onSuccess(List<RefreshModel> refreshModels);
+    }
+
+    public interface StaggeredModelResponseHandler {
+        void onFailure();
+
+        void onSuccess(List<StaggeredModel> staggeredModels);
+    }
 }

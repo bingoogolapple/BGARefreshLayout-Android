@@ -315,7 +315,9 @@ public class BGARefreshLayout extends LinearLayout {
         } else if (manager instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
 
-            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
+//            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
+            // 一旦最后一个item可见则开始加载更多
+            int[] out = layoutManager.findLastVisibleItemPositions(null);
             int lastPosition = layoutManager.getItemCount() - 1;
             for (int position : out) {
                 if (position == lastPosition) {
@@ -758,9 +760,27 @@ public class BGARefreshLayout extends LinearLayout {
     public void beginLoadingMore() {
         if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null && mDelegate.onBGARefreshLayoutBeginLoadingMore(this)) {
             mIsLoadingMore = true;
+
+            // 如果是瀑布流，则不显示加载更多视图
+            if (isStaggeredGridLayout()) {
+                return;
+            }
+
             mRefreshViewHolder.changeToLoadingMore();
             startShowLoadingMoreViewAnim();
         }
+    }
+
+    /**
+     * 是否是瀑布流
+     *
+     * @return
+     */
+    private boolean isStaggeredGridLayout() {
+        if (mRecyclerView != null && mRecyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -808,6 +828,11 @@ public class BGARefreshLayout extends LinearLayout {
     public void endLoadingMore() {
         if (mIsLoadingMore) {
             mIsLoadingMore = false;
+
+            // 如果是瀑布流，加载更多视图没有显示，不用开始隐藏动画
+            if (isStaggeredGridLayout()) {
+                return;
+            }
             mRefreshViewHolder.onEndLoadingMore();
             startHiddenLoadingMoreViewAnim();
         }

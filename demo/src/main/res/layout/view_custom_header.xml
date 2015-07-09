@@ -11,7 +11,7 @@
         android:layout_height="100dp"
         app:banner_pointGravity="bottom|right"
         app:banner_pointTopBottomMargin="10dp"
-        app:banner_tipTextSize="10sp"
+        app:banner_tipTextSize="12sp"
         app:banner_pointAutoPlayInterval="3000"
         app:banner_transitionEffect="accordion" />
 </LinearLayout>

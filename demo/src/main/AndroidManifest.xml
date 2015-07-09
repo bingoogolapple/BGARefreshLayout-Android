@@ -31,7 +31,7 @@
             android:label="普通RecyclerView示例" />
 
         <activity
-            android:name=".activity.StaggeredGridRecyclerViewDemoActivity"
+            android:name=".activity.StaggeredRecyclerViewDemoActivity"
             android:label="StaggeredGrid示例" />
 
         <activity

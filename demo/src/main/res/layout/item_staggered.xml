@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="#3f0fff"
-    android:layout_margin="5dp"
-    android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
 
-    <TextView
-        android:id="@+id/tv_item_staggered_title"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/iv_item_staggered_icon"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="标题"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:scaleType="centerCrop"
+        android:src="@mipmap/staggered_holder"/>
 
     <TextView
-        android:id="@+id/tv_item_staggered_detail"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_item_staggered_desc"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="详细内容"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tv_item_staggered_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/selector_btn_red"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="删除"
-        android:clickable="true"
+        android:layout_gravity="bottom"
+        android:padding="5dp"
+        android:background="#99cccccc"
+        android:singleLine="true"
+        android:text="我是描述文本"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
-</RelativeLayout>
+        android:textSize="14sp" />
+</FrameLayout>

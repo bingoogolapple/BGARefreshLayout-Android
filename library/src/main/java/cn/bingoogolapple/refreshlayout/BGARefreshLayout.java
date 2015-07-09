@@ -294,7 +294,6 @@ public class BGARefreshLayout extends LinearLayout {
             // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
             lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
         }
-//        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1;
         return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getHeight();
     }
 
@@ -314,8 +313,15 @@ public class BGARefreshLayout extends LinearLayout {
                 return true;
             }
         } else if (manager instanceof StaggeredGridLayoutManager) {
-            StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) manager;
-            // TODO
+            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
+
+            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
+            int lastPosition = layoutManager.getItemCount() - 1;
+            for (int position : out) {
+                if (position == lastPosition) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -447,8 +453,12 @@ public class BGARefreshLayout extends LinearLayout {
                     return true;
                 }
             } else if (manager instanceof StaggeredGridLayoutManager) {
-                StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) manager;
-                // TODO
+                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
+
+                int[] out = layoutManager.findFirstCompletelyVisibleItemPositions(null);
+                if (out[0] == 0) {
+                    return true;
+                }
             }
         }
         return false;

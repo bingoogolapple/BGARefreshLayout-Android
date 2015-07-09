@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, NormalRecyclerViewDemoActivity.class));
     }
 
+    public void changeToStaggeredGridRecyclerViewDemo(View v) {
+        startActivity(new Intent(this, StaggeredGridRecyclerViewDemoActivity.class));
+    }
+
     public void changeToSwipeListViewDemo(View v) {
         startActivity(new Intent(this, SwipeListViewDemoActivity.class));
     }

@@ -3,9 +3,8 @@ package cn.bingoogolapple.refreshlayout.demo.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,19 +17,18 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
-import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
+import cn.bingoogolapple.refreshlayout.demo.adapter.StaggeredGridRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
-import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = NormalRecyclerViewDemoActivity.class.getSimpleName();
-    private NormalRecyclerViewAdapter mAdapter;
+public class StaggeredGridRecyclerViewDemoActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = StaggeredGridRecyclerViewDemoActivity.class.getSimpleName();
+    private StaggeredGridRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private List<RefreshModel> mDatas;
     private RecyclerView mDataRv;
@@ -56,15 +54,11 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
 
     private void initRecyclerView() {
         mDataRv = (RecyclerView) findViewById(R.id.rv_recyclerview_data);
-        mDataRv.addItemDecoration(new Divider(this));
 
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-//        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-//        mDataRv.setLayoutManager(gridLayoutManager);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        mDataRv.setLayoutManager(layoutManager);
 
-        mDataRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        mAdapter = new NormalRecyclerViewAdapter(this);
+        mAdapter = new StaggeredGridRecyclerViewAdapter(this);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
@@ -75,17 +69,17 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
         mDataRv.setAdapter(mAdapter);
 
         // 使用addOnScrollListener，而不是setOnScrollListener();
-        mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                Log.i(TAG, "测试自定义onScrollStateChanged被调用");
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                Log.i(TAG, "测试自定义onScrolled被调用");
-            }
-        });
+//        mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                Log.i(TAG, "测试自定义onScrollStateChanged被调用");
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                Log.i(TAG, "测试自定义onScrolled被调用");
+//            }
+//        });
     }
 
     @Override
@@ -135,14 +129,14 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
 
     @Override
     public void onItemChildClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_normal_delete) {
+        if (v.getId() == R.id.tv_item_staggered_delete) {
             mAdapter.removeItem(position);
         }
     }
 
     @Override
     public boolean onItemChildLongClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_normal_delete) {
+        if (v.getId() == R.id.tv_item_staggered_delete) {
             Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
             return true;
         }

@@ -21,6 +21,12 @@
         style="@style/MainBtn"
         android:onClick="changeToNormalRecyclerViewDemo"
         android:text="普通RecyclerView示例" />
+
+    <Button
+        style="@style/MainBtn"
+        android:onClick="changeToStaggeredGridRecyclerViewDemo"
+        android:text="StaggeredGrid示例" />
+
     <Button
         style="@style/MainBtn"
         android:onClick="changeToSwipeListViewDemo"

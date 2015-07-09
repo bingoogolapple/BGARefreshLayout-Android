@@ -29,6 +29,11 @@
         <activity
             android:name=".activity.NormalRecyclerViewDemoActivity"
             android:label="普通RecyclerView示例" />
+
+        <activity
+            android:name=".activity.StaggeredGridRecyclerViewDemoActivity"
+            android:label="StaggeredGrid示例" />
+
         <activity
             android:name=".activity.SwipeListViewDemoActivity"
             android:label="滑动ListView示例" />

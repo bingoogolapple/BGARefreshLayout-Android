@@ -11,7 +11,7 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.StaggeredRecyclerViewAdapter;
@@ -45,8 +45,7 @@ public class StaggeredRecyclerViewDemoActivity extends AppCompatActivity impleme
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_recyclerview_refresh);
         mRefreshLayout.setDelegate(this);
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), true);
-        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(this, true);
-        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
     }
 
     private void initRecyclerView() {

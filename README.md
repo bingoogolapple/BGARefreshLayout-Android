@@ -22,7 +22,6 @@
 ### 目前存在的问题
 
 * 当配置自定义头部广告位可滚动时，内容区域和广告位还不能平滑过度。
-* 当RecyclerView的LayoutManager为StaggeredGridLayoutManager时，不知道怎样判断是否滚动到了顶部（处理下拉刷新）或者底部（处理上拉加载更多）。
 
 ### 效果图
 ![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/1.gif)

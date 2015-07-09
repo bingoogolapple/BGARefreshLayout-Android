@@ -49,7 +49,6 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
         BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(this, true);
         moocStyleRefreshViewHolder.setUltimateColor(Color.rgb(0, 0, 255));
         moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.iqegg));
-        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_green);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), true);
     }

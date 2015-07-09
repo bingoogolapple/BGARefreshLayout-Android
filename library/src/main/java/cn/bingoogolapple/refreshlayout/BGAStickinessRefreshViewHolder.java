@@ -1,6 +1,7 @@
 package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -23,6 +24,7 @@ public class BGAStickinessRefreshViewHolder extends BGARefreshViewHolder {
     public View getRefreshHeaderView() {
         if (mRefreshHeaderView == null) {
             mRefreshHeaderView = View.inflate(mContext, R.layout.view_refresh_header_stickiness, null);
+            mRefreshHeaderView.setBackgroundColor(Color.TRANSPARENT);
             if (mRefreshViewBackgroundColorRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundColorRes);
             }

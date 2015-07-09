@@ -2,6 +2,7 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
@@ -29,6 +30,7 @@ public class BGAMoocStyleRefreshViewHolder extends BGARefreshViewHolder {
     public View getRefreshHeaderView() {
         if (mRefreshHeaderView == null) {
             mRefreshHeaderView = View.inflate(mContext, R.layout.view_refresh_header_mooc_style, null);
+            mRefreshHeaderView.setBackgroundColor(Color.TRANSPARENT);
             if (mRefreshViewBackgroundColorRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundColorRes);
             }

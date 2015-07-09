@@ -2,6 +2,7 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -57,10 +58,6 @@ public class BGARefreshLayout extends LinearLayout {
      */
     private View mLoadMoreFooterView;
     /**
-     * 上拉加载更多控件的高度
-     */
-    private int mLoadMoreFooterViewHeight;
-    /**
      * 下拉刷新和上拉加载更多代理
      */
     private BGARefreshLayoutDelegate mDelegate;
@@ -104,6 +101,8 @@ public class BGARefreshLayout extends LinearLayout {
      */
     private boolean mIsInitedContentViewScrollListener = false;
 
+    private Handler mHandler;
+
     public BGARefreshLayout(Context context) {
         this(context, null);
     }
@@ -111,6 +110,7 @@ public class BGARefreshLayout extends LinearLayout {
     public BGARefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(LinearLayout.VERTICAL);
+        mHandler = new Handler(Looper.getMainLooper());
         initWholeHeaderView();
     }
 
@@ -214,8 +214,7 @@ public class BGARefreshLayout extends LinearLayout {
         if (mLoadMoreFooterView != null) {
             // 测量上拉加载更多控件的高度
             mLoadMoreFooterView.measure(0, 0);
-            mLoadMoreFooterViewHeight = mLoadMoreFooterView.getMeasuredHeight();
-            mLoadMoreFooterView.setPadding(0, 0, 0, -mLoadMoreFooterViewHeight);
+            mLoadMoreFooterView.setVisibility(GONE);
         }
     }
 
@@ -289,12 +288,8 @@ public class BGARefreshLayout extends LinearLayout {
             return false;
         }
 
-        int lastChildBottom = 0;
-        if (mAbsListView.getChildCount() > 0) {
-            // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
-            lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
-        }
-        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getHeight();
+        // 一旦最后一个item可见则开始加载更多，而不是完全显示才开始加载更多
+        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1;
     }
 
     private boolean shouldHandleRecyclerViewLoadingMore() {
@@ -309,14 +304,14 @@ public class BGARefreshLayout extends LinearLayout {
 
         if (manager instanceof LinearLayoutManager) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-            if (layoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1) {
+            // 一旦最后一个item可见则开始加载更多，而不是完全显示才开始加载更多
+            if (layoutManager.findLastVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1) {
                 return true;
             }
         } else if (manager instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
 
-//            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
-            // 一旦最后一个item可见则开始加载更多
+            // 一旦最后一个item可见则开始加载更多，而不是完全显示才开始加载更多
             int[] out = layoutManager.findLastVisibleItemPositions(null);
             int lastPosition = layoutManager.getItemCount() - 1;
             for (int position : out) {
@@ -766,8 +761,7 @@ public class BGARefreshLayout extends LinearLayout {
                 return;
             }
 
-            mRefreshViewHolder.changeToLoadingMore();
-            startShowLoadingMoreViewAnim();
+            showLoadingMoreView();
         }
     }
 
@@ -786,40 +780,28 @@ public class BGARefreshLayout extends LinearLayout {
     /**
      * 显示上拉加载更多控件
      */
-    private void startShowLoadingMoreViewAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(mLoadMoreFooterView.getPaddingBottom(), 0);
-        animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (!mIsLoadingMore) {
-                    return;
+    private void showLoadingMoreView() {
+        mRefreshViewHolder.changeToLoadingMore();
+        mLoadMoreFooterView.setVisibility(VISIBLE);
+        if (mScrollView != null) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
                 }
-                int paddingBottom = (int) animation.getAnimatedValue();
-                mLoadMoreFooterView.setPadding(0, 0, 0, paddingBottom);
-
-                if (mScrollView != null) {
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                        }
-                    });
-                }
-                if (mRecyclerView != null) {
-                    RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
-                    if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 0) {
-                        layoutManager.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
-                    }
-                }
-                if (mAbsListView != null) {
-                    if (mAbsListView.getAdapter() != null && mAbsListView.getAdapter().getCount() > 0) {
-                        mAbsListView.smoothScrollToPosition(mAbsListView.getAdapter().getCount() - 1);
-                    }
-                }
+            });
+        }
+        if (mRecyclerView != null) {
+            RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+            if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 0) {
+                layoutManager.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
             }
-        });
-        animator.start();
+        }
+        if (mAbsListView != null) {
+            if (mAbsListView.getAdapter() != null && mAbsListView.getAdapter().getCount() > 0) {
+                mAbsListView.smoothScrollToPosition(mAbsListView.getAdapter().getCount() - 1);
+            }
+        }
     }
 
     /**
@@ -827,32 +809,24 @@ public class BGARefreshLayout extends LinearLayout {
      */
     public void endLoadingMore() {
         if (mIsLoadingMore) {
-            mIsLoadingMore = false;
-
             // 如果是瀑布流，加载更多视图没有显示，不用开始隐藏动画
             if (isStaggeredGridLayout()) {
+                mIsLoadingMore = false;
                 return;
             }
-            mRefreshViewHolder.onEndLoadingMore();
-            startHiddenLoadingMoreViewAnim();
+            // 避免WiFi环境下请求数据太快，加载更多控件一闪而过
+            mHandler.postDelayed(mDelayHiddenLoadingMoreViewTask, 300);
         }
     }
 
-    /**
-     * 隐藏上拉加载更多控件
-     */
-    private void startHiddenLoadingMoreViewAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(mLoadMoreFooterView.getPaddingBottom(), -mLoadMoreFooterViewHeight);
-        animator.setDuration(mRefreshViewHolder.getBottomAnimDuration());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int paddingBottom = (int) animation.getAnimatedValue();
-                mLoadMoreFooterView.setPadding(0, 0, 0, paddingBottom);
-            }
-        });
-        animator.start();
-    }
+    private Runnable mDelayHiddenLoadingMoreViewTask = new Runnable() {
+        @Override
+        public void run() {
+            mIsLoadingMore = false;
+            mRefreshViewHolder.onEndLoadingMore();
+            mLoadMoreFooterView.setVisibility(GONE);
+        }
+    };
 
     public void setDelegate(BGARefreshLayoutDelegate delegate) {
         mDelegate = delegate;

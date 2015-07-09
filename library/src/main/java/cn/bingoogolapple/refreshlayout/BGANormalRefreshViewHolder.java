@@ -1,6 +1,7 @@
 package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
 import android.view.animation.Animation;
@@ -74,6 +75,7 @@ public class BGANormalRefreshViewHolder extends BGARefreshViewHolder {
     public View getRefreshHeaderView() {
         if (mRefreshHeaderView == null) {
             mRefreshHeaderView = View.inflate(mContext, R.layout.view_refresh_header_normal, null);
+            mRefreshHeaderView.setBackgroundColor(Color.TRANSPARENT);
             if (mRefreshViewBackgroundColorRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundColorRes);
             }

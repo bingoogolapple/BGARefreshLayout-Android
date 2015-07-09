@@ -1,6 +1,7 @@
 package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -84,10 +85,6 @@ public abstract class BGARefreshViewHolder {
      * 头部控件移动动画时常
      */
     private int mTopAnimDuration = 500;
-    /**
-     * 底部控件移动动画时常
-     */
-    private int mBottomAnimDuration = 300;
 
     /**
      * @param context
@@ -162,24 +159,6 @@ public abstract class BGARefreshViewHolder {
     }
 
     /**
-     * 获取底部加载更多控件显示、隐藏的动画时间
-     *
-     * @return
-     */
-    public int getBottomAnimDuration() {
-        return mBottomAnimDuration;
-    }
-
-    /**
-     * 设置底部加载更多控件显示、隐藏的动画时间
-     *
-     * @param bottomAnimDuration
-     */
-    public void setBottomAnimDuration(int bottomAnimDuration) {
-        mBottomAnimDuration = bottomAnimDuration;
-    }
-
-    /**
      * 获取上拉加载更多控件，如果不喜欢这种上拉刷新风格可重写该方法实现自定义LoadMoreFooterView
      *
      * @return
@@ -190,6 +169,7 @@ public abstract class BGARefreshViewHolder {
         }
         if (mLoadMoreFooterView == null) {
             mLoadMoreFooterView = View.inflate(mContext, R.layout.view_normal_refresh_footer, null);
+            mLoadMoreFooterView.setBackgroundColor(Color.TRANSPARENT);
             if (mLoadMoreBackgroundColorRes != -1) {
                 mLoadMoreFooterView.setBackgroundResource(mLoadMoreBackgroundColorRes);
             }

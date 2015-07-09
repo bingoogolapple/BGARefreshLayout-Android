@@ -109,7 +109,7 @@ public class NormalListViewDemoActivity extends AppCompatActivity implements BGA
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
+            public void onSuccess(final List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addDatas(refreshModels);
             }

@@ -313,8 +313,7 @@ public class BGARefreshLayout extends LinearLayout {
 
         if (manager instanceof LinearLayoutManager) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-            // 一旦最后一个item可见则开始加载更多，而不是完全显示才开始加载更多
-            if (layoutManager.findLastVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1) {
+            if (layoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1) {
                 return true;
             }
         } else if (manager instanceof StaggeredGridLayoutManager) {

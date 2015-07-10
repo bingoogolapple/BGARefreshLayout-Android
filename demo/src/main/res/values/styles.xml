@@ -1,9 +1,14 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- 去掉ActionBar，欲练此功，必先自宫 -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- toolbar（actionbar）背景颜色 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
+
+    <style name="AppTheme" parent="AppBaseTheme"></style>
 
     <style name="MainBtn">
         <item name="android:layout_width">match_parent</item>
@@ -12,16 +17,6 @@
         <item name="android:background">@drawable/selector_btn_blue</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-    </style>
-
-    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <!-- 全透明 -->
-        <!-- <item name="android:backgroundDimEnabled">false</item> -->
     </style>
 
 </resources>

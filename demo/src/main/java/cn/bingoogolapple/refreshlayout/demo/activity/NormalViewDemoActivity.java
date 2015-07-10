@@ -12,6 +12,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com

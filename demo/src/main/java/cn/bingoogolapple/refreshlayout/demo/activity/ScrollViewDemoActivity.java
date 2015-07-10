@@ -1,5 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.activity;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +13,8 @@ import android.widget.Toast;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
-import cn.bingoogolapple.refreshlayout.demo.dialog.LoadingDialog;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -24,14 +25,14 @@ public class ScrollViewDemoActivity extends AppCompatActivity implements BGARefr
     private static final String TAG = ScrollViewDemoActivity.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private TextView mClickableLabelTv;
-    private LoadingDialog mLoadingDialog;
+    private ProgressDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrollview);
-        mLoadingDialog = new LoadingDialog(this);
-        mLoadingDialog.setMsg("正在加载中...");
+        mLoadingDialog = new ProgressDialog(this);
+        mLoadingDialog.setMessage("正在加载中...");
 
         initRefreshLayout();
 

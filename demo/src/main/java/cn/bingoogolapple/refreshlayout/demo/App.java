@@ -16,12 +16,18 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
  * 描述:
  */
 public class App extends Application {
+    private static App sInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sInstance = this;
 
         initImageLoader(this);
+    }
+
+    public static App getInstance() {
+        return sInstance;
     }
 
     private void initImageLoader(Context context) {

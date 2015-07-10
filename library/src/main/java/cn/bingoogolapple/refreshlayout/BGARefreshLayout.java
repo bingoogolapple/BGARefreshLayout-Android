@@ -58,6 +58,10 @@ public class BGARefreshLayout extends LinearLayout {
      */
     private View mLoadMoreFooterView;
     /**
+     * 上拉加载更多控件的高度
+     */
+    private int mLoadMoreFooterViewHeight;
+    /**
      * 下拉刷新和上拉加载更多代理
      */
     private BGARefreshLayoutDelegate mDelegate;
@@ -214,6 +218,7 @@ public class BGARefreshLayout extends LinearLayout {
         if (mLoadMoreFooterView != null) {
             // 测量上拉加载更多控件的高度
             mLoadMoreFooterView.measure(0, 0);
+            mLoadMoreFooterViewHeight = mLoadMoreFooterView.getMeasuredHeight();
             mLoadMoreFooterView.setVisibility(GONE);
         }
     }
@@ -288,8 +293,12 @@ public class BGARefreshLayout extends LinearLayout {
             return false;
         }
 
-        // 一旦最后一个item可见则开始加载更多，而不是完全显示才开始加载更多
-        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1;
+        int lastChildBottom = 0;
+        if (mAbsListView.getChildCount() > 0) {
+            // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
+            lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
+        }
+        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getHeight();
     }
 
     private boolean shouldHandleRecyclerViewLoadingMore() {
@@ -799,7 +808,7 @@ public class BGARefreshLayout extends LinearLayout {
         }
         if (mAbsListView != null) {
             if (mAbsListView.getAdapter() != null && mAbsListView.getAdapter().getCount() > 0) {
-                mAbsListView.smoothScrollToPosition(mAbsListView.getAdapter().getCount() - 1);
+                mAbsListView.scrollBy(0, mLoadMoreFooterViewHeight);
             }
         }
     }
@@ -825,6 +834,12 @@ public class BGARefreshLayout extends LinearLayout {
             mIsLoadingMore = false;
             mRefreshViewHolder.onEndLoadingMore();
             mLoadMoreFooterView.setVisibility(GONE);
+
+            if (mAbsListView != null) {
+                if (mAbsListView.getAdapter() != null && mAbsListView.getAdapter().getCount() > 0) {
+                    mAbsListView.scrollBy(0, -mLoadMoreFooterViewHeight);
+                }
+            }
         }
     };
 

@@ -104,6 +104,10 @@ public class BGARefreshLayout extends LinearLayout {
      * 是否已经设置内容控件滚动监听器
      */
     private boolean mIsInitedContentViewScrollListener = false;
+    /**
+     * 触发上拉加载更多时是否显示加载更多控件
+     */
+    private boolean mIsShowLoadingMoreView = true;
 
     private Handler mHandler;
 
@@ -763,25 +767,10 @@ public class BGARefreshLayout extends LinearLayout {
         if (!mIsLoadingMore && mLoadMoreFooterView != null && mDelegate != null && mDelegate.onBGARefreshLayoutBeginLoadingMore(this)) {
             mIsLoadingMore = true;
 
-            // 如果是瀑布流，则不显示加载更多视图
-            if (isStaggeredGridLayout()) {
-                return;
+            if (mIsShowLoadingMoreView) {
+                showLoadingMoreView();
             }
-
-            showLoadingMoreView();
         }
-    }
-
-    /**
-     * 是否是瀑布流
-     *
-     * @return
-     */
-    private boolean isStaggeredGridLayout() {
-        if (mRecyclerView != null && mRecyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -817,13 +806,12 @@ public class BGARefreshLayout extends LinearLayout {
      */
     public void endLoadingMore() {
         if (mIsLoadingMore) {
-            // 如果是瀑布流，加载更多视图没有显示，不用开始隐藏动画
-            if (isStaggeredGridLayout()) {
+            if (mIsShowLoadingMoreView) {
+                // 避免WiFi环境下请求数据太快，加载更多控件一闪而过
+                mHandler.postDelayed(mDelayHiddenLoadingMoreViewTask, 300);
+            } else {
                 mIsLoadingMore = false;
-                return;
             }
-            // 避免WiFi环境下请求数据太快，加载更多控件一闪而过
-            mHandler.postDelayed(mDelayHiddenLoadingMoreViewTask, 300);
         }
     }
 
@@ -841,6 +829,15 @@ public class BGARefreshLayout extends LinearLayout {
             }
         }
     };
+
+    /**
+     * 上拉加载更多时是否显示加载更多控件
+     *
+     * @param isShowLoadingMoreView
+     */
+    public void setIsShowLoadingMoreView(boolean isShowLoadingMoreView) {
+        mIsShowLoadingMoreView = isShowLoadingMoreView;
+    }
 
     public void setDelegate(BGARefreshLayoutDelegate delegate) {
         mDelegate = delegate;

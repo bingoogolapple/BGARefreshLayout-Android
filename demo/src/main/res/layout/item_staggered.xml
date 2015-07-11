@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/iv_item_staggered_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/staggered_holder"/>
+
+    <TextView
+        android:id="@+id/tv_item_staggered_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="5dp"
+        android:background="#99cccccc"
+        android:singleLine="true"
+        android:text="我是描述文本"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+</FrameLayout>

@@ -1,15 +1,17 @@
 package cn.bingoogolapple.refreshlayout.demo.engine;
 
 import android.content.Context;
-import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.widget.ImageView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 
@@ -20,6 +22,7 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -29,16 +32,8 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 public class DataEngine {
     private static AsyncHttpClient sAsyncHttpClient = new AsyncHttpClient();
 
-    public static List<RefreshModel> loadInitDatas() {
-        List<RefreshModel> datas = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            datas.add(new RefreshModel("title" + i, "detail" + i));
-        }
-        return datas;
-    }
-
-    public static void loadNewData(final RefreshModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/api/newdata.json", new TextHttpResponseHandler() {
+    public static void loadInitDatas(final RefreshModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/defaultdata.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 responseHandler.onFailure();
@@ -53,8 +48,52 @@ public class DataEngine {
         });
     }
 
-    public static void loadMoreData(final RefreshModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGARefreshLayout-Android/server/api/moredata.json", new TextHttpResponseHandler() {
+    public static void loadNewData(final int pageNumber, final RefreshModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/newdata" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
+            }
+        }, 2000);
+    }
+
+    public static void loadMoreData(final int pageNumber, final RefreshModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时1秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/moredata" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
+            }
+        }, 1000);
+    }
+
+    public static void loadDefaultStaggeredData(final StaggeredModelResponseHandler responseHandler) {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_default.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 responseHandler.onFailure();
@@ -62,16 +101,55 @@ public class DataEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
                 }.getType());
                 responseHandler.onSuccess(refreshModels);
             }
         });
     }
 
-    public interface RefreshModelResponseHandler {
-        void onFailure();
-        void onSuccess(List<RefreshModel> refreshModels);
+    public static void loadNewStaggeredData(final int pageNumber, final StaggeredModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_new" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
+            }
+        }, 2000);
+    }
+
+    public static void loadMoreStaggeredData(final int pageNumber, final StaggeredModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时1秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_more" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
+            }
+        }, 1000);
     }
 
     public static View getCustomHeaderView(Context context) {
@@ -82,7 +160,7 @@ public class DataEngine {
             views.add(View.inflate(context, R.layout.view_image, null));
         }
         banner.setViews(views);
-        sAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/5item.json", new TextHttpResponseHandler() {
+        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/banner/api/5item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -90,10 +168,9 @@ public class DataEngine {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
-                SimpleDraweeView simpleDraweeView;
+                ImageLoader imageLoader = ImageLoader.getInstance();
                 for (int i = 0; i < views.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) views.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    imageLoader.displayImage(bannerModel.imgs.get(i), (ImageView) views.get(i));
                 }
                 banner.setTips(bannerModel.tips);
             }
@@ -101,4 +178,15 @@ public class DataEngine {
         return headerView;
     }
 
+    public interface RefreshModelResponseHandler {
+        void onFailure();
+
+        void onSuccess(List<RefreshModel> refreshModels);
+    }
+
+    public interface StaggeredModelResponseHandler {
+        void onFailure();
+
+        void onSuccess(List<StaggeredModel> staggeredModels);
+    }
 }

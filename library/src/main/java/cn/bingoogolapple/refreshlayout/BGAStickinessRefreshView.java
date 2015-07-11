@@ -1,3 +1,19 @@
+/**
+ * Copyright 2015 bingoogolapple
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
@@ -106,7 +122,7 @@ public class BGAStickinessRefreshView extends View {
         mRotateDrawableSize = BGARefreshLayout.dp2px(getContext(), 30);
         mTopSize = mRotateDrawableSize + 2 * mEdge;
 
-        mMaxBottomHeight = (int) (2.5f * mRotateDrawableSize);
+        mMaxBottomHeight = (int) (2.4f * mRotateDrawableSize);
     }
 
     @Override
@@ -163,7 +179,7 @@ public class BGAStickinessRefreshView extends View {
             // scale                  0.2 到 1
             float scale = Math.max(mCurrentBottomHeight * 1.0f / mMaxBottomHeight, 0.2f);
 
-            float bottomControlXOffset = mTopSize * ((4 + (float) Math.pow(scale, 7) * 15) / 32);
+            float bottomControlXOffset = mTopSize * ((3 + (float) Math.pow(scale, 7) * 16) / 32);
             float bottomControlY = mTopBound.bottom / 2 + mCenterPoint.y / 2;
             // 三阶贝塞尔曲线，前两个是控制点，最后一个点是终点
             mPath.cubicTo(mTopBound.right - mTopSize / 8, mTopBound.bottom, mTopBound.right - bottomControlXOffset, bottomControlY, mBottomBound.right, mBottomBound.bottom - mBottomBound.height() / 2);

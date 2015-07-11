@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.Vertical">
+
+    <Button
+        android:id="@+id/beginRefreshing"
+        style="@style/MatchWrap"
+        android:layout_margin="@dimen/small"
+        android:background="@color/colorPrimary"
+        android:text="BeginRefreshing"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/beginLoadingMore"
+        style="@style/MatchWrap"
+        android:layout_margin="@dimen/small"
+        android:background="@color/colorPrimary"
+        android:text="BeginLoadingMore"
+        android:textColor="@android:color/white" />
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_gridview_refresh"
+        style="@style/MatchMatch">
+
+        <GridView
+            android:id="@+id/lv_gridview_data"
+            style="@style/MatchAuto"
+            android:numColumns="2"
+            android:scrollbars="none" />
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+</LinearLayout>

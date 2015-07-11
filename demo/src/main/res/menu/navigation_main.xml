@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_main_gridview"
+            android:checked="true"
+            android:title="@string/gridview_demo" />
+        <item
+            android:id="@+id/navigation_main_normallistview"
+            android:title="@string/normal_listview_demo" />
+        <item
+            android:id="@+id/navigation_main_normalrecyclerview"
+            android:title="@string/normal_recyclerview_demo" />
+        <item
+            android:id="@+id/navigation_main_swipelistview"
+            android:title="@string/swipe_listview_demo" />
+        <item
+            android:id="@+id/navigation_main_swiperecyclerview"
+            android:title="@string/swipe_recyclerview_demo" />
+        <item
+            android:id="@+id/navigation_main_staggeredgridlayoutmanager"
+            android:title="@string/staggeredgrid_demo" />
+        <item
+            android:id="@+id/navigation_main_scrollview"
+            android:title="@string/scrollview_demo" />
+        <item
+            android:id="@+id/navigation_main_normalview"
+            android:title="@string/normalview_demo" />
+    </group>
+</menu>

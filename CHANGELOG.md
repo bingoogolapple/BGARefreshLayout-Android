@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.5 *(2014-7-11)*
+----------------------------
+
+- 支持RecyclerView的LayoutManager为StaggeredGridLayoutManager
+
 Version 1.0.4 *(2014-7-8)*
 ----------------------------
 

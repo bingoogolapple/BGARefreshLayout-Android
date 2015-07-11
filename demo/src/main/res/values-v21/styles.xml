@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- 底部导航栏的颜色 -->
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+    </style>
+
+</resources>

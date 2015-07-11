@@ -1,7 +1,7 @@
-<com.facebook.drawee.view.SimpleDraweeView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/my_image_view"
-    android:layout_width="match_parent"
+<ImageView
+    android:id="@+id/iv_image_view"
     android:layout_height="100dp"
-    app:placeholderImage="@mipmap/holder"
-    app:placeholderImageScaleType="centerCrop"/>
+    android:layout_width="match_parent"
+    android:scaleType="centerCrop"
+    android:src="@mipmap/holder"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

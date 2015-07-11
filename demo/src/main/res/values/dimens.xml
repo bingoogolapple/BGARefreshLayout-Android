@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="textSize_12">12sp</dimen>
+    <dimen name="textSize_14">14sp</dimen>
+    <dimen name="textSize_16">16sp</dimen>
+    <dimen name="textSize_18">18sp</dimen>
+
+    <dimen name="small">5dp</dimen>
+    <dimen name="middle">10dp</dimen>
+    <dimen name="large">15dp</dimen>
+    <dimen name="large_large">20dp</dimen>
+
+</resources>

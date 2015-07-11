@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_listview_refresh"
+    style="@style/MatchMatch">
+
+    <ListView
+        android:id="@+id/lv_listview_data"
+        style="@style/MatchAuto"
+        android:divider="@mipmap/list_divider"
+        android:scrollbars="none" />
+</cn.bingoogolapple.refreshlayout.BGARefreshLayout>

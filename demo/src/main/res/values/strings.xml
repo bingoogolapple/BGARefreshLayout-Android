@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">BGARefreshLayoutDemo</string>
+    <string name="app_name">BGARefreshLayout</string>
+
+    <string name="gridview_demo">GridViewDemo</string>
+    <string name="normal_listview_demo">NormalListViewDemo</string>
+    <string name="normal_recyclerview_demo">NormalRecyclerViewDemo</string>
+    <string name="swipe_listview_demo">SwipeListViewDemo</string>
+    <string name="swipe_recyclerview_demo">SwipeRecyclerViewDemo</string>
+    <string name="staggeredgrid_demo">StaggeredGridDemo</string>
+    <string name="scrollview_demo">ScrollViewDemo</string>
+    <string name="normalview_demo">NormalViewDemo</string>
+
 </resources>

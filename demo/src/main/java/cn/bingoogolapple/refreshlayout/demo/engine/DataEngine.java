@@ -1,6 +1,8 @@
 package cn.bingoogolapple.refreshlayout.demo.engine;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -46,36 +48,48 @@ public class DataEngine {
         });
     }
 
-    public static void loadNewData(int pageNumber, final RefreshModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/newdata" + pageNumber + ".json", new TextHttpResponseHandler() {
+    public static void loadNewData(final int pageNumber, final RefreshModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                responseHandler.onFailure();
-            }
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/newdata" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
-                }.getType());
-                responseHandler.onSuccess(refreshModels);
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
             }
-        });
+        }, 2000);
     }
 
-    public static void loadMoreData(int pageNumber, final RefreshModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/moredata" + pageNumber + ".json", new TextHttpResponseHandler() {
+    public static void loadMoreData(final int pageNumber, final RefreshModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                responseHandler.onFailure();
-            }
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/moredata" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
-                }.getType());
-                responseHandler.onSuccess(refreshModels);
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<RefreshModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<RefreshModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
             }
-        });
+        }, 1000);
     }
 
     public static void loadDefaultStaggeredData(final StaggeredModelResponseHandler responseHandler) {
@@ -94,36 +108,48 @@ public class DataEngine {
         });
     }
 
-    public static void loadNewStaggeredData(int pageNumber, final StaggeredModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_new" + pageNumber + ".json", new TextHttpResponseHandler() {
+    public static void loadNewStaggeredData(final int pageNumber, final StaggeredModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                responseHandler.onFailure();
-            }
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_new" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
-                }.getType());
-                responseHandler.onSuccess(refreshModels);
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
             }
-        });
+        }, 2000);
     }
 
-    public static void loadMoreStaggeredData(int pageNumber, final StaggeredModelResponseHandler responseHandler) {
-        sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_more" + pageNumber + ".json", new TextHttpResponseHandler() {
+    public static void loadMoreStaggeredData(final int pageNumber, final StaggeredModelResponseHandler responseHandler) {
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                responseHandler.onFailure();
-            }
+            public void run() {
+                sAsyncHttpClient.get("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/staggered_more" + pageNumber + ".json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        responseHandler.onFailure();
+                    }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
-                }.getType());
-                responseHandler.onSuccess(refreshModels);
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        List<StaggeredModel> refreshModels = new GsonBuilder().create().fromJson(responseString, new TypeToken<ArrayList<StaggeredModel>>() {
+                        }.getType());
+                        responseHandler.onSuccess(refreshModels);
+                    }
+                });
             }
-        });
+        }, 1000);
     }
 
     public static View getCustomHeaderView(Context context) {

@@ -43,6 +43,8 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
+        // 设置正在加载更多时不显示加载更多控件
+        mRefreshLayout.setIsShowLoadingMoreView(false);
 
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
@@ -81,16 +83,13 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
     protected void onUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
-        mLoadingDialog.show();
         DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
-                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
-                mLoadingDialog.dismiss();
                 mDatas = refreshModels;
                 mAdapter.setDatas(mDatas);
             }
@@ -105,18 +104,15 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             showToast("没有最新数据了");
             return;
         }
-        mLoadingDialog.show();
         DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endRefreshing();
-                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
-                mLoadingDialog.dismiss();
 
                 mDatas.addAll(0, refreshModels);
                 mAdapter.setDatas(mDatas);
@@ -132,18 +128,15 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             showToast("没有更多数据了");
             return false;
         }
-        mLoadingDialog.show();
         DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endLoadingMore();
-                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(final List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
-                mLoadingDialog.dismiss();
 
                 mAdapter.addDatas(refreshModels);
             }

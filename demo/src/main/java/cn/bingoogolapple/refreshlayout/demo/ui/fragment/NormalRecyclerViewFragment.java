@@ -110,15 +110,20 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
             showToast("没有最新数据了");
             return;
         }
+
+        mLoadingDialog.show();
         DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endRefreshing();
+                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
+                mLoadingDialog.dismiss();
+
                 mDatas.addAll(0, refreshModels);
                 mAdapter.setDatas(mDatas);
             }
@@ -133,15 +138,20 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
             showToast("没有更多数据了");
             return false;
         }
+
+        mLoadingDialog.show();
         DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endLoadingMore();
+                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
+                mLoadingDialog.dismiss();
+
                 mAdapter.addDatas(refreshModels);
             }
         });

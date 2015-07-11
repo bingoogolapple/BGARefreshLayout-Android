@@ -20,8 +20,7 @@
 
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rl_gridview_refresh"
-        style="@style/MatchMatch"
-        android:background="@android:color/white">
+        style="@style/MatchMatch">
 
         <GridView
             android:id="@+id/lv_gridview_data"

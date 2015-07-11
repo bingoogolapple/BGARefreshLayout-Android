@@ -71,7 +71,7 @@ public class DataEngine {
     }
 
     public static void loadMoreData(final int pageNumber, final RefreshModelResponseHandler responseHandler) {
-        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时1秒再请求的网络数据
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -131,7 +131,7 @@ public class DataEngine {
     }
 
     public static void loadMoreStaggeredData(final int pageNumber, final StaggeredModelResponseHandler responseHandler) {
-        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时2秒再请求的网络数据
+        // 测试数据放到七牛云存储的，再加上WiFi环境，加载数据非常快，看不出效果，这里延时1秒再请求的网络数据
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {

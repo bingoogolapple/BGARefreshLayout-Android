@@ -1,7 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,11 +66,11 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
-        moocStyleRefreshViewHolder.setUltimateColor(Color.rgb(0, 0, 255));
-        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.iqegg));
-        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_green);
+        moocStyleRefreshViewHolder.setUltimateColor(getResources().getColor(R.color.custom_imoocstyle));
+        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.custom_mooc_icon));
+//        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_imoocstyle);
         moocStyleRefreshViewHolder.setSpringDistanceScale(0.2f);
-        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_green);
+//        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
 
@@ -82,13 +81,16 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
     protected void onUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
+        mLoadingDialog.show();
         DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
+                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
+                mLoadingDialog.dismiss();
                 mDatas = refreshModels;
                 mAdapter.setDatas(mDatas);
             }
@@ -103,15 +105,19 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             showToast("没有最新数据了");
             return;
         }
+        mLoadingDialog.show();
         DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endRefreshing();
+                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
+                mLoadingDialog.dismiss();
+
                 mDatas.addAll(0, refreshModels);
                 mAdapter.setDatas(mDatas);
             }
@@ -126,15 +132,19 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             showToast("没有更多数据了");
             return false;
         }
+        mLoadingDialog.show();
         DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endLoadingMore();
+                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onSuccess(final List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
+                mLoadingDialog.dismiss();
+
                 mAdapter.addDatas(refreshModels);
             }
         });

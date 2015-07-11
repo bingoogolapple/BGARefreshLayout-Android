@@ -1,7 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +9,7 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.BGASwipeAdapterViewAdapter;
@@ -53,10 +51,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
-        moocStyleRefreshViewHolder.setUltimateColor(Color.rgb(0, 0, 255));
-        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.iqegg));
-        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
 
         mDataLv.setAdapter(mAdapter);

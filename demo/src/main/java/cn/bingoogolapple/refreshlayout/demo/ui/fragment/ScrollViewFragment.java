@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,14 +22,12 @@ public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout
     private static final String TAG = ScrollViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private TextView mClickableLabelTv;
-    private ProgressDialog mLoadingDialog;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.fragment_scrollview);
         mRefreshLayout = getViewById(R.id.rl_scrollview_refresh);
         mClickableLabelTv = getViewById(R.id.tv_scrollview_clickablelabel);
-
     }
 
     @Override
@@ -47,9 +44,6 @@ public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mLoadingDialog = new ProgressDialog(getActivity());
-        mLoadingDialog.setMessage("正在加载中...");
-
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
         stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
         stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));

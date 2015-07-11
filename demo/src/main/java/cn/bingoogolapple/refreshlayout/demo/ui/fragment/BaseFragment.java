@@ -1,6 +1,7 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -22,11 +23,14 @@ public abstract class BaseFragment extends Fragment {
     protected String TAG;
     protected App mApp;
     protected View mContentView;
+    protected ProgressDialog mLoadingDialog;
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
+        mLoadingDialog = new ProgressDialog(activity);
+        mLoadingDialog.setMessage("数据加载中...");
     }
 
     @Override

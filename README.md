@@ -1,7 +1,7 @@
-:running:BGARefreshLayout-Android v1.0.5:running:
+:running:BGARefreshLayout-Android:running:
 ============
 
-[![Join the chat at https://gitter.im/bingoogolapple/BGARefreshLayout-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGARefreshLayout-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/bingoogolapple/BGARefreshLayout-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGARefreshLayout-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion)
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
 
@@ -45,10 +45,10 @@
 
 ```groovy
 dependencies {
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:latestVersion'
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.5@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:latestVersion@aar'
 }
 ```
 

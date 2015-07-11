@@ -95,6 +95,8 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 
 
         // 为了增加下拉刷新头部和加载更多的通用性，提供了以下可选配置选项  -------------START
+        // 设置正在加载更多时不显示加载更多控件
+        // mRefreshLayout.setIsShowLoadingMoreView(false);
         // 设置正在加载更多时的文本
         refreshViewHolder.setLoadingMoreText(loadingMoreText);
         // 设置整个加载更多控件的背景颜色资源id

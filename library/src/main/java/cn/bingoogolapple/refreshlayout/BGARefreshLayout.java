@@ -319,8 +319,7 @@ public class BGARefreshLayout extends LinearLayout {
         } else if (manager instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
 
-            // 一旦最后一个item可见则开始加载更多，而不是完全显示才开始加载更多
-            int[] out = layoutManager.findLastVisibleItemPositions(null);
+            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
             int lastPosition = layoutManager.getItemCount() - 1;
             for (int position : out) {
                 if (position == lastPosition) {
@@ -791,6 +790,7 @@ public class BGARefreshLayout extends LinearLayout {
     private void showLoadingMoreView() {
         mRefreshViewHolder.changeToLoadingMore();
         mLoadMoreFooterView.setVisibility(VISIBLE);
+
         if (mScrollView != null) {
             new Handler().post(new Runnable() {
                 @Override

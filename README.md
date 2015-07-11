@@ -26,14 +26,14 @@
 > 为了减少大家的clone项目的时间，我将测试用的Json数据和图片放到七牛云存储的，如果大家也想将自己开源库的测试数据放到七牛云存储，[可以点击这个链接注册七牛云存储](https://portal.qiniu.com/signup?code=3ldz2di58f1oy)，注册是免费的，并且会免费送一定的存储空间和下载流量，这样我在七牛云存储上的GitHub测试数据空间也可以每个月多5G的下载流量，谢谢大家支持。
 
 ### 效果图
-![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/1.gif)
-![Image of 瀑布流示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/6.gif)
-![Image of 普通ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/2.gif)
-![Image of 普通RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/3.gif)
-![Image of 滑动ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/4.gif)
-![Image of 滑动RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/5.gif)
-![Image of ScrollView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/7.gif)
-![Image of NormalView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/8.gif)
+![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout1.gif)
+![Image of 瀑布流示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout6.gif)
+![Image of 普通ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout2.gif)
+![Image of 普通RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout3.gif)
+![Image of 滑动ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout4.gif)
+![Image of 滑动RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout5.gif)
+![Image of ScrollView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout7.gif)
+![Image of NormalView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout8.gif)
 
 ### 基本使用
 

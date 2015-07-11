@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.bingoogolapple.refreshlayout.demo.App;
+import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 
 
 /**
@@ -87,5 +88,9 @@ public abstract class BaseFragment extends Fragment {
      */
     protected <VT extends View> VT getViewById(@IdRes int id) {
         return (VT) mContentView.findViewById(id);
+    }
+
+    protected void showToast(String text) {
+        ToastUtil.show(text);
     }
 }

@@ -4,27 +4,27 @@
         <item
             android:id="@+id/navigation_main_gridview"
             android:checked="true"
-            android:title="GridView" />
+            android:title="@string/gridview_demo" />
         <item
             android:id="@+id/navigation_main_normallistview"
-            android:title="NormalListView" />
+            android:title="@string/normal_listview_demo" />
         <item
             android:id="@+id/navigation_main_normalrecyclerview"
-            android:title="NormalRecyclerView" />
+            android:title="@string/normal_recyclerview_demo" />
         <item
             android:id="@+id/navigation_main_swipelistview"
-            android:title="SwipeListView" />
+            android:title="@string/swipe_listview_demo" />
         <item
             android:id="@+id/navigation_main_swiperecyclerview"
-            android:title="SwipeRecyclerView" />
+            android:title="@string/swipe_recyclerview_demo" />
         <item
             android:id="@+id/navigation_main_staggeredgridlayoutmanager"
-            android:title="StaggeredGridLayoutManager" />
+            android:title="@string/staggeredgrid_demo" />
         <item
             android:id="@+id/navigation_main_scrollview"
-            android:title="ScrollView" />
+            android:title="@string/scrollview_demo" />
         <item
             android:id="@+id/navigation_main_normalview"
-            android:title="NormalView" />
+            android:title="@string/normalview_demo" />
     </group>
 </menu>

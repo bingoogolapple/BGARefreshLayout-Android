@@ -1,13 +1,11 @@
-package cn.bingoogolapple.refreshlayout.demo.activity;
+package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,51 +26,31 @@ import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = NormalRecyclerViewDemoActivity.class.getSimpleName();
+public class NormalRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = NormalRecyclerViewFragment.class.getSimpleName();
     private NormalRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private List<RefreshModel> mDatas;
     private RecyclerView mDataRv;
+    private int mNewPageNumber = 0;
+    private int mMorePageNumber = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recyclerview);
-
-        initRefreshLayout();
-        initRecyclerView();
+    protected void initView(Bundle savedInstanceState) {
+        setContentView(R.layout.fragment_recyclerview);
+        mRefreshLayout = getViewById(R.id.rl_recyclerview_refresh);
+        mDataRv = getViewById(R.id.rv_recyclerview_data);
     }
 
-    private void initRefreshLayout() {
-        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_recyclerview_refresh);
+    @Override
+    protected void setListener() {
         mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), true);
-        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
-        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
-        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
-        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
-    }
 
-    private void initRecyclerView() {
-        mDataRv = (RecyclerView) findViewById(R.id.rv_recyclerview_data);
-        mDataRv.addItemDecoration(new Divider(this));
-
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-//        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-//        mDataRv.setLayoutManager(gridLayoutManager);
-
-        mDataRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        mAdapter = new NormalRecyclerViewAdapter(this);
+        mAdapter = new NormalRecyclerViewAdapter(mApp);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
-        mDatas = DataEngine.loadInitDatas();
-        mAdapter.setDatas(mDatas);
-        mDataRv.setAdapter(mAdapter);
 
         // 使用addOnScrollListener，而不是setOnScrollListener();
         mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -89,8 +67,50 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
+        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
+        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
+        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+
+        mDataRv.addItemDecoration(new Divider(mApp));
+
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(mApp, 2);
+//        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+//        mDataRv.setLayoutManager(gridLayoutManager);
+
+        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
+
+        mDataRv.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onUserVisible() {
+        mNewPageNumber = 0;
+        mMorePageNumber = 0;
+        DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
+            @Override
+            public void onFailure() {
+            }
+
+            @Override
+            public void onSuccess(List<RefreshModel> refreshModels) {
+                mDatas = refreshModels;
+                mAdapter.setDatas(mDatas);
+            }
+        });
+    }
+
+    @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        DataEngine.loadNewData(new DataEngine.RefreshModelResponseHandler() {
+        mNewPageNumber++;
+        if (mNewPageNumber > 4) {
+            mRefreshLayout.endRefreshing();
+            showToast("没有最新数据了");
+            return;
+        }
+        DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endRefreshing();
@@ -107,7 +127,13 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        DataEngine.loadMoreData(new DataEngine.RefreshModelResponseHandler() {
+        mMorePageNumber++;
+        if (mMorePageNumber > 5) {
+            mRefreshLayout.endLoadingMore();
+            showToast("没有更多数据了");
+            return false;
+        }
+        DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endLoadingMore();
@@ -124,12 +150,12 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
 
     @Override
     public void onRVItemClick(View v, int position) {
-        Toast.makeText(this, "点击了条目 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+        showToast("点击了条目 " + mAdapter.getItem(position).title);
     }
 
     @Override
     public boolean onRVItemLongClick(View v, int position) {
-        Toast.makeText(this, "长按了条目 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+        showToast("长按了条目 " + mAdapter.getItem(position).title);
         return true;
     }
 
@@ -143,7 +169,7 @@ public class NormalRecyclerViewDemoActivity extends AppCompatActivity implements
     @Override
     public boolean onItemChildLongClick(View v, int position) {
         if (v.getId() == R.id.tv_item_normal_delete) {
-            Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+            showToast("长按了删除 " + mAdapter.getItem(position).title);
             return true;
         }
         return false;

@@ -10,13 +10,13 @@
 
     <style name="AppTheme" parent="AppBaseTheme"></style>
 
-    <style name="MainBtn">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:background">@drawable/selector_btn_blue</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+
+    <style name="TestTv" parent="MatchWrap">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:text">我是测试文本</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>

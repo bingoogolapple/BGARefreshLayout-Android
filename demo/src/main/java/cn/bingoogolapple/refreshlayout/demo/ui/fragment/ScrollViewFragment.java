@@ -1,12 +1,12 @@
-package cn.bingoogolapple.refreshlayout.demo.activity;
+package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
+import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
@@ -19,37 +19,57 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
  * 创建时间:15/5/21 上午1:22
  * 描述:
  */
-public class NormalViewDemoActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static final String TAG = NormalViewDemoActivity.class.getSimpleName();
+public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+    private static final String TAG = ScrollViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private TextView mClickableLabelTv;
+    private ProgressDialog mLoadingDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_normalview);
+    protected void initView(Bundle savedInstanceState) {
+        setContentView(R.layout.fragment_scrollview);
+        mRefreshLayout = getViewById(R.id.rl_scrollview_refresh);
+        mClickableLabelTv = getViewById(R.id.tv_scrollview_clickablelabel);
 
-        initRefreshLayout();
-        
-        mClickableLabelTv = (TextView) findViewById(R.id.tv_normalview_clickablelabel);
+    }
+
+    @Override
+    protected void setListener() {
+        mRefreshLayout.setDelegate(this);
+
         mClickableLabelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(NormalViewDemoActivity.this, "点击了测试文本", Toast.LENGTH_SHORT).show();
+                showToast("点击了测试文本");
             }
         });
     }
 
-    private void initRefreshLayout() {
-        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_normalview_refresh);
-        mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), false);
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        mLoadingDialog = new ProgressDialog(getActivity());
+        mLoadingDialog.setMessage("正在加载中...");
+
+        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
+        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
+        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
+        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
+    }
+
+    @Override
+    protected void onUserVisible() {
+
     }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected void onPreExecute() {
+                mLoadingDialog.show();
+            }
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -63,6 +83,7 @@ public class NormalViewDemoActivity extends AppCompatActivity implements BGARefr
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                mLoadingDialog.dismiss();
                 mRefreshLayout.endRefreshing();
                 mClickableLabelTv.setText("加载最新数据完成");
             }
@@ -74,6 +95,11 @@ public class NormalViewDemoActivity extends AppCompatActivity implements BGARefr
         new AsyncTask<Void, Void, Void>() {
 
             @Override
+            protected void onPreExecute() {
+                mLoadingDialog.show();
+            }
+
+            @Override
             protected Void doInBackground(Void... params) {
                 try {
                     Thread.sleep(MainActivity.LOADING_DURATION);
@@ -85,6 +111,7 @@ public class NormalViewDemoActivity extends AppCompatActivity implements BGARefr
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                mLoadingDialog.dismiss();
                 mRefreshLayout.endLoadingMore();
                 Log.i(TAG, "上拉加载更多完成");
             }

@@ -1,15 +1,11 @@
-package cn.bingoogolapple.refreshlayout.demo.activity;
+package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,61 +23,71 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class SwipeListViewDemoActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = SwipeListViewDemoActivity.class.getSimpleName();
+public class SwipeListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = SwipeListViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private List<RefreshModel> mDatas;
     private ListView mDataLv;
     private BGASwipeAdapterViewAdapter mAdapter;
+    private int mNewPageNumber = 0;
+    private int mMorePageNumber = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview);
-
-        initRefreshLayout();
-        initListView();
+    protected void initView(Bundle savedInstanceState) {
+        setContentView(R.layout.fragment_listview);
+        mRefreshLayout = getViewById(R.id.rl_listview_refresh);
+        mDataLv = getViewById(R.id.lv_listview_data);
     }
 
-    private void initRefreshLayout() {
-        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_listview_refresh);
+    @Override
+    protected void setListener() {
         mRefreshLayout.setDelegate(this);
-        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(this, true);
-        moocStyleRefreshViewHolder.setUltimateColor(Color.rgb(0, 0, 255));
-        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.iqegg));
-        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(this), true);
-    }
 
-    private void initListView() {
-        mDataLv = (ListView) findViewById(R.id.lv_listview_data);
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
 
-        mAdapter = new BGASwipeAdapterViewAdapter(this);
+        mAdapter = new BGASwipeAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
+    }
 
-        mDatas = DataEngine.loadInitDatas();
-        mAdapter.setDatas(mDatas);
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
+        moocStyleRefreshViewHolder.setUltimateColor(Color.rgb(0, 0, 255));
+        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.iqegg));
+        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+
         mDataLv.setAdapter(mAdapter);
+    }
 
-        mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
+    @Override
+    protected void onUserVisible() {
+        mNewPageNumber = 0;
+        mMorePageNumber = 0;
+        DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.i(TAG, "滚动状态变化");
+            public void onFailure() {
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.i(TAG, "正在滚动");
+            public void onSuccess(List<RefreshModel> refreshModels) {
+                mDatas = refreshModels;
+                mAdapter.setDatas(mDatas);
             }
         });
     }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        DataEngine.loadNewData(new DataEngine.RefreshModelResponseHandler() {
+        mNewPageNumber++;
+        if (mNewPageNumber > 4) {
+            mRefreshLayout.endRefreshing();
+            showToast("没有最新数据了");
+            return;
+        }
+        DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endRefreshing();
@@ -98,7 +104,13 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        DataEngine.loadMoreData(new DataEngine.RefreshModelResponseHandler() {
+        mMorePageNumber++;
+        if (mMorePageNumber > 5) {
+            mRefreshLayout.endLoadingMore();
+            showToast("没有更多数据了");
+            return false;
+        }
+        DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
             @Override
             public void onFailure() {
                 mRefreshLayout.endLoadingMore();
@@ -115,12 +127,12 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "点击了条目 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+        showToast("点击了条目 " + mAdapter.getItem(position).title);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "长按了" + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+        showToast("长按了" + mAdapter.getItem(position).title);
         return true;
     }
 
@@ -134,9 +146,10 @@ public class SwipeListViewDemoActivity extends AppCompatActivity implements BGAR
     @Override
     public boolean onItemChildLongClick(View v, int position) {
         if (v.getId() == R.id.tv_item_swipe_delete) {
-            Toast.makeText(this, "长按了删除 " + mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+            showToast("长按了删除 " + mAdapter.getItem(position).title);
             return true;
         }
         return false;
     }
+
 }

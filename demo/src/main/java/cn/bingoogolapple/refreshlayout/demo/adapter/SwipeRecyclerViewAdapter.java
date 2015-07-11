@@ -2,7 +2,7 @@ package cn.bingoogolapple.refreshlayout.demo.adapter;
 
 import android.content.Context;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAAdapterViewAdapter;
+import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
@@ -10,18 +10,18 @@ import cn.bingoogolapple.swipeitemlayout.BGASwipeItemLayout;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:15/5/21 上午12:39
+ * 创建时间:15/5/22 16:31
  * 描述:
  */
-public class BGASwipeAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel> {
+public class SwipeRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshModel> {
     private BGASwipeItemLayout mOpenedSil;
 
-    public BGASwipeAdapterViewAdapter(Context context) {
+    public SwipeRecyclerViewAdapter(Context context) {
         super(context, R.layout.item_swipe);
     }
 
     @Override
-    protected void setItemChildListener(BGAViewHolderHelper viewHolderHelper) {
+    public void setItemChildListener(BGAViewHolderHelper viewHolderHelper) {
         BGASwipeItemLayout swipeItemLayout = viewHolderHelper.getView(R.id.sil_item_swipe_root);
         swipeItemLayout.setDelegate(new BGASwipeItemLayout.BGASwipeItemLayoutDelegate() {
             @Override

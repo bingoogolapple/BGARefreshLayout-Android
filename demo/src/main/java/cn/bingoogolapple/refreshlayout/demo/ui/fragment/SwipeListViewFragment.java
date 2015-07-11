@@ -12,7 +12,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
-import cn.bingoogolapple.refreshlayout.demo.adapter.BGASwipeAdapterViewAdapter;
+import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 
@@ -26,7 +26,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
     private BGARefreshLayout mRefreshLayout;
     private List<RefreshModel> mDatas;
     private ListView mDataLv;
-    private BGASwipeAdapterViewAdapter mAdapter;
+    private SwipeAdapterViewAdapter mAdapter;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
 
@@ -44,7 +44,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
 
-        mAdapter = new BGASwipeAdapterViewAdapter(mApp);
+        mAdapter = new SwipeAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
     }

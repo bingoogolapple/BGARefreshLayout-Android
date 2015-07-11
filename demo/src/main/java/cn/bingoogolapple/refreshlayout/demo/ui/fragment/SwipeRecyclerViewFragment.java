@@ -14,7 +14,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
-import cn.bingoogolapple.refreshlayout.demo.adapter.BGASwipeRecyclerViewAdapter;
+import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
@@ -25,7 +25,7 @@ import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
  * 描述:
  */
 public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private BGASwipeRecyclerViewAdapter mAdapter;
+    private SwipeRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private List<RefreshModel> mDatas;
     private RecyclerView mDataRv;
@@ -43,7 +43,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
 
-        mAdapter = new BGASwipeRecyclerViewAdapter(mApp);
+        mAdapter = new SwipeRecyclerViewAdapter(mApp);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);

@@ -26,7 +26,6 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
  */
 public class GridViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener {
     private BGARefreshLayout mRefreshLayout;
-    private List<RefreshModel> mDatas;
     private GridView mDataGv;
     private NormalAdapterViewAdapter mAdapter;
     private int mNewPageNumber = 0;
@@ -87,8 +86,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
-                mDatas = refreshModels;
-                mAdapter.setDatas(mDatas);
+                mAdapter.setDatas(refreshModels);
             }
         });
     }
@@ -113,8 +111,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
                 @Override
                 public void onSuccess(List<RefreshModel> refreshModels) {
                     mRefreshLayout.endRefreshing();
-                    mDatas.addAll(0, refreshModels);
-                    mAdapter.setDatas(mDatas);
+                    mAdapter.addNewDatas(refreshModels);
                 }
             });
         } else {
@@ -147,7 +144,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
                 @Override
                 public void onSuccess(List<RefreshModel> refreshModels) {
                     mRefreshLayout.endLoadingMore();
-                    mAdapter.addDatas(refreshModels);
+                    mAdapter.addMoreDatas(refreshModels);
                 }
             });
             // 模拟网络可用不可用

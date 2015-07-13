@@ -25,7 +25,6 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
     private static final String TAG = StaggeredRecyclerViewFragment.class.getSimpleName();
     private StaggeredRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
-    private List<StaggeredModel> mDatas;
     private RecyclerView mDataRv;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
@@ -68,8 +67,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
 
             @Override
             public void onSuccess(List<StaggeredModel> staggeredModels) {
-                mDatas = staggeredModels;
-                mAdapter.setDatas(mDatas);
+                mAdapter.setDatas(staggeredModels);
             }
         });
     }
@@ -91,8 +89,8 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
             @Override
             public void onSuccess(List<StaggeredModel> staggeredModels) {
                 mRefreshLayout.endRefreshing();
-                mDatas.addAll(0, staggeredModels);
-                mAdapter.setDatas(mDatas);
+                mAdapter.addNewDatas(staggeredModels);
+                mDataRv.smoothScrollToPosition(0);
             }
         });
     }
@@ -114,7 +112,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
             @Override
             public void onSuccess(List<StaggeredModel> staggeredModels) {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addDatas(staggeredModels);
+                mAdapter.addMoreDatas(staggeredModels);
             }
         });
         return true;

@@ -27,7 +27,6 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 public class NormalListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
     private static final String TAG = NormalListViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
-    private List<RefreshModel> mDatas;
     private ListView mDataLv;
     private NormalAdapterViewAdapter mAdapter;
     private int mNewPageNumber = 0;
@@ -90,8 +89,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
-                mDatas = refreshModels;
-                mAdapter.setDatas(mDatas);
+                mAdapter.setDatas(refreshModels);
             }
         });
     }
@@ -113,9 +111,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
-
-                mDatas.addAll(0, refreshModels);
-                mAdapter.setDatas(mDatas);
+                mAdapter.addNewDatas(refreshModels);
             }
         });
     }
@@ -138,7 +134,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             public void onSuccess(final List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
 
-                mAdapter.addDatas(refreshModels);
+                mAdapter.addMoreDatas(refreshModels);
             }
         });
         return true;

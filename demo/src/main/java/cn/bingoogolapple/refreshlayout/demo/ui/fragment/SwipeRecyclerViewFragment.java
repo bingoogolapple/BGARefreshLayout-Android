@@ -27,7 +27,6 @@ import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
     private SwipeRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
-    private List<RefreshModel> mDatas;
     private RecyclerView mDataRv;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
@@ -74,8 +73,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
-                mDatas = refreshModels;
-                mAdapter.setDatas(mDatas);
+                mAdapter.setDatas(refreshModels);
             }
         });
     }
@@ -97,8 +95,8 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
-                mDatas.addAll(0, refreshModels);
-                mAdapter.setDatas(mDatas);
+                mAdapter.addNewDatas(refreshModels);
+                mDataRv.smoothScrollToPosition(0);
             }
         });
     }
@@ -120,7 +118,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addDatas(refreshModels);
+                mAdapter.addMoreDatas(refreshModels);
             }
         });
         return true;

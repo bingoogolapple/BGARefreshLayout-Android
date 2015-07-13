@@ -24,7 +24,6 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 public class SwipeListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
     private static final String TAG = SwipeListViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
-    private List<RefreshModel> mDatas;
     private ListView mDataLv;
     private SwipeAdapterViewAdapter mAdapter;
     private int mNewPageNumber = 0;
@@ -68,8 +67,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
-                mDatas = refreshModels;
-                mAdapter.setDatas(mDatas);
+                mAdapter.setDatas(refreshModels);
             }
         });
     }
@@ -91,8 +89,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endRefreshing();
-                mDatas.addAll(0, refreshModels);
-                mAdapter.setDatas(mDatas);
+                mAdapter.addNewDatas(refreshModels);
             }
         });
     }
@@ -114,7 +111,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addDatas(refreshModels);
+                mAdapter.addMoreDatas(refreshModels);
             }
         });
         return true;

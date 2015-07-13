@@ -30,7 +30,6 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
     private static final String TAG = NormalRecyclerViewFragment.class.getSimpleName();
     private NormalRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
-    private List<RefreshModel> mDatas;
     private RecyclerView mDataRv;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
@@ -96,8 +95,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
 
             @Override
             public void onSuccess(List<RefreshModel> refreshModels) {
-                mDatas = refreshModels;
-                mAdapter.setDatas(mDatas);
+                mAdapter.setDatas(refreshModels);
             }
         });
     }
@@ -124,8 +122,8 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
                 mRefreshLayout.endRefreshing();
                 mLoadingDialog.dismiss();
 
-                mDatas.addAll(0, refreshModels);
-                mAdapter.setDatas(mDatas);
+                mAdapter.addNewDatas(refreshModels);
+                mDataRv.smoothScrollToPosition(0);
             }
         });
     }
@@ -152,7 +150,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
                 mRefreshLayout.endLoadingMore();
                 mLoadingDialog.dismiss();
 
-                mAdapter.addDatas(refreshModels);
+                mAdapter.addMoreDatas(refreshModels);
             }
         });
         return true;

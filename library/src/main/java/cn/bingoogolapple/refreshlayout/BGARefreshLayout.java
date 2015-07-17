@@ -474,10 +474,7 @@ public class BGARefreshLayout extends LinearLayout {
             int firstChildTop = 0;
             if (mAbsListView.getChildCount() > 0) {
                 // 如果AdapterView的子控件数量不为0，获取第一个子控件的top
-
-                // 解决item的topMargin不为0时不能触发下拉刷新
-                MarginLayoutParams layoutParams = (MarginLayoutParams) mAbsListView.getChildAt(0).getLayoutParams();
-                firstChildTop = mAbsListView.getChildAt(0).getTop() - layoutParams.topMargin;
+                firstChildTop = mAbsListView.getChildAt(0).getTop() - mAbsListView.getPaddingTop();
             }
             if (mAbsListView.getFirstVisiblePosition() == 0 && firstChildTop == 0) {
                 return true;
@@ -491,7 +488,7 @@ public class BGARefreshLayout extends LinearLayout {
 
                 // 解决item的topMargin不为0时不能触发下拉刷新
                 MarginLayoutParams layoutParams = (MarginLayoutParams) mRecyclerView.getChildAt(0).getLayoutParams();
-                firstChildTop = mRecyclerView.getChildAt(0).getTop() - layoutParams.topMargin;
+                firstChildTop = mRecyclerView.getChildAt(0).getTop() - layoutParams.topMargin - mRecyclerView.getPaddingTop();
             }
 
             RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();

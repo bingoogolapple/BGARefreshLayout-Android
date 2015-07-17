@@ -5,9 +5,10 @@
 
     <ScrollView
         style="@style/MatchAuto"
+        android:padding="5dp"
         android:scrollbars="none">
 
-        <LinearLayout style="@style/MatchMatch.Vertical">
+        <LinearLayout style="@style/MatchMatch.Vertical" android:layout_margin="5dp">
 
             <TextView style="@style/TestTv" />
 

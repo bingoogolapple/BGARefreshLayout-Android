@@ -128,14 +128,6 @@ public class BGARefreshLayout extends LinearLayout {
     private Handler mHandler;
 
     /**
-     * 是否具有下拉刷新功能
-     */
-    private boolean mWhetherHavePullDownRefresh = true;
-    /**
-     * 是否具有上拉加载更多功能
-     */
-    private boolean mWhetherHavePullUpLoadingMore = true;
-    /**
      * 下拉刷新是否可用
      */
     private boolean mPullDownRefreshEnabled = true;
@@ -196,6 +188,18 @@ public class BGARefreshLayout extends LinearLayout {
         mRefreshViewHolder.setRefreshLayout(this);
         initRefreshHeaderView();
         initLoadMoreFooterView();
+    }
+
+    public void setPullDownRefreshEnabled(boolean enabled) {
+        mPullDownRefreshEnabled = enabled;
+    }
+
+    public void setPullUpLoadingMoreEnabled(boolean enabled) {
+        mPullUpLoadingMoreEnabled = enabled;
+    }
+
+    public void setPullUpLoadingMoreThreshold(int threshold) {
+        mPullUpLoadingMoreThreshold = threshold;
     }
 
     public void startChangeWholeHeaderViewPaddingTop(int distance) {
@@ -470,7 +474,10 @@ public class BGARefreshLayout extends LinearLayout {
             int firstChildTop = 0;
             if (mAbsListView.getChildCount() > 0) {
                 // 如果AdapterView的子控件数量不为0，获取第一个子控件的top
-                firstChildTop = mAbsListView.getChildAt(0).getTop();
+
+                // 解决item的topMargin不为0时不能触发下拉刷新
+                MarginLayoutParams layoutParams = (MarginLayoutParams) mAbsListView.getChildAt(0).getLayoutParams();
+                firstChildTop = mAbsListView.getChildAt(0).getTop() - layoutParams.topMargin;
             }
             if (mAbsListView.getFirstVisiblePosition() == 0 && firstChildTop == 0) {
                 return true;
@@ -481,7 +488,10 @@ public class BGARefreshLayout extends LinearLayout {
             int firstChildTop = 0;
             if (mRecyclerView.getChildCount() > 0) {
                 // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
-                firstChildTop = mRecyclerView.getChildAt(0).getTop();
+
+                // 解决item的topMargin不为0时不能触发下拉刷新
+                MarginLayoutParams layoutParams = (MarginLayoutParams) mRecyclerView.getChildAt(0).getLayoutParams();
+                firstChildTop = mRecyclerView.getChildAt(0).getTop() - layoutParams.topMargin;
             }
 
             RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();

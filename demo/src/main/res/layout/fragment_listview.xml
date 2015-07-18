@@ -7,5 +7,6 @@
         android:id="@+id/lv_listview_data"
         style="@style/MatchAuto"
         android:divider="@mipmap/list_divider"
+        android:padding="5dp"
         android:scrollbars="none" />
 </cn.bingoogolapple.refreshlayout.BGARefreshLayout>

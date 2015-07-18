@@ -19,7 +19,7 @@ dependencies {
     // 以下三个库是必须依赖的
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.5@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.6@aar'
 //    compile project(':library')
 
 

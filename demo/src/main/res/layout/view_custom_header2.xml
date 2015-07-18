@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap.Vertical"
+    android:background="#f00">
+    <TextView
+        android:id="@+id/tv_custom_header2_title"
+        android:textSize="16sp"
+        android:minLines="1"
+        android:background="#0f0"
+        android:textColor="@android:color/white"
+        style="@style/MatchWrap" />
+    <TextView
+        android:id="@+id/tv_custom_header2_desc"
+        android:textSize="14sp"
+        android:minLines="1"
+        android:background="#00f"
+        android:textColor="@android:color/white"
+        style="@style/MatchWrap" />
+</LinearLayout>

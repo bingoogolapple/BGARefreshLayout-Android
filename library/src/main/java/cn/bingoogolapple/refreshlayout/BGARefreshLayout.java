@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -318,7 +318,7 @@ public class BGARefreshLayout extends LinearLayout {
             // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
             lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
         }
-        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getHeight();
+        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getMeasuredHeight();
     }
 
     private boolean shouldHandleRecyclerViewLoadingMore() {
@@ -368,9 +368,9 @@ public class BGARefreshLayout extends LinearLayout {
         // 内容是ScrollView，并且其scrollY为0时满足
         if (mScrollView != null) {
             int scrollY = mScrollView.getScrollY();
-            int height = mScrollView.getHeight();
-            int scrollViewMeasuredHeight = mScrollView.getChildAt(0).getMeasuredHeight();
-            if ((scrollY + height) == scrollViewMeasuredHeight) {
+            int scrollContentHeight = mScrollView.getMeasuredHeight() - mScrollView.getPaddingTop() - mScrollView.getPaddingBottom();
+            int realContentHeight = mScrollView.getChildAt(0).getMeasuredHeight();
+            if ((scrollY + scrollContentHeight) == realContentHeight) {
                 return true;
             }
         }
@@ -449,7 +449,7 @@ public class BGARefreshLayout extends LinearLayout {
             int firstChildTop = 0;
             if (mAbsListView.getChildCount() > 0) {
                 // 如果AdapterView的子控件数量不为0，获取第一个子控件的top
-                firstChildTop = mAbsListView.getChildAt(0).getTop();
+                firstChildTop = mAbsListView.getChildAt(0).getTop() - mAbsListView.getPaddingTop();
             }
             if (mAbsListView.getFirstVisiblePosition() == 0 && firstChildTop == 0) {
                 return true;
@@ -460,7 +460,10 @@ public class BGARefreshLayout extends LinearLayout {
             int firstChildTop = 0;
             if (mRecyclerView.getChildCount() > 0) {
                 // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
-                firstChildTop = mRecyclerView.getChildAt(0).getTop();
+
+                // 解决item的topMargin不为0时不能触发下拉刷新
+                MarginLayoutParams layoutParams = (MarginLayoutParams) mRecyclerView.getChildAt(0).getLayoutParams();
+                firstChildTop = mRecyclerView.getChildAt(0).getTop() - layoutParams.topMargin - mRecyclerView.getPaddingTop();
             }
 
             RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
@@ -687,7 +690,7 @@ public class BGARefreshLayout extends LinearLayout {
             mRefreshDownY = (int) event.getY();
         }
         int diffY = (int) event.getY() - mRefreshDownY;
-        if (shouldHandleLoadingMore() && (diffY < 0 || (mScrollView != null && diffY == 0)) && !mIsLoadingMore) {
+        if (shouldHandleLoadingMore() && diffY <= 0) {
             // 处理上拉加载更多，需要返回true，自己消耗ACTION_UP事件
             isReturnTrue = true;
             beginLoadingMore();

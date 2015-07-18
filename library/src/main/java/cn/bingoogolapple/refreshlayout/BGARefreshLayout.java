@@ -343,7 +343,7 @@ public class BGARefreshLayout extends LinearLayout {
             // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
             lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
         }
-        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getHeight();
+        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getMeasuredHeight();
     }
 
     private boolean shouldHandleRecyclerViewLoadingMore() {
@@ -393,9 +393,9 @@ public class BGARefreshLayout extends LinearLayout {
         // 内容是ScrollView，并且其scrollY为0时满足
         if (mScrollView != null) {
             int scrollY = mScrollView.getScrollY();
-            int height = mScrollView.getHeight();
-            int scrollViewMeasuredHeight = mScrollView.getChildAt(0).getMeasuredHeight();
-            if ((scrollY + height) == scrollViewMeasuredHeight) {
+            int scrollContentHeight = mScrollView.getMeasuredHeight() - mScrollView.getPaddingTop() - mScrollView.getPaddingBottom();
+            int realContentHeight = mScrollView.getChildAt(0).getMeasuredHeight();
+            if ((scrollY + scrollContentHeight) == realContentHeight) {
                 return true;
             }
         }
@@ -715,7 +715,7 @@ public class BGARefreshLayout extends LinearLayout {
             mRefreshDownY = (int) event.getY();
         }
         int diffY = (int) event.getY() - mRefreshDownY;
-        if (shouldHandleLoadingMore() && (diffY < 0 || (mScrollView != null && diffY == 0)) && !mIsLoadingMore) {
+        if (shouldHandleLoadingMore() && diffY <= 0) {
             // 处理上拉加载更多，需要返回true，自己消耗ACTION_UP事件
             isReturnTrue = true;
             beginLoadingMore();

@@ -127,19 +127,6 @@ public class BGARefreshLayout extends LinearLayout {
 
     private Handler mHandler;
 
-    /**
-     * 下拉刷新是否可用
-     */
-    private boolean mPullDownRefreshEnabled = true;
-    /**
-     * 上拉加载更多是否可用
-     */
-    private boolean mPullUpLoadingMoreEnabled = true;
-    /**
-     * 还剩多少条数据未显示时触发加载更多事件
-     */
-    private int mPullUpLoadingMoreThreshold = 5;
-
     public BGARefreshLayout(Context context) {
         this(context, null);
     }
@@ -188,18 +175,6 @@ public class BGARefreshLayout extends LinearLayout {
         mRefreshViewHolder.setRefreshLayout(this);
         initRefreshHeaderView();
         initLoadMoreFooterView();
-    }
-
-    public void setPullDownRefreshEnabled(boolean enabled) {
-        mPullDownRefreshEnabled = enabled;
-    }
-
-    public void setPullUpLoadingMoreEnabled(boolean enabled) {
-        mPullUpLoadingMoreEnabled = enabled;
-    }
-
-    public void setPullUpLoadingMoreThreshold(int threshold) {
-        mPullUpLoadingMoreThreshold = threshold;
     }
 
     public void startChangeWholeHeaderViewPaddingTop(int distance) {

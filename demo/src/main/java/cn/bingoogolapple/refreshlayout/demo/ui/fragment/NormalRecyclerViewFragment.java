@@ -2,12 +2,10 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -69,18 +67,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
-        View headerView = View.inflate(mApp, R.layout.view_custom_header2, null);
-        // 测试自定义header的高度
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) getViewById(R.id.tv_custom_header2_title)).setText(R.string.test_custom_header_title);
-                ((TextView) getViewById(R.id.tv_custom_header2_desc)).setText(R.string.test_custom_header_desc);
-            }
-        }, 2000);
-        mRefreshLayout.setCustomHeaderView(headerView, true);
-
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
 
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
         stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));

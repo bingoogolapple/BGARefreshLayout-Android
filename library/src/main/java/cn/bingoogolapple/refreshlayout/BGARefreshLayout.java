@@ -425,6 +425,15 @@ public class BGARefreshLayout extends LinearLayout {
         return super.onInterceptTouchEvent(event);
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mIsCustomHeaderViewScrollable && !isWholeHeaderViewCompleteInvisible()) {
+            super.dispatchTouchEvent(ev);
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
     /**
      * 是否满足处理刷新的条件
      *
@@ -497,7 +506,7 @@ public class BGARefreshLayout extends LinearLayout {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mWholeHeaderDownY = (int) event.getY();
-
+                    Log.i(TAG, "ACTION_DOWN mWholeHeaderDownY = " + mWholeHeaderDownY);
                     if (mCustomHeaderView != null) {
                         mWholeHeaderViewDownPaddingTop = mWholeHeaderView.getPaddingTop();
                     }
@@ -507,6 +516,7 @@ public class BGARefreshLayout extends LinearLayout {
                     }
                     if (isWholeHeaderViewCompleteInvisible()) {
                         mRefreshDownY = (int) event.getY();
+                        return true;
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
@@ -641,6 +651,8 @@ public class BGARefreshLayout extends LinearLayout {
         if (mCustomHeaderView != null && mIsCustomHeaderViewScrollable) {
             if (mWholeHeaderDownY == -1) {
                 mWholeHeaderDownY = (int) event.getY();
+
+                Log.i(TAG, "ACTION_MOVE mWholeHeaderDownY = " + mWholeHeaderDownY);
                 if (mCustomHeaderView != null) {
                     mWholeHeaderViewDownPaddingTop = mWholeHeaderView.getPaddingTop();
                 }

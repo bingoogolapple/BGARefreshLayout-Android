@@ -4,6 +4,6 @@
     style="@style/MatchMatch">
 
     <WebView
-        android:id="@+id/webview"
-        style="@style/MatchMatch"/>
+        android:id="@+id/wv_webview_content"
+        style="@style/MatchAuto" />
 </cn.bingoogolapple.refreshlayout.BGARefreshLayout>

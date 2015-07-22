@@ -23,6 +23,7 @@
         android:background="#00f"
         android:minLines="1"
         android:text="测试描述文本"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 </LinearLayout>

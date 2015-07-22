@@ -1,9 +1,11 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 
@@ -13,43 +15,52 @@ import cn.bingoogolapple.refreshlayout.demo.R;
  * 描述:
  */
 public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static final String TAG = ScrollViewFragment.class.getSimpleName();
+    private static final String TAG = WebViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
-    private WebView mWebView;
+    private WebView mContentWv;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.fragment_webview);
         mRefreshLayout = getViewById(R.id.rl_webview_refresh);
-        mWebView = getViewById(R.id.webview);
+        mContentWv = getViewById(R.id.wv_webview_content);
     }
 
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
+        mContentWv.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mRefreshLayout.endRefreshing();
+            }
+        });
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, false));
-
-        mWebView.loadUrl("http://www.baidu.com");
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
+        mContentWv.getSettings().setJavaScriptEnabled(true);
+        mContentWv.loadUrl("http://www.imooc.com");
     }
 
     @Override
     protected void onUserVisible() {
-
     }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        mRefreshLayout.endRefreshing();
+        mContentWv.reload();
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-
         return false;
     }
 }

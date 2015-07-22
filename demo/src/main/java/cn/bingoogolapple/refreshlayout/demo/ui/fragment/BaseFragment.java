@@ -30,6 +30,7 @@ public abstract class BaseFragment extends Fragment {
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
         mLoadingDialog = new ProgressDialog(activity);
+        mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setMessage("数据加载中...");
     }
 

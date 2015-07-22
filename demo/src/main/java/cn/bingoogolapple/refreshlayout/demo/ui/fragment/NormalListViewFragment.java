@@ -2,7 +2,6 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -50,12 +49,12 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
         mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.i(TAG, "滚动状态变化");
+//                Log.i(TAG, "滚动状态变化");
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.i(TAG, "正在滚动");
+//                Log.i(TAG, "正在滚动");
             }
         });
 

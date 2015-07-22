@@ -25,6 +25,7 @@ import cn.bingoogolapple.refreshlayout.demo.ui.fragment.ScrollViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StaggeredRecyclerViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.SwipeListViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.SwipeRecyclerViewFragment;
+import cn.bingoogolapple.refreshlayout.demo.ui.fragment.WebViewFragment;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -99,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_main_normalview:
                         mViewPager.setCurrentItem(7, false);
                         break;
+                    case R.id.navigation_main_webview:
+                        mViewPager.setCurrentItem(8, false);
+                        break;
                     default:
                         break;
                 }
@@ -138,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static class ContentViewPagerAdapter extends FragmentPagerAdapter {
-        private Class[] mFragments = new Class[]{GridViewFragment.class, NormalListViewFragment.class, NormalRecyclerViewFragment.class, SwipeListViewFragment.class, SwipeRecyclerViewFragment.class, StaggeredRecyclerViewFragment.class, ScrollViewFragment.class, NormalViewFragment.class};
+        private Class[] mFragments = new Class[]{GridViewFragment.class, NormalListViewFragment.class, NormalRecyclerViewFragment.class, SwipeListViewFragment.class, SwipeRecyclerViewFragment.class, StaggeredRecyclerViewFragment.class, ScrollViewFragment.class, NormalViewFragment.class, WebViewFragment.class};
         private Context mContext;
 
         public ContentViewPagerAdapter(FragmentManager fm, Context context) {

@@ -26,5 +26,9 @@
         <item
             android:id="@+id/navigation_main_normalview"
             android:title="@string/normalview_demo" />
+
+        <item
+            android:id="@+id/navigation_main_webview"
+            android:title="@string/webview_demo" />
     </group>
 </menu>

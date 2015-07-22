@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_webview_refresh"
+    style="@style/MatchMatch">
+
+    <WebView
+        android:id="@+id/wv_webview_content"
+        style="@style/MatchAuto" />
+</cn.bingoogolapple.refreshlayout.BGARefreshLayout>

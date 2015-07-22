@@ -2,18 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchWrap.Vertical"
     android:background="#f00">
+
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/tv_custom_header2_title"
-        android:textSize="16sp"
-        android:minLines="1"
+        style="@style/MatchWrap"
         android:background="#0f0"
+        android:minLines="1"
+        android:text="测试标题文本"
         android:textColor="@android:color/white"
-        style="@style/MatchWrap" />
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btn_custom_header2_test"
+        style="@style/MatchWrap"
+        android:text="测试点击" />
+
     <TextView
         android:id="@+id/tv_custom_header2_desc"
-        android:textSize="14sp"
-        android:minLines="1"
+        style="@style/MatchWrap"
         android:background="#00f"
+        android:minLines="1"
+        android:text="测试描述文本"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/white"
-        style="@style/MatchWrap" />
+        android:textSize="14sp" />
 </LinearLayout>

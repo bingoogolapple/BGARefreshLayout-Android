@@ -2,6 +2,7 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -45,7 +46,8 @@ public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BG
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
         mContentWv.getSettings().setJavaScriptEnabled(true);
         mContentWv.loadUrl("http://www.imooc.com");
     }
@@ -61,6 +63,7 @@ public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BG
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        Log.i(TAG, "加载更多");
         return false;
     }
 }

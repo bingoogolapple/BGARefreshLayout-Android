@@ -4,6 +4,7 @@
     android:background="#f00">
 
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/tv_custom_header2_title"
         style="@style/MatchWrap"
         android:background="#0f0"

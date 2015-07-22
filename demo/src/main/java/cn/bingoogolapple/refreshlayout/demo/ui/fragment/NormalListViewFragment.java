@@ -2,12 +2,10 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,7 +17,6 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
-import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -75,28 +72,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
         moocStyleRefreshViewHolder.setSpringDistanceScale(0.2f);
 //        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
-
-        View headerView = View.inflate(mApp, R.layout.view_custom_header2, null);
-        headerView.findViewById(R.id.btn_custom_header2_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.show("点击了测试按钮");
-            }
-        });
-        // 测试自定义header的高度
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) getViewById(R.id.tv_custom_header2_title)).setText(R.string.test_custom_header_title);
-                ((TextView) getViewById(R.id.tv_custom_header2_desc)).setText(R.string.test_custom_header_desc);
-            }
-        }, 2000);
-        mRefreshLayout.setCustomHeaderView(headerView, true);
-
-//        mDataLv.addHeaderView(headerView);
-
-//        mDataLv.addHeaderView(DataEngine.getCustomHeaderView(mApp));
+        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
 
         mDataLv.setAdapter(mAdapter);
     }

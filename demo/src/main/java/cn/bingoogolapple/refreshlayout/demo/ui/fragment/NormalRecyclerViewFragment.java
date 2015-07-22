@@ -2,10 +2,12 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 
 /**
@@ -67,7 +70,26 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+
+        View headerView = View.inflate(mApp, R.layout.view_custom_header2, null);
+
+        // 测试自定义header中控件的点击事件
+        headerView.findViewById(R.id.btn_custom_header2_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.show("点击了测试按钮");
+            }
+        });
+        // 模拟网络数据加载，测试动态改变自定义header的高度
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) getViewById(R.id.tv_custom_header2_title)).setText(R.string.test_custom_header_title);
+                ((TextView) getViewById(R.id.tv_custom_header2_desc)).setText(R.string.test_custom_header_desc);
+            }
+        }, 2000);
+        mRefreshLayout.setCustomHeaderView(headerView, true);
 
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
         stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));

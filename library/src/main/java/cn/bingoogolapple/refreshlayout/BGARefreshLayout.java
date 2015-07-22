@@ -28,6 +28,7 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -103,6 +104,7 @@ public class BGARefreshLayout extends LinearLayout {
     private ScrollView mScrollView;
     private RecyclerView mRecyclerView;
     private View mNormalView;
+    private WebView mWebView;
     private View mContentView;
 
     private float mInterceptTouchDownX = -1;
@@ -163,6 +165,8 @@ public class BGARefreshLayout extends LinearLayout {
             mRecyclerView = (RecyclerView) mContentView;
         } else if (mContentView instanceof ScrollView) {
             mScrollView = (ScrollView) mContentView;
+        } else if (mContentView instanceof WebView) {
+            mWebView = (WebView) mContentView;
         } else {
             mNormalView = mContentView;
             // 设置为可点击，否则在空白区域无法拖动
@@ -365,12 +369,16 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        // 内容是ScrollView，并且其scrollY为0时满足
+        if (mWebView != null) {
+            if (mWebView.getContentHeight() * mWebView.getScale() == (mWebView.getScrollY() + mWebView.getMeasuredHeight())) {
+                return true;
+            }
+        }
+
         if (mScrollView != null) {
-            int scrollY = mScrollView.getScrollY();
-            int scrollContentHeight = mScrollView.getMeasuredHeight() - mScrollView.getPaddingTop() - mScrollView.getPaddingBottom();
+            int scrollContentHeight = mScrollView.getScrollY() + mScrollView.getMeasuredHeight() - mScrollView.getPaddingTop() - mScrollView.getPaddingBottom();
             int realContentHeight = mScrollView.getChildAt(0).getMeasuredHeight();
-            if ((scrollY + scrollContentHeight) == realContentHeight) {
+            if (scrollContentHeight == realContentHeight) {
                 return true;
             }
         }
@@ -446,6 +454,10 @@ public class BGARefreshLayout extends LinearLayout {
 
         // 内容是普通控件，满足
         if (mNormalView != null) {
+            return true;
+        }
+
+        if (mWebView != null && mWebView.getScrollY() == 0) {
             return true;
         }
 

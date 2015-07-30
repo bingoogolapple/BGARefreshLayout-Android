@@ -47,6 +47,15 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
+
+        mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (RecyclerView.SCROLL_STATE_DRAGGING == newState) {
+                    mAdapter.closeOpenedSwipeItemLayoutWithAnim();
+                }
+            }
+        });
     }
 
     @Override

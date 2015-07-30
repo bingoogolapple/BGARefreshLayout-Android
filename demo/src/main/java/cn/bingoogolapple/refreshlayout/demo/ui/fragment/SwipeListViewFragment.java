@@ -2,6 +2,7 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -42,6 +43,18 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
 
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
+        mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+                    mAdapter.closeOpenedSwipeItemLayoutWithAnim();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
 
         mAdapter = new SwipeAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
@@ -131,6 +144,8 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
     @Override
     public void onItemChildClick(View v, int position) {
         if (v.getId() == R.id.tv_item_swipe_delete) {
+            // 作为ListView的item使用时，如果删除了某一个item，请先关闭已经打开的item，否则其他item会显示不正常（RecyclerView不会有这个问题）
+            mAdapter.closeOpenedSwipeItemLayout();
             mAdapter.removeItem(position);
         }
     }

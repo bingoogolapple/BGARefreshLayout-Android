@@ -4,6 +4,7 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -58,7 +59,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
             }
         });
 
-        mAdapter = new NormalAdapterViewAdapter(mApp);
+        mAdapter = new NormalAdapterViewAdapter(mDataGv);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
 
@@ -172,15 +173,15 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
     }
 
     @Override
-    public void onItemChildClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_normal_delete) {
+    public void onItemChildClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_normal_delete) {
             mAdapter.removeItem(position);
         }
     }
 
     @Override
-    public boolean onItemChildLongClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_normal_delete) {
+    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_normal_delete) {
             showToast("长按了删除 " + mAdapter.getItem(position).title);
             return true;
         }

@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class SwipeRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshMode
      */
     private List<BGASwipeItemLayout> mOpenedSil = new ArrayList<>();
 
-    public SwipeRecyclerViewAdapter(Context context) {
-        super(context, R.layout.item_swipe);
+    public SwipeRecyclerViewAdapter(RecyclerView recyclerView) {
+        super(recyclerView, R.layout.item_swipe);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
-import android.content.Context;
+import android.widget.AbsListView;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
@@ -14,8 +14,8 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
  */
 public class NormalAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel> {
 
-    public NormalAdapterViewAdapter(Context context) {
-        super(context, R.layout.item_normal);
+    public NormalAdapterViewAdapter(AbsListView absListView) {
+        super(absListView, R.layout.item_normal);
     }
 
     @Override

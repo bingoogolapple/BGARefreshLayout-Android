@@ -2,6 +2,7 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -56,7 +57,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             }
         });
 
-        mAdapter = new SwipeAdapterViewAdapter(mApp);
+        mAdapter = new SwipeAdapterViewAdapter(mDataLv);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
     }
@@ -142,8 +143,8 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
     }
 
     @Override
-    public void onItemChildClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_swipe_delete) {
+    public void onItemChildClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
             // 作为ListView的item使用时，如果删除了某一个item，请先关闭已经打开的item，否则其他item会显示不正常（RecyclerView不会有这个问题）
             mAdapter.closeOpenedSwipeItemLayout();
             mAdapter.removeItem(position);
@@ -151,12 +152,11 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
     }
 
     @Override
-    public boolean onItemChildLongClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_swipe_delete) {
+    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
             showToast("长按了删除 " + mAdapter.getItem(position).title);
             return true;
         }
         return false;
     }
-
 }

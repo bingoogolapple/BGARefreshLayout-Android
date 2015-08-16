@@ -3,6 +3,7 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -58,7 +59,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             }
         });
 
-        mAdapter = new NormalAdapterViewAdapter(mApp);
+        mAdapter = new NormalAdapterViewAdapter(mDataLv);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
     }
@@ -151,15 +152,15 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
     }
 
     @Override
-    public void onItemChildClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_normal_delete) {
+    public void onItemChildClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_normal_delete) {
             mAdapter.removeItem(position);
         }
     }
 
     @Override
-    public boolean onItemChildLongClick(View v, int position) {
-        if (v.getId() == R.id.tv_item_normal_delete) {
+    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_normal_delete) {
             showToast("长按了删除 " + mAdapter.getItem(position).title);
             return true;
         }

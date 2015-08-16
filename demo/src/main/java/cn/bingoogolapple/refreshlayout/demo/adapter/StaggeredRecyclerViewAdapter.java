@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -18,8 +18,8 @@ import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
 public class StaggeredRecyclerViewAdapter extends BGARecyclerViewAdapter<StaggeredModel> {
     private ImageLoader mImageLoader;
 
-    public StaggeredRecyclerViewAdapter(Context context) {
-        super(context, R.layout.item_staggered);
+    public StaggeredRecyclerViewAdapter(RecyclerView recyclerView) {
+        super(recyclerView, R.layout.item_staggered);
         mImageLoader = ImageLoader.getInstance();
     }
 

@@ -5,7 +5,7 @@
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
 
-开发者使用BGARefreshLayout-Android可以对所有控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
+开发者使用BGARefreshLayout-Android可以对各种控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
 ### 目前已经实现了三种下拉刷新效果:
 

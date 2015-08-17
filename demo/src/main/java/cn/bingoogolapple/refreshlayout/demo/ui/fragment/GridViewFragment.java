@@ -59,7 +59,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
             }
         });
 
-        mAdapter = new NormalAdapterViewAdapter(mDataGv);
+        mAdapter = new NormalAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
 

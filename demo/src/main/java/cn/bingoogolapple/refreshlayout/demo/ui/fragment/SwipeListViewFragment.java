@@ -57,7 +57,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             }
         });
 
-        mAdapter = new SwipeAdapterViewAdapter(mDataLv);
+        mAdapter = new SwipeAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
     }

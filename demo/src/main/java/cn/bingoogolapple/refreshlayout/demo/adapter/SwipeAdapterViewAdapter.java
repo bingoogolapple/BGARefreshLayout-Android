@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
-import android.widget.AbsListView;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class SwipeAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel>
      */
     private List<BGASwipeItemLayout> mOpenedSil = new ArrayList<>();
 
-    public SwipeAdapterViewAdapter(AbsListView absListView) {
-        super(absListView, R.layout.item_swipe);
+    public SwipeAdapterViewAdapter(Context context) {
+        super(context, R.layout.item_swipe);
     }
 
     @Override

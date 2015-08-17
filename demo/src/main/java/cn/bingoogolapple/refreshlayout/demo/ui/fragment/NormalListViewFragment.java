@@ -59,7 +59,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             }
         });
 
-        mAdapter = new NormalAdapterViewAdapter(mDataLv);
+        mAdapter = new NormalAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
     }

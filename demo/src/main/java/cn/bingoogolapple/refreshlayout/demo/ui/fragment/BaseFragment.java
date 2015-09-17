@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.bingoogolapple.refreshlayout.demo.App;
+import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 
 
@@ -24,6 +25,7 @@ public abstract class BaseFragment extends Fragment {
     protected App mApp;
     protected View mContentView;
     protected ProgressDialog mLoadingDialog;
+    protected Engine mEngine;
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -32,6 +34,7 @@ public abstract class BaseFragment extends Fragment {
         mLoadingDialog = new ProgressDialog(activity);
         mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setMessage("数据加载中...");
+        mEngine = mApp.getEngine();
     }
 
     @Override

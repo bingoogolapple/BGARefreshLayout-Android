@@ -19,10 +19,11 @@ import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
-import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
+import retrofit.Callback;
+import retrofit.Response;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -113,14 +114,14 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
     protected void onUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
-        DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
+                mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
-                mAdapter.setDatas(refreshModels);
+            public void onFailure(Throwable t) {
             }
         });
     }
@@ -135,20 +136,19 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
         }
 
         mLoadingDialog.show();
-        DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
                 mLoadingDialog.dismiss();
+                mAdapter.addNewDatas(response.body());
+                mDataRv.smoothScrollToPosition(0);
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
+            public void onFailure(Throwable t) {
                 mRefreshLayout.endRefreshing();
                 mLoadingDialog.dismiss();
-
-                mAdapter.addNewDatas(refreshModels);
-                mDataRv.smoothScrollToPosition(0);
             }
         });
     }
@@ -163,21 +163,21 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
         }
 
         mLoadingDialog.show();
-        DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
                 mLoadingDialog.dismiss();
+                mAdapter.addMoreDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
+            public void onFailure(Throwable t) {
                 mRefreshLayout.endLoadingMore();
                 mLoadingDialog.dismiss();
-
-                mAdapter.addMoreDatas(refreshModels);
             }
         });
+
         return true;
     }
 

@@ -16,6 +16,8 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.StaggeredRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
+import retrofit.Callback;
+import retrofit.Response;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -61,14 +63,14 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
     protected void onUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
-        DataEngine.loadDefaultStaggeredData(new DataEngine.StaggeredModelResponseHandler() {
+        mEngine.loadDefaultStaggeredData().enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<StaggeredModel>> response) {
+                mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<StaggeredModel> staggeredModels) {
-                mAdapter.setDatas(staggeredModels);
+            public void onFailure(Throwable t) {
             }
         });
     }
@@ -81,17 +83,17 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
             showToast("没有最新数据了");
             return;
         }
-        DataEngine.loadNewStaggeredData(mNewPageNumber, new DataEngine.StaggeredModelResponseHandler() {
+        mEngine.loadNewStaggeredData(mNewPageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<StaggeredModel>> response) {
                 mRefreshLayout.endRefreshing();
+                mAdapter.addNewDatas(response.body());
+                mDataRv.smoothScrollToPosition(0);
             }
 
             @Override
-            public void onSuccess(List<StaggeredModel> staggeredModels) {
+            public void onFailure(Throwable t) {
                 mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(staggeredModels);
-                mDataRv.smoothScrollToPosition(0);
             }
         });
     }
@@ -104,16 +106,16 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
             showToast("没有更多数据了");
             return false;
         }
-        DataEngine.loadMoreStaggeredData(mMorePageNumber, new DataEngine.StaggeredModelResponseHandler() {
+        mEngine.loadMoreStaggeredData(mMorePageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<StaggeredModel>> response) {
                 mRefreshLayout.endLoadingMore();
+                mAdapter.addMoreDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<StaggeredModel> staggeredModels) {
+            public void onFailure(Throwable t) {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(staggeredModels);
             }
         });
         return true;

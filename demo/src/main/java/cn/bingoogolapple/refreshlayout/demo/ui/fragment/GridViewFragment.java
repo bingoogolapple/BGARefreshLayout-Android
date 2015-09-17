@@ -17,8 +17,9 @@ import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
-import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import retrofit.Callback;
+import retrofit.Response;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -80,20 +81,20 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
     protected void onUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
-        DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
+                mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
-                mAdapter.setDatas(refreshModels);
+            public void onFailure(Throwable t) {
             }
         });
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+    public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
         if (mIsNetworkEnabled) {
             // 如果网络可用，则加载网络数据
 
@@ -103,16 +104,16 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
                 showToast("没有最新数据了");
                 return;
             }
-            DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
+            mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onFailure() {
+                public void onResponse(Response<List<RefreshModel>> response) {
                     mRefreshLayout.endRefreshing();
+                    mAdapter.addNewDatas(response.body());
                 }
 
                 @Override
-                public void onSuccess(List<RefreshModel> refreshModels) {
+                public void onFailure(Throwable t) {
                     mRefreshLayout.endRefreshing();
-                    mAdapter.addNewDatas(refreshModels);
                 }
             });
         } else {
@@ -136,16 +137,16 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
                 showToast("没有更多数据了");
                 return false;
             }
-            DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
+            mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onFailure() {
+                public void onResponse(Response<List<RefreshModel>> response) {
                     mRefreshLayout.endLoadingMore();
+                    mAdapter.addMoreDatas(response.body());
                 }
 
                 @Override
-                public void onSuccess(List<RefreshModel> refreshModels) {
+                public void onFailure(Throwable t) {
                     mRefreshLayout.endLoadingMore();
-                    mAdapter.addMoreDatas(refreshModels);
                 }
             });
             // 模拟网络可用不可用

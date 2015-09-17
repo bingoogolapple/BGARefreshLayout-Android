@@ -18,6 +18,8 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import retrofit.Callback;
+import retrofit.Response;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -82,14 +84,14 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
     protected void onUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
-        DataEngine.loadInitDatas(new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
+                mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
-                mAdapter.setDatas(refreshModels);
+            public void onFailure(Throwable t) {
             }
         });
     }
@@ -102,16 +104,16 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             showToast("没有最新数据了");
             return;
         }
-        DataEngine.loadNewData(mNewPageNumber, new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
+                mAdapter.addNewDatas(response.body());
             }
 
             @Override
-            public void onSuccess(List<RefreshModel> refreshModels) {
+            public void onFailure(Throwable t) {
                 mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(refreshModels);
             }
         });
     }
@@ -124,17 +126,16 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             showToast("没有更多数据了");
             return false;
         }
-        DataEngine.loadMoreData(mMorePageNumber, new DataEngine.RefreshModelResponseHandler() {
+        mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onFailure() {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
+                mAdapter.addMoreDatas(response.body());
             }
 
             @Override
-            public void onSuccess(final List<RefreshModel> refreshModels) {
+            public void onFailure(Throwable t) {
                 mRefreshLayout.endLoadingMore();
-
-                mAdapter.addMoreDatas(refreshModels);
             }
         });
         return true;

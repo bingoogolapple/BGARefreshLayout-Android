@@ -21,6 +21,7 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -80,7 +81,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -100,7 +101,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endRefreshing();
                 mAdapter.addNewDatas(response.body());
                 mDataRv.smoothScrollToPosition(0);
@@ -123,7 +124,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addMoreDatas(response.body());
             }

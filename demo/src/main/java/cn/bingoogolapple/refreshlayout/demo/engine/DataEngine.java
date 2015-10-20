@@ -15,6 +15,7 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -33,7 +34,7 @@ public class DataEngine {
         banner.setViews(views);
         App.getInstance().getEngine().getBannerModel().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
                 BannerModel bannerModel = response.body();
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 for (int i = 0; i < views.size(); i++) {

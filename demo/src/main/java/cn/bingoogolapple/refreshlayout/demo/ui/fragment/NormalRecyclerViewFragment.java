@@ -25,6 +25,7 @@ import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -115,7 +116,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -137,7 +138,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
         mLoadingDialog.show();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endRefreshing();
                 mLoadingDialog.dismiss();
                 mAdapter.addNewDatas(response.body());
@@ -164,7 +165,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
         mLoadingDialog.show();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endLoadingMore();
                 mLoadingDialog.dismiss();
                 mAdapter.addMoreDatas(response.body());

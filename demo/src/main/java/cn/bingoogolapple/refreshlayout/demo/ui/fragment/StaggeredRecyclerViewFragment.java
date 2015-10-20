@@ -18,6 +18,7 @@ import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -65,7 +66,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
         mMorePageNumber = 0;
         mEngine.loadDefaultStaggeredData().enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response) {
+            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -85,7 +86,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
         }
         mEngine.loadNewStaggeredData(mNewPageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response) {
+            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endRefreshing();
                 mAdapter.addNewDatas(response.body());
                 mDataRv.smoothScrollToPosition(0);
@@ -108,7 +109,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
         }
         mEngine.loadMoreStaggeredData(mMorePageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response) {
+            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addMoreDatas(response.body());
             }

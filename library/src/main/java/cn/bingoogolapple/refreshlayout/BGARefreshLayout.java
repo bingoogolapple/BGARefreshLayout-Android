@@ -23,7 +23,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -288,7 +287,6 @@ public class BGARefreshLayout extends LinearLayout {
                     @Override
                     public void onScrollStateChanged(AbsListView absListView, int scrollState) {
                         if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore()) {
-                            Log.i(TAG, "开始加载更多");
                             beginLoadingMore();
                         }
 
@@ -518,7 +516,6 @@ public class BGARefreshLayout extends LinearLayout {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mWholeHeaderDownY = (int) event.getY();
-                    Log.i(TAG, "ACTION_DOWN mWholeHeaderDownY = " + mWholeHeaderDownY);
                     if (mCustomHeaderView != null) {
                         mWholeHeaderViewDownPaddingTop = mWholeHeaderView.getPaddingTop();
                     }
@@ -664,7 +661,6 @@ public class BGARefreshLayout extends LinearLayout {
             if (mWholeHeaderDownY == -1) {
                 mWholeHeaderDownY = (int) event.getY();
 
-                Log.i(TAG, "ACTION_MOVE mWholeHeaderDownY = " + mWholeHeaderDownY);
                 if (mCustomHeaderView != null) {
                     mWholeHeaderViewDownPaddingTop = mWholeHeaderView.getPaddingTop();
                 }

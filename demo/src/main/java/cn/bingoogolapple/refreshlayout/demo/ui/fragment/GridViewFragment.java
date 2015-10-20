@@ -20,6 +20,7 @@ import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -83,7 +84,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -106,7 +107,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
             }
             mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onResponse(Response<List<RefreshModel>> response) {
+                public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                     mRefreshLayout.endRefreshing();
                     mAdapter.addNewDatas(response.body());
                 }
@@ -139,7 +140,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
             }
             mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onResponse(Response<List<RefreshModel>> response) {
+                public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                     mRefreshLayout.endLoadingMore();
                     mAdapter.addMoreDatas(response.body());
                 }

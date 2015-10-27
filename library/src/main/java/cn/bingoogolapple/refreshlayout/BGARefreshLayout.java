@@ -36,6 +36,8 @@ import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.reflect.Field;
 
+import cn.bingoogolapple.refreshlayout.util.ScrollingUtil;
+
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/5/21 22:35
@@ -104,6 +106,7 @@ public class BGARefreshLayout extends LinearLayout {
     private RecyclerView mRecyclerView;
     private View mNormalView;
     private WebView mWebView;
+    private BGAStickyNavLayout mStickyNavLayout;
     private View mContentView;
 
     private float mInterceptTouchDownX = -1;
@@ -166,6 +169,8 @@ public class BGARefreshLayout extends LinearLayout {
             mScrollView = (ScrollView) mContentView;
         } else if (mContentView instanceof WebView) {
             mWebView = (WebView) mContentView;
+        } else if (mContentView instanceof BGAStickyNavLayout) {
+            mStickyNavLayout = (BGAStickyNavLayout) mContentView;
         } else {
             mNormalView = mContentView;
             // 设置为可点击，否则在空白区域无法拖动
@@ -302,9 +307,7 @@ public class BGARefreshLayout extends LinearLayout {
                         }
                     }
                 });
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -455,58 +458,22 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (mWebView != null && mWebView.getScrollY() == 0) {
+        if (ScrollingUtil.isScrollViewOrWebViewToTop(mWebView)) {
             return true;
         }
 
-        // 内容是ScrollView，并且其scrollY为0时满足
-        if (mScrollView != null && mScrollView.getScrollY() == 0) {
+        if (ScrollingUtil.isScrollViewOrWebViewToTop(mWebView)) {
             return true;
         }
 
-        if (mAbsListView != null) {
-            int firstChildTop = 0;
-            if (mAbsListView.getChildCount() > 0) {
-                // 如果AdapterView的子控件数量不为0，获取第一个子控件的top
-                firstChildTop = mAbsListView.getChildAt(0).getTop() - mAbsListView.getPaddingTop();
-            }
-            if (mAbsListView.getFirstVisiblePosition() == 0 && firstChildTop == 0) {
-                return true;
-            }
+        if (ScrollingUtil.isAbsListViewToTop(mAbsListView)) {
+            return true;
         }
 
-        if (mRecyclerView != null) {
-            int firstChildTop = 0;
-            if (mRecyclerView.getChildCount() > 0) {
-                // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
-
-                // 解决item的topMargin不为0时不能触发下拉刷新
-                MarginLayoutParams layoutParams = (MarginLayoutParams) mRecyclerView.getChildAt(0).getLayoutParams();
-                firstChildTop = mRecyclerView.getChildAt(0).getTop() - layoutParams.topMargin - mRecyclerView.getPaddingTop();
-            }
-
-            RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-            if (manager == null) {
-                return true;
-            }
-            if (manager.getItemCount() == 0) {
-                return true;
-            }
-
-            if (manager instanceof LinearLayoutManager) {
-                LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0 && firstChildTop == 0) {
-                    return true;
-                }
-            } else if (manager instanceof StaggeredGridLayoutManager) {
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
-
-                int[] out = layoutManager.findFirstCompletelyVisibleItemPositions(null);
-                if (out[0] == 0) {
-                    return true;
-                }
-            }
+        if (ScrollingUtil.isRecyclerViewToTop(mRecyclerView)) {
+            return true;
         }
+
         return false;
     }
 

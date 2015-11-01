@@ -18,14 +18,14 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
  * 创建时间:15/5/21 上午1:22
  * 描述:
  */
-public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static final String TAG = ScrollViewFragment.class.getSimpleName();
+public class RefreshScrollViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+    private static final String TAG = RefreshScrollViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private TextView mClickableLabelTv;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_scrollview);
+        setContentView(R.layout.fragment_scrollview_refresh);
         mRefreshLayout = getViewById(R.id.rl_scrollview_refresh);
         mClickableLabelTv = getViewById(R.id.tv_scrollview_clickablelabel);
     }
@@ -62,7 +62,7 @@ public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout
 
             @Override
             protected void onPreExecute() {
-                mLoadingDialog.show();
+                showLoadingDialog();
             }
 
             @Override
@@ -77,7 +77,7 @@ public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                mLoadingDialog.dismiss();
+                dismissLoadingDialog();
                 mRefreshLayout.endRefreshing();
                 mClickableLabelTv.setText("加载最新数据完成");
             }
@@ -90,7 +90,7 @@ public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout
 
             @Override
             protected void onPreExecute() {
-                mLoadingDialog.show();
+                showLoadingDialog();
             }
 
             @Override
@@ -105,7 +105,7 @@ public class ScrollViewFragment extends BaseFragment implements BGARefreshLayout
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                mLoadingDialog.dismiss();
+                dismissLoadingDialog();
                 mRefreshLayout.endLoadingMore();
                 Log.i(TAG, "上拉加载更多完成");
             }

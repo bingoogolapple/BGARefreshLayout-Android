@@ -27,8 +27,8 @@ import retrofit.Retrofit;
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class NormalListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = NormalListViewFragment.class.getSimpleName();
+public class RefreshListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = RefreshListViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
     private NormalAdapterViewAdapter mAdapter;
@@ -37,7 +37,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_listview);
+        setContentView(R.layout.fragment_listview_refresh);
         mRefreshLayout = getViewById(R.id.rl_listview_refresh);
         mDataLv = getViewById(R.id.lv_listview_data);
     }

@@ -1,4 +1,4 @@
-package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
+package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,23 +11,17 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
+import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeAdapterViewAdapter;
-import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-/**
- * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:15/5/22 10:06
- * 描述:
- */
-public class SwipeListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = SwipeListViewFragment.class.getSimpleName();
+public class SwipeListViewActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
     private SwipeAdapterViewAdapter mAdapter;
@@ -36,9 +30,9 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_listview);
-        mRefreshLayout = getViewById(R.id.rl_listview_refresh);
-        mDataLv = getViewById(R.id.lv_listview_data);
+        setContentView(R.layout.activity_listview);
+        mRefreshLayout = getViewById(R.id.refreshLayout);
+        mDataLv = getViewById(R.id.data);
     }
 
     @Override
@@ -60,23 +54,21 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             }
         });
 
-        mAdapter = new SwipeAdapterViewAdapter(mApp);
+        mAdapter = new SwipeAdapterViewAdapter(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
+
+        findViewById(R.id.retweet).setOnClickListener(this);
+        findViewById(R.id.comment).setOnClickListener(this);
+        findViewById(R.id.praise).setOnClickListener(this);
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
 
         mDataLv.setAdapter(mAdapter);
-    }
 
-    @Override
-    protected void onUserVisible() {
-        mNewPageNumber = 0;
-        mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
@@ -87,6 +79,46 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             public void onFailure(Throwable t) {
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        showToast("点击了条目 " + mAdapter.getItem(position).title);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        showToast("长按了条目 " + mAdapter.getItem(position).title);
+        return true;
+    }
+
+    @Override
+    public void onItemChildClick(ViewGroup viewGroup, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
+            // 作为ListView的item使用时，如果删除了某一个item，请先关闭已经打开的item，否则其他item会显示不正常（RecyclerView不会有这个问题）
+            mAdapter.closeOpenedSwipeItemLayout();
+            mAdapter.removeItem(position);
+        }
+    }
+
+    @Override
+    public boolean onItemChildLongClick(ViewGroup viewGroup, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
+            showToast("长按了删除 " + mAdapter.getItem(position).title);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.retweet) {
+            showToast("点击了转发");
+        } else if (v.getId() == R.id.comment) {
+            showToast("点击了评论");
+        } else if (v.getId() == R.id.praise) {
+            showToast("点击了赞");
+        }
     }
 
     @Override
@@ -132,34 +164,5 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
             }
         });
         return true;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        showToast("点击了条目 " + mAdapter.getItem(position).title);
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        showToast("长按了" + mAdapter.getItem(position).title);
-        return true;
-    }
-
-    @Override
-    public void onItemChildClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_swipe_delete) {
-            // 作为ListView的item使用时，如果删除了某一个item，请先关闭已经打开的item，否则其他item会显示不正常（RecyclerView不会有这个问题）
-            mAdapter.closeOpenedSwipeItemLayout();
-            mAdapter.removeItem(position);
-        }
-    }
-
-    @Override
-    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_swipe_delete) {
-            showToast("长按了删除 " + mAdapter.getItem(position).title);
-            return true;
-        }
-        return false;
     }
 }

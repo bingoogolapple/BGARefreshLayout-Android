@@ -30,5 +30,10 @@
         <item
             android:id="@+id/navigation_main_webview"
             android:title="@string/webview_demo" />
+
+        <item
+            android:id="@+id/navigation_main_stickyNav"
+            android:title="@string/sticky_nav_demo" />
+        
     </group>
 </menu>

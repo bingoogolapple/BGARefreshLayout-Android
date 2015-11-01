@@ -27,6 +27,7 @@ dependencies {
     compile 'cn.bingoogolapple:bga-banner:2.0.3@aar'
     compile 'cn.bingoogolapple:bga-adapter:1.0.7@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.3@aar'
+    compile 'cn.bingoogolapple:bga-indicator:1.0.0@aar'
     compile 'com.android.support:cardview-v7:23.1.0'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'

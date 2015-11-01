@@ -391,6 +391,7 @@ public class BGARefreshLayout extends LinearLayout {
         if (mRecyclerView != null) {
             return shouldHandleRecyclerViewLoadingMore(mRecyclerView);
         }
+
         return false;
     }
 

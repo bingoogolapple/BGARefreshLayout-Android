@@ -1,4 +1,4 @@
-package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
+package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,34 +12,28 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeRecyclerViewAdapter;
-import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-/**
- * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:15/5/22 10:06
- * 描述:
- */
-public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private SwipeRecyclerViewAdapter mAdapter;
+public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
     private RecyclerView mDataRv;
+    private SwipeRecyclerViewAdapter mAdapter;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_recyclerview);
-        mRefreshLayout = getViewById(R.id.rl_recyclerview_refresh);
-        mDataRv = getViewById(R.id.rv_recyclerview_data);
+        setContentView(R.layout.activity_recyclerview);
+        mRefreshLayout = getViewById(R.id.refreshLayout);
+        mDataRv = getViewById(R.id.data);
     }
 
     @Override
@@ -60,25 +54,23 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
                 }
             }
         });
+
+        findViewById(R.id.retweet).setOnClickListener(this);
+        findViewById(R.id.comment).setOnClickListener(this);
+        findViewById(R.id.praise).setOnClickListener(this);
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
 
-        mDataRv.addItemDecoration(new Divider(mApp));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mApp);
+        mDataRv.addItemDecoration(new Divider(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mDataRv.setLayoutManager(linearLayoutManager);
 
         mDataRv.setAdapter(mAdapter);
-    }
 
-    @Override
-    protected void onUserVisible() {
-        mNewPageNumber = 0;
-        mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
@@ -89,6 +81,44 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
             public void onFailure(Throwable t) {
             }
         });
+    }
+
+    @Override
+    public void onItemChildClick(ViewGroup viewGroup, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
+            mAdapter.removeItem(position);
+        }
+    }
+
+    @Override
+    public boolean onItemChildLongClick(ViewGroup viewGroup, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
+            showToast("长按了删除 " + mAdapter.getItem(position).title);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRVItemClick(ViewGroup viewGroup, View itemView, int position) {
+        showToast("点击了条目 " + mAdapter.getItem(position).title);
+    }
+
+    @Override
+    public boolean onRVItemLongClick(ViewGroup viewGroup, View itemView, int position) {
+        showToast("长按了条目 " + mAdapter.getItem(position).title);
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.retweet) {
+            showToast("点击了转发");
+        } else if (v.getId() == R.id.comment) {
+            showToast("点击了评论");
+        } else if (v.getId() == R.id.praise) {
+            showToast("点击了赞");
+        }
     }
 
     @Override
@@ -137,31 +167,4 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
         return true;
     }
 
-    @Override
-    public void onItemChildClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_swipe_delete) {
-            mAdapter.closeOpenedSwipeItemLayoutWithAnim();
-            mAdapter.removeItem(position);
-        }
-    }
-
-    @Override
-    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_swipe_delete) {
-            showToast("长按了删除 " + mAdapter.getItem(position).title);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onRVItemClick(ViewGroup parent, View itemView, int position) {
-        showToast("点击了条目 " + mAdapter.getItem(position).title);
-    }
-
-    @Override
-    public boolean onRVItemLongClick(ViewGroup parent, View itemView, int position) {
-        showToast("长按了条目 " + mAdapter.getItem(position).title);
-        return true;
-    }
 }

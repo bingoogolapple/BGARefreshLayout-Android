@@ -1,0 +1,8 @@
+<WebView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wv_webview_content"
+    style="@style/MatchMatch"
+    android:layout_marginBottom="@dimen/test_padding_margin"
+    android:layout_marginTop="@dimen/test_padding_margin"
+    android:background="@color/test_spacing3"
+    android:paddingBottom="@dimen/test_padding_margin"
+    android:paddingTop="@dimen/test_padding_margin" />

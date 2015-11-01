@@ -9,4 +9,5 @@
     <dimen name="large">15dp</dimen>
     <dimen name="large_large">20dp</dimen>
 
+    <dimen name="test_padding_margin">5dp</dimen>
 </resources>

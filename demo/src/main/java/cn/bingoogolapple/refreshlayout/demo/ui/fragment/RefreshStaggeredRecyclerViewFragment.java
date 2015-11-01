@@ -25,8 +25,8 @@ import retrofit.Retrofit;
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
-    private static final String TAG = StaggeredRecyclerViewFragment.class.getSimpleName();
+public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
+    private static final String TAG = RefreshStaggeredRecyclerViewFragment.class.getSimpleName();
     private StaggeredRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private RecyclerView mDataRv;
@@ -35,7 +35,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_recyclerview);
+        setContentView(R.layout.fragment_recyclerview_refresh);
         mRefreshLayout = getViewById(R.id.rl_recyclerview_refresh);
         mDataRv = getViewById(R.id.rv_recyclerview_data);
     }

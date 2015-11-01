@@ -1,8 +1,9 @@
-package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
+package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -10,26 +11,21 @@ import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 
-/**
- * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:15/7/21 下午11:42
- * 描述:
- */
-public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static final String TAG = WebViewFragment.class.getSimpleName();
+public class WebViewActivity extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
     private WebView mContentWv;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_webview);
-        mRefreshLayout = getViewById(R.id.rl_webview_refresh);
+        setContentView(R.layout.activity_webview);
+        mRefreshLayout = getViewById(R.id.refreshLayout);
         mContentWv = getViewById(R.id.wv_webview_content);
     }
 
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
+
         mContentWv.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -42,18 +38,28 @@ public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BG
                 mRefreshLayout.endRefreshing();
             }
         });
+        findViewById(R.id.retweet).setOnClickListener(this);
+        findViewById(R.id.comment).setOnClickListener(this);
+        findViewById(R.id.praise).setOnClickListener(this);
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
+
         mContentWv.getSettings().setJavaScriptEnabled(true);
         mContentWv.loadUrl("http://www.imooc.com");
     }
 
     @Override
-    protected void onUserVisible() {
+    public void onClick(View v) {
+        if (v.getId() == R.id.retweet) {
+            showToast("点击了转发");
+        } else if (v.getId() == R.id.comment) {
+            showToast("点击了评论");
+        } else if (v.getId() == R.id.praise) {
+            showToast("点击了赞");
+        }
     }
 
     @Override

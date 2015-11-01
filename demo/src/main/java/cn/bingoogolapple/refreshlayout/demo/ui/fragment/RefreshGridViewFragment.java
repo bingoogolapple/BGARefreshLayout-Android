@@ -27,7 +27,7 @@ import retrofit.Retrofit;
  * 创建时间:15/7/10 17:45
  * 描述:
  */
-public class GridViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener {
+public class RefreshGridViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener {
     private BGARefreshLayout mRefreshLayout;
     private GridView mDataGv;
     private NormalAdapterViewAdapter mAdapter;
@@ -38,7 +38,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_gridview);
+        setContentView(R.layout.fragment_gridview_refresh);
         mRefreshLayout = getViewById(R.id.rl_gridview_refresh);
         mDataGv = getViewById(R.id.lv_gridview_data);
     }

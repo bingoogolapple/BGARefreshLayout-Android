@@ -32,8 +32,8 @@ import retrofit.Retrofit;
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class NormalRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = NormalRecyclerViewFragment.class.getSimpleName();
+public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = RefreshRecyclerViewFragment.class.getSimpleName();
     private NormalRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private RecyclerView mDataRv;
@@ -42,7 +42,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_recyclerview);
+        setContentView(R.layout.fragment_recyclerview_refresh);
         mRefreshLayout = getViewById(R.id.rl_recyclerview_refresh);
         mDataRv = getViewById(R.id.rv_recyclerview_data);
     }
@@ -135,12 +135,12 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
             return;
         }
 
-        mLoadingDialog.show();
+        showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endRefreshing();
-                mLoadingDialog.dismiss();
+                dismissLoadingDialog();
                 mAdapter.addNewDatas(response.body());
                 mDataRv.smoothScrollToPosition(0);
             }
@@ -148,7 +148,7 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
             @Override
             public void onFailure(Throwable t) {
                 mRefreshLayout.endRefreshing();
-                mLoadingDialog.dismiss();
+                dismissLoadingDialog();
             }
         });
     }
@@ -162,19 +162,19 @@ public class NormalRecyclerViewFragment extends BaseFragment implements BGARefre
             return false;
         }
 
-        mLoadingDialog.show();
+        showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endLoadingMore();
-                mLoadingDialog.dismiss();
+                dismissLoadingDialog();
                 mAdapter.addMoreDatas(response.body());
             }
 
             @Override
             public void onFailure(Throwable t) {
                 mRefreshLayout.endLoadingMore();
-                mLoadingDialog.dismiss();
+                dismissLoadingDialog();
             }
         });
 

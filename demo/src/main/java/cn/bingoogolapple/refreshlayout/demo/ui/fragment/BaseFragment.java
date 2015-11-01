@@ -1,7 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 
 import cn.bingoogolapple.refreshlayout.demo.App;
 import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.BaseActivity;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 
 
@@ -24,16 +24,15 @@ public abstract class BaseFragment extends Fragment {
     protected String TAG;
     protected App mApp;
     protected View mContentView;
-    protected ProgressDialog mLoadingDialog;
     protected Engine mEngine;
+    protected BaseActivity mActivity;
+
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
-        mLoadingDialog = new ProgressDialog(activity);
-        mLoadingDialog.setCanceledOnTouchOutside(false);
-        mLoadingDialog.setMessage("数据加载中...");
+        mActivity = (BaseActivity) activity;
         mEngine = mApp.getEngine();
     }
 
@@ -100,5 +99,15 @@ public abstract class BaseFragment extends Fragment {
 
     protected void showToast(String text) {
         ToastUtil.show(text);
+    }
+
+    protected void showLoadingDialog() {
+        mActivity.showLoadingDialog();
+    }
+
+    protected void dismissLoadingDialog() {
+        if (isVisible()) {
+            mActivity.dismissLoadingDialog();
+        }
     }
 }

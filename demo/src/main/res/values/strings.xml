@@ -10,6 +10,7 @@
     <string name="scrollview_demo">ScrollViewDemo</string>
     <string name="normalview_demo">NormalViewDemo</string>
     <string name="webview_demo">WebViewDemo</string>
+    <string name="sticky_nav_demo">StickyNavDemo</string>
 
     <string name="test_custom_header_title">我是标题标我是标题标我是标题标我是标题标我是标题标我是标题标</string>
     <string name="test_custom_header_desc">我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述</string>

@@ -20,6 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.activity.StickyNavActivity" />
+        <activity android:name=".ui.activity.NormalRecyclerViewActivity" />
+        <activity android:name=".ui.activity.NormalListViewActivity" />
+        <activity android:name=".ui.activity.SwipeRecyclerViewActivity" />
+        <activity android:name=".ui.activity.SwipeListViewActivity" />
+        <activity android:name=".ui.activity.ScrollViewActivity" />
+        <activity android:name=".ui.activity.WebViewActivity" />
+        <activity android:name=".ui.activity.ViewPagerActivity" />
     </application>
 
 </manifest>

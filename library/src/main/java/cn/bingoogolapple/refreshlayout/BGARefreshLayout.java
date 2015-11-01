@@ -271,7 +271,7 @@ public class BGARefreshLayout extends LinearLayout {
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore()) {
+                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore(mRecyclerView)) {
                         beginLoadingMore();
                     }
                 }
@@ -291,7 +291,7 @@ public class BGARefreshLayout extends LinearLayout {
                 mAbsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                        if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore()) {
+                        if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore(mAbsListView)) {
                             beginLoadingMore();
                         }
 
@@ -313,32 +313,32 @@ public class BGARefreshLayout extends LinearLayout {
         }
     }
 
-    private boolean shouldHandleAbsListViewLoadingMore() {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || mAbsListView.getAdapter() == null || mAbsListView.getAdapter().getCount() == 0) {
+    public boolean shouldHandleAbsListViewLoadingMore(AbsListView absListView) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || absListView.getAdapter() == null || absListView.getAdapter().getCount() == 0) {
             return false;
         }
 
         int lastChildBottom = 0;
-        if (mAbsListView.getChildCount() > 0) {
+        if (absListView.getChildCount() > 0) {
             // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
-            lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
+            lastChildBottom = absListView.getChildAt(absListView.getChildCount() - 1).getBottom();
         }
-        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getMeasuredHeight();
+        return absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1 && lastChildBottom <= absListView.getMeasuredHeight();
     }
 
-    private boolean shouldHandleRecyclerViewLoadingMore() {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || mRecyclerView.getAdapter() == null || mRecyclerView.getAdapter().getItemCount() == 0) {
+    public boolean shouldHandleRecyclerViewLoadingMore(RecyclerView recyclerView) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
             return false;
         }
 
-        RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager == null || manager.getItemCount() == 0) {
             return false;
         }
 
         if (manager instanceof LinearLayoutManager) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-            if (layoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1) {
+            if (layoutManager.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
                 return true;
             }
         } else if (manager instanceof StaggeredGridLayoutManager) {
@@ -385,11 +385,11 @@ public class BGARefreshLayout extends LinearLayout {
         }
 
         if (mAbsListView != null) {
-            return shouldHandleAbsListViewLoadingMore();
+            return shouldHandleAbsListViewLoadingMore(mAbsListView);
         }
 
         if (mRecyclerView != null) {
-            return shouldHandleRecyclerViewLoadingMore();
+            return shouldHandleRecyclerViewLoadingMore(mRecyclerView);
         }
         return false;
     }
@@ -462,7 +462,7 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mWebView)) {
+        if (ScrollingUtil.isScrollViewOrWebViewToTop(mScrollView)) {
             return true;
         }
 
@@ -471,6 +471,10 @@ public class BGARefreshLayout extends LinearLayout {
         }
 
         if (ScrollingUtil.isRecyclerViewToTop(mRecyclerView)) {
+            return true;
+        }
+
+        if (ScrollingUtil.isStickyNavLayoutToTop(mStickyNavLayout)) {
             return true;
         }
 

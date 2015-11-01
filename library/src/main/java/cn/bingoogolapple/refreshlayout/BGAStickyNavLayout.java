@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
 
+import java.lang.reflect.Field;
+
 import cn.bingoogolapple.refreshlayout.util.ScrollingUtil;
 
 /**
@@ -52,6 +54,13 @@ public class BGAStickyNavLayout extends LinearLayout {
 
     private float mLastDispatchY;
     private float mLastTouchY;
+
+    public BGARefreshLayout mRefreshLayout;
+
+    /**
+     * 是否已经设置内容控件滚动监听器
+     */
+    private boolean mIsInitedContentViewScrollListener = false;
 
     public BGAStickyNavLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -97,6 +106,64 @@ public class BGAStickyNavLayout extends LinearLayout {
             mDirectWebView = (WebView) mContentView;
         } else if (mContentView instanceof ViewPager) {
             mDirectViewPager = (ViewPager) mContentView;
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        if (!mIsInitedContentViewScrollListener) {
+            setDirectRecyclerViewOnScrollListener();
+            setDirectAbsListViewOnScrollListener();
+            mIsInitedContentViewScrollListener = true;
+        }
+    }
+
+    private void setDirectRecyclerViewOnScrollListener() {
+        if (mDirectRecyclerView != null) {
+            mDirectRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mDirectRecyclerView)) {
+                        mRefreshLayout.beginLoadingMore();
+                    }
+                }
+            });
+        }
+    }
+
+    private void setDirectAbsListViewOnScrollListener() {
+        if (mDirectAbsListView != null) {
+            try {
+                // 通过反射获取开发者自定义的滚动监听器，并将其替换成自己的滚动监听器，触发滚动时也要通知开发者自定义的滚动监听器（非侵入式，不让开发者继承特定的控件）
+                // mAbsListView.getClass().getDeclaredField("mOnScrollListener")获取不到mOnScrollListener，必须通过AbsListView.class.getDeclaredField("mOnScrollListener")获取
+                Field field = AbsListView.class.getDeclaredField("mOnScrollListener");
+                field.setAccessible(true);
+                // 开发者自定义的滚动监听器
+                final AbsListView.OnScrollListener onScrollListener = (AbsListView.OnScrollListener) field.get(mDirectAbsListView);
+                mDirectAbsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                        if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleAbsListViewLoadingMore(mDirectAbsListView)) {
+                            mRefreshLayout.beginLoadingMore();
+                        }
+
+                        if (onScrollListener != null) {
+                            onScrollListener.onScrollStateChanged(absListView, scrollState);
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                        if (onScrollListener != null) {
+                            onScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -289,7 +356,7 @@ public class BGAStickyNavLayout extends LinearLayout {
         return true;
     }
 
-    private boolean isContentViewToTop() {
+    public boolean isContentViewToTop() {
         if (ScrollingUtil.isScrollViewOrWebViewToTop(mDirectWebView)) {
             return true;
         }
@@ -355,6 +422,8 @@ public class BGAStickyNavLayout extends LinearLayout {
                 mNestedAbsListView = (AbsListView) mNestedContentView;
             } else if (mNestedContentView instanceof RecyclerView) {
                 mNestedRecyclerView = (RecyclerView) mNestedContentView;
+                mNestedRecyclerView.removeOnScrollListener(mNestedRvOnScrollListener);
+                mNestedRecyclerView.addOnScrollListener(mNestedRvOnScrollListener);
             } else if (mNestedContentView instanceof ScrollView) {
                 mNestedScrollView = (ScrollView) mNestedContentView;
             } else if (mNestedContentView instanceof WebView) {
@@ -364,5 +433,18 @@ public class BGAStickyNavLayout extends LinearLayout {
             throw new IllegalStateException(BGAStickyNavLayout.class.getSimpleName() + "的第三个子控件为ViewPager时，其adapter必须是FragmentPagerAdapter或者FragmentStatePagerAdapter");
         }
     }
+
+    public void setRefreshLayout(BGARefreshLayout refreshLayout) {
+        mRefreshLayout = refreshLayout;
+    }
+
+    private RecyclerView.OnScrollListener mNestedRvOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mNestedRecyclerView)) {
+                mRefreshLayout.beginLoadingMore();
+            }
+        }
+    };
 
 }

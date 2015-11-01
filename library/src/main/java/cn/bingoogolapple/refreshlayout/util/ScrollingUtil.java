@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+import cn.bingoogolapple.refreshlayout.BGAStickyNavLayout;
+
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/10/28 上午2:26
@@ -69,6 +71,10 @@ public class ScrollingUtil {
             }
         }
         return false;
+    }
+
+    public static boolean isStickyNavLayoutToTop(BGAStickyNavLayout stickyNavLayout) {
+        return isScrollViewOrWebViewToTop(stickyNavLayout) && stickyNavLayout.isContentViewToTop();
     }
 
 }

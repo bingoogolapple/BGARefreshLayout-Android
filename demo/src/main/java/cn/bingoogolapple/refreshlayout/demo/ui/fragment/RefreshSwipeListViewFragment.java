@@ -17,16 +17,19 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class SwipeListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = SwipeListViewFragment.class.getSimpleName();
+public class RefreshSwipeListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = RefreshSwipeListViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
     private SwipeAdapterViewAdapter mAdapter;
@@ -35,7 +38,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_listview);
+        setContentView(R.layout.fragment_listview_refresh);
         mRefreshLayout = getViewById(R.id.rl_listview_refresh);
         mDataLv = getViewById(R.id.lv_listview_data);
     }
@@ -78,7 +81,7 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -98,9 +101,14 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
-                mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                        mAdapter.addNewDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
@@ -120,9 +128,14 @@ public class SwipeListViewFragment extends BaseFragment implements BGARefreshLay
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
-                mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override

@@ -18,15 +18,18 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/7/10 17:45
  * 描述:
  */
-public class GridViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener {
+public class RefreshGridViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener {
     private BGARefreshLayout mRefreshLayout;
     private GridView mDataGv;
     private NormalAdapterViewAdapter mAdapter;
@@ -37,7 +40,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_gridview);
+        setContentView(R.layout.fragment_gridview_refresh);
         mRefreshLayout = getViewById(R.id.rl_gridview_refresh);
         mDataGv = getViewById(R.id.lv_gridview_data);
     }
@@ -83,7 +86,7 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -106,9 +109,15 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
             }
             mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onResponse(Response<List<RefreshModel>> response) {
-                    mRefreshLayout.endRefreshing();
-                    mAdapter.addNewDatas(response.body());
+                public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                    // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
+                    ThreadUtil.runInUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshLayout.endRefreshing();
+                            mAdapter.addNewDatas(response.body());
+                        }
+                    }, MainActivity.LOADING_DURATION);
                 }
 
                 @Override
@@ -139,9 +148,15 @@ public class GridViewFragment extends BaseFragment implements BGARefreshLayout.B
             }
             mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onResponse(Response<List<RefreshModel>> response) {
-                    mRefreshLayout.endLoadingMore();
-                    mAdapter.addMoreDatas(response.body());
+                public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                    // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
+                    ThreadUtil.runInUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshLayout.endLoadingMore();
+                            mAdapter.addMoreDatas(response.body());
+                        }
+                    }, MainActivity.LOADING_DURATION);
                 }
 
                 @Override

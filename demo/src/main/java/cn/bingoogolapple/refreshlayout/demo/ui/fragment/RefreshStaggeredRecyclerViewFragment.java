@@ -16,16 +16,19 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.StaggeredRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
-    private static final String TAG = StaggeredRecyclerViewFragment.class.getSimpleName();
+public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
+    private static final String TAG = RefreshStaggeredRecyclerViewFragment.class.getSimpleName();
     private StaggeredRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private RecyclerView mDataRv;
@@ -34,7 +37,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_recyclerview);
+        setContentView(R.layout.fragment_recyclerview_refresh);
         mRefreshLayout = getViewById(R.id.rl_recyclerview_refresh);
         mDataRv = getViewById(R.id.rv_recyclerview_data);
     }
@@ -65,7 +68,7 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
         mMorePageNumber = 0;
         mEngine.loadDefaultStaggeredData().enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response) {
+            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -85,10 +88,15 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
         }
         mEngine.loadNewStaggeredData(mNewPageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response) {
-                mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(response.body());
-                mDataRv.smoothScrollToPosition(0);
+            public void onResponse(final Response<List<StaggeredModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                        mAdapter.addNewDatas(response.body());
+                        mDataRv.smoothScrollToPosition(0);
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
@@ -108,9 +116,14 @@ public class StaggeredRecyclerViewFragment extends BaseFragment implements BGARe
         }
         mEngine.loadMoreStaggeredData(mMorePageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response) {
-                mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<StaggeredModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override

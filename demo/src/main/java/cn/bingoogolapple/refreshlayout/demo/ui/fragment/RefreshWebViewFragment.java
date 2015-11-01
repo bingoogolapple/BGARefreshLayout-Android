@@ -15,14 +15,14 @@ import cn.bingoogolapple.refreshlayout.demo.R;
  * 创建时间:15/7/21 下午11:42
  * 描述:
  */
-public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static final String TAG = WebViewFragment.class.getSimpleName();
+public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+    private static final String TAG = RefreshWebViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private WebView mContentWv;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_webview);
+        setContentView(R.layout.fragment_webview_refresh);
         mRefreshLayout = getViewById(R.id.rl_webview_refresh);
         mContentWv = getViewById(R.id.wv_webview_content);
     }
@@ -46,10 +46,10 @@ public class WebViewFragment extends BaseFragment implements BGARefreshLayout.BG
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
 //        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
         mContentWv.getSettings().setJavaScriptEnabled(true);
-        mContentWv.loadUrl("http://www.imooc.com");
+        mContentWv.loadUrl("https://github.com/bingoogolapple");
     }
 
     @Override

@@ -17,14 +17,14 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
  * 创建时间:15/5/21 上午1:22
  * 描述:
  */
-public class NormalViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static final String TAG = NormalViewFragment.class.getSimpleName();
+public class RefreshNormalViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+    private static final String TAG = RefreshNormalViewFragment.class.getSimpleName();
     private BGARefreshLayout mRefreshLayout;
     private TextView mClickableLabelTv;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_normalview);
+        setContentView(R.layout.fragment_normalview_refresh);
         mRefreshLayout = getViewById(R.id.rl_normalview_refresh);
         mClickableLabelTv = getViewById(R.id.tv_normalview_clickablelabel);
     }

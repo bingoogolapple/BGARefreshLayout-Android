@@ -23,7 +23,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +35,8 @@ import android.widget.ScrollView;
 import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.reflect.Field;
+
+import cn.bingoogolapple.refreshlayout.util.ScrollingUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -105,6 +106,7 @@ public class BGARefreshLayout extends LinearLayout {
     private RecyclerView mRecyclerView;
     private View mNormalView;
     private WebView mWebView;
+    private BGAStickyNavLayout mStickyNavLayout;
     private View mContentView;
 
     private float mInterceptTouchDownX = -1;
@@ -167,6 +169,9 @@ public class BGARefreshLayout extends LinearLayout {
             mScrollView = (ScrollView) mContentView;
         } else if (mContentView instanceof WebView) {
             mWebView = (WebView) mContentView;
+        } else if (mContentView instanceof BGAStickyNavLayout) {
+            mStickyNavLayout = (BGAStickyNavLayout) mContentView;
+            mStickyNavLayout.setRefreshLayout(this);
         } else {
             mNormalView = mContentView;
             // 设置为可点击，否则在空白区域无法拖动
@@ -267,7 +272,7 @@ public class BGARefreshLayout extends LinearLayout {
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore()) {
+                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore(mRecyclerView)) {
                         beginLoadingMore();
                     }
                 }
@@ -287,8 +292,7 @@ public class BGARefreshLayout extends LinearLayout {
                 mAbsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                        if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore()) {
-                            Log.i(TAG, "开始加载更多");
+                        if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && shouldHandleAbsListViewLoadingMore(mAbsListView)) {
                             beginLoadingMore();
                         }
 
@@ -304,40 +308,38 @@ public class BGARefreshLayout extends LinearLayout {
                         }
                     }
                 });
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private boolean shouldHandleAbsListViewLoadingMore() {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || mAbsListView.getAdapter() == null || mAbsListView.getAdapter().getCount() == 0) {
+    public boolean shouldHandleAbsListViewLoadingMore(AbsListView absListView) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || absListView == null ||  absListView.getAdapter() == null || absListView.getAdapter().getCount() == 0) {
             return false;
         }
 
         int lastChildBottom = 0;
-        if (mAbsListView.getChildCount() > 0) {
+        if (absListView.getChildCount() > 0) {
             // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
-            lastChildBottom = mAbsListView.getChildAt(mAbsListView.getChildCount() - 1).getBottom();
+            lastChildBottom = absListView.getChildAt(absListView.getChildCount() - 1).getBottom();
         }
-        return mAbsListView.getLastVisiblePosition() == mAbsListView.getAdapter().getCount() - 1 && lastChildBottom <= mAbsListView.getMeasuredHeight();
+        return absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1 && lastChildBottom <= absListView.getMeasuredHeight();
     }
 
-    private boolean shouldHandleRecyclerViewLoadingMore() {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || mRecyclerView.getAdapter() == null || mRecyclerView.getAdapter().getItemCount() == 0) {
+    public boolean shouldHandleRecyclerViewLoadingMore(RecyclerView recyclerView) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
             return false;
         }
 
-        RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager == null || manager.getItemCount() == 0) {
             return false;
         }
 
         if (manager instanceof LinearLayoutManager) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-            if (layoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1) {
+            if (layoutManager.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
                 return true;
             }
         } else if (manager instanceof StaggeredGridLayoutManager) {
@@ -369,27 +371,26 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (mWebView != null) {
-            if (mWebView.getContentHeight() * mWebView.getScale() == (mWebView.getScrollY() + mWebView.getMeasuredHeight())) {
-                return true;
-            }
+        if (ScrollingUtil.isWebViewToBottom(mWebView)) {
+            return true;
         }
 
-        if (mScrollView != null) {
-            int scrollContentHeight = mScrollView.getScrollY() + mScrollView.getMeasuredHeight() - mScrollView.getPaddingTop() - mScrollView.getPaddingBottom();
-            int realContentHeight = mScrollView.getChildAt(0).getMeasuredHeight();
-            if (scrollContentHeight == realContentHeight) {
-                return true;
-            }
+        if (ScrollingUtil.isScrollViewToBottom(mScrollView)) {
+            return true;
         }
 
         if (mAbsListView != null) {
-            return shouldHandleAbsListViewLoadingMore();
+            return shouldHandleAbsListViewLoadingMore(mAbsListView);
         }
 
         if (mRecyclerView != null) {
-            return shouldHandleRecyclerViewLoadingMore();
+            return shouldHandleRecyclerViewLoadingMore(mRecyclerView);
         }
+
+        if (mStickyNavLayout != null) {
+            return mStickyNavLayout.shouldHandleLoadingMore();
+        }
+
         return false;
     }
 
@@ -457,58 +458,26 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (mWebView != null && mWebView.getScrollY() == 0) {
+        if (ScrollingUtil.isScrollViewOrWebViewToTop(mWebView)) {
             return true;
         }
 
-        // 内容是ScrollView，并且其scrollY为0时满足
-        if (mScrollView != null && mScrollView.getScrollY() == 0) {
+        if (ScrollingUtil.isScrollViewOrWebViewToTop(mScrollView)) {
             return true;
         }
 
-        if (mAbsListView != null) {
-            int firstChildTop = 0;
-            if (mAbsListView.getChildCount() > 0) {
-                // 如果AdapterView的子控件数量不为0，获取第一个子控件的top
-                firstChildTop = mAbsListView.getChildAt(0).getTop() - mAbsListView.getPaddingTop();
-            }
-            if (mAbsListView.getFirstVisiblePosition() == 0 && firstChildTop == 0) {
-                return true;
-            }
+        if (ScrollingUtil.isAbsListViewToTop(mAbsListView)) {
+            return true;
         }
 
-        if (mRecyclerView != null) {
-            int firstChildTop = 0;
-            if (mRecyclerView.getChildCount() > 0) {
-                // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
-
-                // 解决item的topMargin不为0时不能触发下拉刷新
-                MarginLayoutParams layoutParams = (MarginLayoutParams) mRecyclerView.getChildAt(0).getLayoutParams();
-                firstChildTop = mRecyclerView.getChildAt(0).getTop() - layoutParams.topMargin - mRecyclerView.getPaddingTop();
-            }
-
-            RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-            if (manager == null) {
-                return true;
-            }
-            if (manager.getItemCount() == 0) {
-                return true;
-            }
-
-            if (manager instanceof LinearLayoutManager) {
-                LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0 && firstChildTop == 0) {
-                    return true;
-                }
-            } else if (manager instanceof StaggeredGridLayoutManager) {
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
-
-                int[] out = layoutManager.findFirstCompletelyVisibleItemPositions(null);
-                if (out[0] == 0) {
-                    return true;
-                }
-            }
+        if (ScrollingUtil.isRecyclerViewToTop(mRecyclerView)) {
+            return true;
         }
+
+        if (ScrollingUtil.isStickyNavLayoutToTop(mStickyNavLayout)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -518,7 +487,6 @@ public class BGARefreshLayout extends LinearLayout {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mWholeHeaderDownY = (int) event.getY();
-                    Log.i(TAG, "ACTION_DOWN mWholeHeaderDownY = " + mWholeHeaderDownY);
                     if (mCustomHeaderView != null) {
                         mWholeHeaderViewDownPaddingTop = mWholeHeaderView.getPaddingTop();
                     }
@@ -664,7 +632,6 @@ public class BGARefreshLayout extends LinearLayout {
             if (mWholeHeaderDownY == -1) {
                 mWholeHeaderDownY = (int) event.getY();
 
-                Log.i(TAG, "ACTION_MOVE mWholeHeaderDownY = " + mWholeHeaderDownY);
                 if (mCustomHeaderView != null) {
                     mWholeHeaderViewDownPaddingTop = mWholeHeaderView.getPaddingTop();
                 }

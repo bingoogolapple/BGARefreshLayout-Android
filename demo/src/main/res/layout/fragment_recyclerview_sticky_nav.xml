@@ -1,0 +1,11 @@
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/data"
+    style="@style/MatchMatch"
+    android:layout_marginBottom="@dimen/test_padding_margin"
+    android:layout_marginTop="@dimen/test_padding_margin"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/test_padding_margin"
+    android:paddingTop="@dimen/test_padding_margin"
+    android:scrollbars="none"
+    tools:listitem="@layout/item_normal" />

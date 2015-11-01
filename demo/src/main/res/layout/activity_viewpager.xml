@@ -1,0 +1,50 @@
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refreshLayout"
+    style="@style/MatchMatch"
+    android:paddingBottom="@dimen/test_padding_margin"
+    android:paddingTop="@dimen/test_padding_margin">
+
+    <cn.bingoogolapple.refreshlayout.BGAStickyNavLayout style="@style/MatchAuto">
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:banner_pointAutoPlayInterval="3000"
+            app:banner_pointGravity="bottom|right"
+            app:banner_pointTopBottomMargin="10dp"
+            app:banner_tipTextSize="12sp"
+            app:banner_transitionEffect="accordion" />
+
+        <cn.bingoogolapple.bgaindicator.BGAFixedIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/test_padding_margin"
+            android:layout_marginTop="@dimen/test_padding_margin"
+            android:background="@color/test_spacing4"
+            android:paddingBottom="@dimen/test_padding_margin"
+            android:paddingTop="@dimen/test_padding_margin"
+            app:indicator_dividerColor="@color/srl_blue_bright"
+            app:indicator_dividerVerticalMargin="5dp"
+            app:indicator_dividerWidth="2dp"
+            app:indicator_hasDivider="true"
+            app:indicator_textColor="@color/selector_tab"
+            app:indicator_textSizeNormal="12sp"
+            app:indicator_textSizeSelected="14sp"
+            app:indicator_triangleColor="@color/srl_red_light"
+            app:indicator_triangleHeight="2dp"
+            app:indicator_triangleHorizontalMargin="5dp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_viewpager_content"
+            style="@style/MatchMatch"
+            android:layout_marginBottom="@dimen/test_padding_margin"
+            android:layout_marginTop="@dimen/test_padding_margin"
+            android:background="@color/test_spacing3"
+            android:paddingBottom="@dimen/test_padding_margin"
+            android:paddingTop="@dimen/test_padding_margin" />
+
+    </cn.bingoogolapple.refreshlayout.BGAStickyNavLayout>
+</cn.bingoogolapple.refreshlayout.BGARefreshLayout>

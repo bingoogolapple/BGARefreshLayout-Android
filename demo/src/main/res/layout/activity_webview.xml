@@ -1,0 +1,56 @@
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refreshLayout"
+    style="@style/MatchMatch">
+
+    <cn.bingoogolapple.refreshlayout.BGAStickyNavLayout style="@style/MatchAuto">
+
+        <TextView
+            style="@style/MatchWrap"
+            android:background="@color/test_spacing3"
+            android:gravity="center"
+            android:paddingBottom="50dp"
+            android:paddingTop="50dp"
+            android:text="顶部视图"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            style="@style/MatchWrap.Horizontal"
+            android:background="@color/test_spacing4"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/retweet"
+                style="@style/AutoWrap"
+                android:gravity="center"
+                android:text="转发"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/comment"
+                style="@style/AutoWrap"
+                android:gravity="center"
+                android:text="评论"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/praise"
+                style="@style/AutoWrap"
+                android:gravity="center"
+                android:text="赞"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/wv_webview_content"
+            style="@style/MatchMatch"
+            android:background="@color/test_spacing3"
+            android:paddingBottom="@dimen/test_padding_margin"
+            android:paddingTop="@dimen/test_padding_margin" />
+
+    </cn.bingoogolapple.refreshlayout.BGAStickyNavLayout>
+</cn.bingoogolapple.refreshlayout.BGARefreshLayout>

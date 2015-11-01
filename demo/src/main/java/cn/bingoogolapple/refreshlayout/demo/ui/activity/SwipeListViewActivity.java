@@ -1,6 +1,5 @@
-package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
+package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,80 +12,66 @@ import java.util.List;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
-import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
-import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
+import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
-/**
- * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:15/5/22 10:06
- * 描述:
- */
-public class NormalListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private static final String TAG = NormalListViewFragment.class.getSimpleName();
+public class SwipeListViewActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
-    private NormalAdapterViewAdapter mAdapter;
+    private SwipeAdapterViewAdapter mAdapter;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_listview);
-        mRefreshLayout = getViewById(R.id.rl_listview_refresh);
-        mDataLv = getViewById(R.id.lv_listview_data);
+        setContentView(R.layout.activity_listview);
+        mRefreshLayout = getViewById(R.id.refreshLayout);
+        mDataLv = getViewById(R.id.data);
     }
 
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-        // 设置正在加载更多时不显示加载更多控件
-        mRefreshLayout.setIsShowLoadingMoreView(false);
 
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
         mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                Log.i(TAG, "滚动状态变化");
+                if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+                    mAdapter.closeOpenedSwipeItemLayoutWithAnim();
+                }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                Log.i(TAG, "正在滚动");
             }
         });
 
-        mAdapter = new NormalAdapterViewAdapter(mApp);
+        mAdapter = new SwipeAdapterViewAdapter(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
+
+        findViewById(R.id.retweet).setOnClickListener(this);
+        findViewById(R.id.comment).setOnClickListener(this);
+        findViewById(R.id.praise).setOnClickListener(this);
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
-        moocStyleRefreshViewHolder.setUltimateColor(getResources().getColor(R.color.custom_imoocstyle));
-        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.custom_mooc_icon));
-//        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_imoocstyle);
-        moocStyleRefreshViewHolder.setSpringDistanceScale(0.2f);
-//        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_imoocstyle);
-        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
 
         mDataLv.setAdapter(mAdapter);
-    }
 
-    @Override
-    protected void onUserVisible() {
-        mNewPageNumber = 0;
-        mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -94,6 +79,46 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             public void onFailure(Throwable t) {
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        showToast("点击了条目 " + mAdapter.getItem(position).title);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        showToast("长按了条目 " + mAdapter.getItem(position).title);
+        return true;
+    }
+
+    @Override
+    public void onItemChildClick(ViewGroup viewGroup, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
+            // 作为ListView的item使用时，如果删除了某一个item，请先关闭已经打开的item，否则其他item会显示不正常（RecyclerView不会有这个问题）
+            mAdapter.closeOpenedSwipeItemLayout();
+            mAdapter.removeItem(position);
+        }
+    }
+
+    @Override
+    public boolean onItemChildLongClick(ViewGroup viewGroup, View childView, int position) {
+        if (childView.getId() == R.id.tv_item_swipe_delete) {
+            showToast("长按了删除 " + mAdapter.getItem(position).title);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.retweet) {
+            showToast("点击了转发");
+        } else if (v.getId() == R.id.comment) {
+            showToast("点击了评论");
+        } else if (v.getId() == R.id.praise) {
+            showToast("点击了赞");
+        }
     }
 
     @Override
@@ -106,7 +131,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endRefreshing();
                 mAdapter.addNewDatas(response.body());
             }
@@ -128,7 +153,7 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addMoreDatas(response.body());
             }
@@ -139,32 +164,5 @@ public class NormalListViewFragment extends BaseFragment implements BGARefreshLa
             }
         });
         return true;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        showToast("点击了条目 " + mAdapter.getItem(position).title);
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        showToast("长按了" + mAdapter.getItem(position).title);
-        return true;
-    }
-
-    @Override
-    public void onItemChildClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_normal_delete) {
-            mAdapter.removeItem(position);
-        }
-    }
-
-    @Override
-    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_normal_delete) {
-            showToast("长按了删除 " + mAdapter.getItem(position).title);
-            return true;
-        }
-        return false;
     }
 }

@@ -1,10 +1,13 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -15,20 +18,24 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
-import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeRecyclerViewAdapter;
-import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
+import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
+import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/5/22 10:06
  * 描述:
  */
-public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
-    private SwipeRecyclerViewAdapter mAdapter;
+public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+    private static final String TAG = RefreshRecyclerViewFragment.class.getSimpleName();
+    private NormalRecyclerViewAdapter mAdapter;
     private BGARefreshLayout mRefreshLayout;
     private RecyclerView mDataRv;
     private int mNewPageNumber = 0;
@@ -36,7 +43,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_recyclerview);
+        setContentView(R.layout.fragment_recyclerview_refresh);
         mRefreshLayout = getViewById(R.id.rl_recyclerview_refresh);
         mDataRv = getViewById(R.id.rv_recyclerview_data);
     }
@@ -45,31 +52,63 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
 
-        mAdapter = new SwipeRecyclerViewAdapter(mDataRv);
+        mAdapter = new NormalRecyclerViewAdapter(mDataRv);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
 
+        // 使用addOnScrollListener，而不是setOnScrollListener();
         mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (RecyclerView.SCROLL_STATE_DRAGGING == newState) {
-                    mAdapter.closeOpenedSwipeItemLayoutWithAnim();
-                }
+                Log.i(TAG, "测试自定义onScrollStateChanged被调用");
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Log.i(TAG, "测试自定义onScrolled被调用");
             }
         });
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
+//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+
+        View headerView = View.inflate(mApp, R.layout.view_custom_header2, null);
+
+        // 测试自定义header中控件的点击事件
+        headerView.findViewById(R.id.btn_custom_header2_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.show("点击了测试按钮");
+            }
+        });
+        // 模拟网络数据加载，测试动态改变自定义header的高度
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) getViewById(R.id.tv_custom_header2_title)).setText(R.string.test_custom_header_title);
+                ((TextView) getViewById(R.id.tv_custom_header2_desc)).setText(R.string.test_custom_header_desc);
+            }
+        }, 2000);
+        mRefreshLayout.setCustomHeaderView(headerView, true);
+
+//        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
+//        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
+//        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
+//        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+
         mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
 
         mDataRv.addItemDecoration(new Divider(mApp));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mApp);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mDataRv.setLayoutManager(linearLayoutManager);
+
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(mApp, 2);
+//        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+//        mDataRv.setLayoutManager(gridLayoutManager);
+
+        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
 
         mDataRv.setAdapter(mAdapter);
     }
@@ -80,7 +119,7 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -98,17 +137,26 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
             showToast("没有最新数据了");
             return;
         }
+
+        showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
-                mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(response.body());
-                mDataRv.smoothScrollToPosition(0);
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                        dismissLoadingDialog();
+                        mAdapter.addNewDatas(response.body());
+                        mDataRv.smoothScrollToPosition(0);
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 mRefreshLayout.endRefreshing();
+                dismissLoadingDialog();
             }
         });
     }
@@ -121,32 +169,41 @@ public class SwipeRecyclerViewFragment extends BaseFragment implements BGARefres
             showToast("没有更多数据了");
             return false;
         }
+
+        showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
-                mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                        dismissLoadingDialog();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 mRefreshLayout.endLoadingMore();
+                dismissLoadingDialog();
             }
         });
+
         return true;
     }
 
     @Override
     public void onItemChildClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_swipe_delete) {
-            mAdapter.closeOpenedSwipeItemLayoutWithAnim();
+        if (childView.getId() == R.id.tv_item_normal_delete) {
             mAdapter.removeItem(position);
         }
     }
 
     @Override
     public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.tv_item_swipe_delete) {
+        if (childView.getId() == R.id.tv_item_normal_delete) {
             showToast("长按了删除 " + mAdapter.getItem(position).title);
             return true;
         }

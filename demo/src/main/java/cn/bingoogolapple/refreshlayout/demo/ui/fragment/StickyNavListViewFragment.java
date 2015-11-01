@@ -10,9 +10,11 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -22,9 +24,11 @@ import retrofit.Retrofit;
  * 创建时间:15/9/27 下午12:38
  * 描述:
  */
-public class StickyNavListViewFragment extends BaseFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+public class StickyNavListViewFragment extends BaseFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private ListView mDataLv;
     private NormalAdapterViewAdapter mAdapter;
+    private int mNewPageNumber = 0;
+    private int mMorePageNumber = 0;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
 
     @Override
     protected void onUserVisible() {
+        mNewPageNumber = 0;
+        mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
@@ -86,5 +92,50 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        mNewPageNumber++;
+        if (mNewPageNumber > 4) {
+            ((ViewPagerActivity) getActivity()).endRefreshing();
+            showToast("没有最新数据了");
+            return;
+        }
+        mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+            @Override
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ((ViewPagerActivity) getActivity()).endRefreshing();
+                mAdapter.addNewDatas(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                ((ViewPagerActivity) getActivity()).endRefreshing();
+            }
+        });
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        mMorePageNumber++;
+        if (mMorePageNumber > 5) {
+            ((ViewPagerActivity) getActivity()).endLoadingMore();
+            showToast("没有更多数据了");
+            return false;
+        }
+        mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+            @Override
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ((ViewPagerActivity) getActivity()).endLoadingMore();
+                mAdapter.addMoreDatas(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                ((ViewPagerActivity) getActivity()).endLoadingMore();
+            }
+        });
+        return true;
     }
 }

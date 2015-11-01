@@ -32,6 +32,7 @@ public class BGAStickyNavLayout extends LinearLayout {
     private View mNavView;
     private View mContentView;
 
+    private View mDirectNormalView;
     private RecyclerView mDirectRecyclerView;
     private AbsListView mDirectAbsListView;
     private ScrollView mDirectScrollView;
@@ -39,6 +40,7 @@ public class BGAStickyNavLayout extends LinearLayout {
     private ViewPager mDirectViewPager;
 
     private View mNestedContentView;
+    private View mNestedNormalView;
     private RecyclerView mNestedRecyclerView;
     private AbsListView mNestedAbsListView;
     private ScrollView mNestedScrollView;
@@ -106,6 +108,8 @@ public class BGAStickyNavLayout extends LinearLayout {
             mDirectWebView = (WebView) mContentView;
         } else if (mContentView instanceof ViewPager) {
             mDirectViewPager = (ViewPager) mContentView;
+        } else {
+            mDirectNormalView = mContentView;
         }
     }
 
@@ -383,6 +387,10 @@ public class BGAStickyNavLayout extends LinearLayout {
     private boolean isViewPagerContentViewToTop() {
         regetNestedContentView();
 
+        if (mDirectNormalView != null) {
+            return true;
+        }
+
         if (ScrollingUtil.isScrollViewOrWebViewToTop(mNestedWebView)) {
             return true;
         }
@@ -413,6 +421,7 @@ public class BGAStickyNavLayout extends LinearLayout {
             mNestedContentView = item.getView();
 
             // 清空之前的
+            mNestedNormalView = null;
             mNestedAbsListView = null;
             mNestedRecyclerView = null;
             mNestedScrollView = null;
@@ -420,6 +429,7 @@ public class BGAStickyNavLayout extends LinearLayout {
 
             if (mNestedContentView instanceof AbsListView) {
                 mNestedAbsListView = (AbsListView) mNestedContentView;
+                mNestedAbsListView.setOnScrollListener(mNestedLvOnScrollListener);
             } else if (mNestedContentView instanceof RecyclerView) {
                 mNestedRecyclerView = (RecyclerView) mNestedContentView;
                 mNestedRecyclerView.removeOnScrollListener(mNestedRvOnScrollListener);
@@ -428,6 +438,8 @@ public class BGAStickyNavLayout extends LinearLayout {
                 mNestedScrollView = (ScrollView) mNestedContentView;
             } else if (mNestedContentView instanceof WebView) {
                 mNestedWebView = (WebView) mNestedContentView;
+            } else {
+                mNestedNormalView = mNestedContentView;
             }
         } else {
             throw new IllegalStateException(BGAStickyNavLayout.class.getSimpleName() + "的第三个子控件为ViewPager时，其adapter必须是FragmentPagerAdapter或者FragmentStatePagerAdapter");
@@ -447,4 +459,68 @@ public class BGAStickyNavLayout extends LinearLayout {
         }
     };
 
+    private AbsListView.OnScrollListener mNestedLvOnScrollListener = new AbsListView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+            if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleAbsListViewLoadingMore(mNestedAbsListView)) {
+                mRefreshLayout.beginLoadingMore();
+            }
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        }
+    };
+
+    public boolean shouldHandleLoadingMore() {
+        if (mRefreshLayout == null) {
+            return false;
+        }
+
+        if (mDirectNormalView != null) {
+            return true;
+        }
+
+        if (ScrollingUtil.isWebViewToBottom(mDirectWebView)) {
+            return true;
+        }
+
+        if (ScrollingUtil.isScrollViewToBottom(mDirectScrollView)) {
+            return true;
+        }
+
+        if (mDirectAbsListView != null) {
+            return mRefreshLayout.shouldHandleAbsListViewLoadingMore(mDirectAbsListView);
+        }
+
+        if (mDirectRecyclerView != null) {
+            return mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mDirectRecyclerView);
+        }
+
+        if (mDirectViewPager != null) {
+            regetNestedContentView();
+
+            if (mNestedNormalView != null) {
+                return true;
+            }
+
+            if (ScrollingUtil.isWebViewToBottom(mNestedWebView)) {
+                return true;
+            }
+
+            if (ScrollingUtil.isScrollViewToBottom(mNestedScrollView)) {
+                return true;
+            }
+
+            if (mNestedAbsListView != null) {
+                return mRefreshLayout.shouldHandleAbsListViewLoadingMore(mNestedAbsListView);
+            }
+
+            if (mNestedRecyclerView != null) {
+                return mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mNestedRecyclerView);
+            }
+        }
+
+        return false;
+    }
 }

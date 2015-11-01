@@ -46,10 +46,10 @@ public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLa
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
 //        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
         mContentWv.getSettings().setJavaScriptEnabled(true);
-        mContentWv.loadUrl("http://www.imooc.com");
+        mContentWv.loadUrl("https://github.com/bingoogolapple");
     }
 
     @Override

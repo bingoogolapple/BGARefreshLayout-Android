@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,8 +19,13 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
     private BGARefreshLayout mRefreshLayout;
     private ViewPager mContentVp;
     private BGAFixedIndicator mIndicator;
-    private int mNewPageNumber = 0;
-    private int mMorePageNumber = 0;
+
+    private Fragment[] mFragments;
+    private String[] mTitles;
+    private StickyNavRecyclerViewFragment mRecyclerViewFragment;
+    private StickyNavListViewFragment mListViewFragment;
+    private StickyNavScrollViewFragment mScrollViewFragment;
+    private StickyNavWebViewFragment mWebViewFragment;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -38,41 +42,70 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        mFragments = new Fragment[4];
+        mFragments[0] = mRecyclerViewFragment = new StickyNavRecyclerViewFragment();
+        mFragments[1] = mListViewFragment = new StickyNavListViewFragment();
+        mFragments[2] = mScrollViewFragment = new StickyNavScrollViewFragment();
+        mFragments[3] = mWebViewFragment = new StickyNavWebViewFragment();
+
+        mTitles = new String[4];
+        mTitles[0] = "RecyclerView";
+        mTitles[1] = "ListView";
+        mTitles[2] = "ScrollView";
+        mTitles[3] = "WebView";
+
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
 
-        mContentVp.setAdapter(new ContentViewPagerAdapter(getSupportFragmentManager(), this));
+        mContentVp.setAdapter(new ContentViewPagerAdapter(getSupportFragmentManager()));
         mIndicator.initData(0, mContentVp);
     }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
+        switch (mContentVp.getCurrentItem()) {
+            case 0:
+                mRecyclerViewFragment.onBGARefreshLayoutBeginRefreshing(refreshLayout);
+                break;
+            case 1:
+                mListViewFragment.onBGARefreshLayoutBeginRefreshing(refreshLayout);
+                break;
+            case 2:
+                mScrollViewFragment.onBGARefreshLayoutBeginRefreshing(refreshLayout);
+                break;
+            case 3:
+                mWebViewFragment.onBGARefreshLayoutBeginRefreshing(refreshLayout);
+                break;
+        }
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
+        switch (mContentVp.getCurrentItem()) {
+            case 0:
+                return mRecyclerViewFragment.onBGARefreshLayoutBeginLoadingMore(refreshLayout);
+            case 1:
+                return mListViewFragment.onBGARefreshLayoutBeginLoadingMore(refreshLayout);
+            case 2:
+                return mScrollViewFragment.onBGARefreshLayoutBeginLoadingMore(refreshLayout);
+            case 3:
+                return mWebViewFragment.onBGARefreshLayoutBeginLoadingMore(refreshLayout);
+            default:
+                return false;
+        }
     }
 
-    private static class ContentViewPagerAdapter extends FragmentPagerAdapter {
-        private Class[] mFragments;
-        private String[] mTitles;
-        private Context mContext;
+    public void endRefreshing() {
+        mRefreshLayout.endRefreshing();
+    }
 
-        public ContentViewPagerAdapter(FragmentManager fm, Context context) {
+    public void endLoadingMore() {
+        mRefreshLayout.endLoadingMore();
+    }
+
+    class ContentViewPagerAdapter extends FragmentPagerAdapter {
+
+        public ContentViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            mContext = context;
-            mFragments = new Class[4];
-            mFragments[0] = StickyNavRecyclerViewFragment.class;
-            mFragments[1] = StickyNavListViewFragment.class;
-            mFragments[2] = StickyNavScrollViewFragment.class;
-            mFragments[3] = StickyNavWebViewFragment.class;
-
-            mTitles = new String[4];
-            mTitles[0] = "RV";
-            mTitles[1] = "LV";
-            mTitles[2] = "SV";
-            mTitles[3] = "WV";
         }
 
         @Override
@@ -82,7 +115,7 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
 
         @Override
         public Fragment getItem(int position) {
-            return Fragment.instantiate(mContext, mFragments[position].getName());
+            return mFragments[position];
         }
 
         @Override

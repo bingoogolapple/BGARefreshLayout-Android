@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 hideDrawer();
                 if (menuItem.getItemId() == R.id.navigation_main_stickyNav) {
-                    menuItem.setChecked(false);
                     startActivity(new Intent(MainActivity.this, StickyNavActivity.class));
                 } else {
                     setTitle(menuItem.getTitle());

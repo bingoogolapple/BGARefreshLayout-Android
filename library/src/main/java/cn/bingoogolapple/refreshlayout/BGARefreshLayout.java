@@ -171,6 +171,7 @@ public class BGARefreshLayout extends LinearLayout {
             mWebView = (WebView) mContentView;
         } else if (mContentView instanceof BGAStickyNavLayout) {
             mStickyNavLayout = (BGAStickyNavLayout) mContentView;
+            mStickyNavLayout.setRefreshLayout(this);
         } else {
             mNormalView = mContentView;
             // 设置为可点击，否则在空白区域无法拖动
@@ -370,18 +371,12 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (mWebView != null) {
-            if (mWebView.getContentHeight() * mWebView.getScale() == (mWebView.getScrollY() + mWebView.getMeasuredHeight())) {
-                return true;
-            }
+        if (ScrollingUtil.isWebViewToBottom(mWebView)) {
+            return true;
         }
 
-        if (mScrollView != null) {
-            int scrollContentHeight = mScrollView.getScrollY() + mScrollView.getMeasuredHeight() - mScrollView.getPaddingTop() - mScrollView.getPaddingBottom();
-            int realContentHeight = mScrollView.getChildAt(0).getMeasuredHeight();
-            if (scrollContentHeight == realContentHeight) {
-                return true;
-            }
+        if (ScrollingUtil.isScrollViewToBottom(mScrollView)) {
+            return true;
         }
 
         if (mAbsListView != null) {
@@ -390,6 +385,10 @@ public class BGARefreshLayout extends LinearLayout {
 
         if (mRecyclerView != null) {
             return shouldHandleRecyclerViewLoadingMore(mRecyclerView);
+        }
+
+        if (mStickyNavLayout != null) {
+            return mStickyNavLayout.shouldHandleLoadingMore();
         }
 
         return false;

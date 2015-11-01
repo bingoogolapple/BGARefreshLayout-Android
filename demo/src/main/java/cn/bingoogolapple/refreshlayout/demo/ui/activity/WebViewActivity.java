@@ -48,7 +48,7 @@ public class WebViewActivity extends BaseActivity implements BGARefreshLayout.BG
         mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
 
         mContentWv.getSettings().setJavaScriptEnabled(true);
-        mContentWv.loadUrl("http://www.imooc.com");
+        mContentWv.loadUrl("https://github.com/bingoogolapple");
     }
 
     @Override

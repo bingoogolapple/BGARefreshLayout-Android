@@ -12,9 +12,11 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
 import retrofit.Response;
@@ -25,9 +27,11 @@ import retrofit.Retrofit;
  * 创建时间:15/9/27 下午12:38
  * 描述:
  */
-public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
+public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private RecyclerView mDataRv;
     private NormalRecyclerViewAdapter mAdapter;
+    private int mNewPageNumber = 0;
+    private int mMorePageNumber = 0;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -55,6 +59,8 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
 
     @Override
     protected void onUserVisible() {
+        mNewPageNumber = 0;
+        mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
@@ -91,6 +97,61 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
     @Override
     public boolean onRVItemLongClick(ViewGroup viewGroup, View itemView, int position) {
         showToast("长按了条目 " + mAdapter.getItem(position).title);
+        return true;
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        mNewPageNumber++;
+        if (mNewPageNumber > 4) {
+            ((ViewPagerActivity) getActivity()).endRefreshing();
+            showToast("没有最新数据了");
+            return;
+        }
+
+        showLoadingDialog();
+        mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+            @Override
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ((ViewPagerActivity) getActivity()).endRefreshing();
+                dismissLoadingDialog();
+                mAdapter.addNewDatas(response.body());
+                mDataRv.smoothScrollToPosition(0);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                ((ViewPagerActivity) getActivity()).endRefreshing();
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        mMorePageNumber++;
+        if (mMorePageNumber > 5) {
+            ((ViewPagerActivity) getActivity()).endLoadingMore();
+            showToast("没有更多数据了");
+            return false;
+        }
+
+        showLoadingDialog();
+        mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+            @Override
+            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ((ViewPagerActivity) getActivity()).endLoadingMore();
+                dismissLoadingDialog();
+                mAdapter.addMoreDatas(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                ((ViewPagerActivity) getActivity()).endLoadingMore();
+                dismissLoadingDialog();
+            }
+        });
+
         return true;
     }
 }

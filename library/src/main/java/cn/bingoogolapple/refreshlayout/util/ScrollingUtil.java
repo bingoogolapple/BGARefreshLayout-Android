@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AbsListView;
+import android.widget.ScrollView;
 
 import cn.bingoogolapple.refreshlayout.BGAStickyNavLayout;
 
@@ -77,4 +79,18 @@ public class ScrollingUtil {
         return isScrollViewOrWebViewToTop(stickyNavLayout) && stickyNavLayout.isContentViewToTop();
     }
 
+    public static boolean isWebViewToBottom(WebView webView) {
+        return webView != null && webView.getContentHeight() * webView.getScale() == (webView.getScrollY() + webView.getMeasuredHeight());
+    }
+
+    public static boolean isScrollViewToBottom(ScrollView scrollView) {
+        if (scrollView != null) {
+            int scrollContentHeight = scrollView.getScrollY() + scrollView.getMeasuredHeight() - scrollView.getPaddingTop() - scrollView.getPaddingBottom();
+            int realContentHeight = scrollView.getChildAt(0).getMeasuredHeight();
+            if (scrollContentHeight == realContentHeight) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

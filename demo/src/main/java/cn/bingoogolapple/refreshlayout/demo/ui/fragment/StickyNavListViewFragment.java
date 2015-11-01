@@ -14,7 +14,9 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -102,11 +104,19 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
             showToast("没有最新数据了");
             return;
         }
+        showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                ((ViewPagerActivity) getActivity()).endRefreshing();
-                mAdapter.addNewDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ViewPagerActivity) getActivity()).endRefreshing();
+                        dismissLoadingDialog();
+                        mAdapter.addNewDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
@@ -126,9 +136,16 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                ((ViewPagerActivity) getActivity()).endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ViewPagerActivity) getActivity()).endLoadingMore();
+                        dismissLoadingDialog();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override

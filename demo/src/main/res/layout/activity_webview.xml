@@ -17,8 +17,8 @@
         <LinearLayout
             style="@style/MatchWrap.Horizontal"
             android:background="@color/test_spacing4"
-            android:paddingBottom="@dimen/test_padding_margin"
-            android:paddingTop="@dimen/test_padding_margin">
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/retweet"

@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,7 @@ import android.view.View;
 import cn.bingoogolapple.refreshlayout.demo.App;
 import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -19,7 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected String TAG;
     protected App mApp;
     protected Engine mEngine;
-    private ProgressDialog mLoadingDialog;
+    private SweetAlertDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +74,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     public void showLoadingDialog() {
         if (mLoadingDialog == null) {
-            mLoadingDialog = new ProgressDialog(this);
-            mLoadingDialog.setCanceledOnTouchOutside(false);
-            mLoadingDialog.setMessage("数据加载中...");
+            mLoadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            mLoadingDialog.setCancelable(false);
+            mLoadingDialog.setTitleText("数据加载中...");
         }
         mLoadingDialog.show();
     }

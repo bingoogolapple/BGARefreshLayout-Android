@@ -16,6 +16,8 @@ import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.StaggeredRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -86,10 +88,15 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
         }
         mEngine.loadNewStaggeredData(mNewPageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
-                mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(response.body());
-                mDataRv.smoothScrollToPosition(0);
+            public void onResponse(final Response<List<StaggeredModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                        mAdapter.addNewDatas(response.body());
+                        mDataRv.smoothScrollToPosition(0);
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
@@ -109,9 +116,14 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
         }
         mEngine.loadMoreStaggeredData(mMorePageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
-                mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<StaggeredModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override

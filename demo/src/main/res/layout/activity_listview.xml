@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/refreshLayout"
     style="@style/MatchMatch"
-    android:background="@color/test_spacing1"
     android:paddingBottom="@dimen/test_padding_margin"
     android:paddingTop="@dimen/test_padding_margin">
 
@@ -31,8 +30,8 @@
             android:layout_marginBottom="@dimen/test_padding_margin"
             android:layout_marginTop="@dimen/test_padding_margin"
             android:background="@color/test_spacing4"
-            android:paddingBottom="@dimen/test_padding_margin"
-            android:paddingTop="@dimen/test_padding_margin">
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/retweet"

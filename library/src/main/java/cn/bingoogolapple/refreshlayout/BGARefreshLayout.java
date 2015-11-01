@@ -315,7 +315,7 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     public boolean shouldHandleAbsListViewLoadingMore(AbsListView absListView) {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || absListView.getAdapter() == null || absListView.getAdapter().getCount() == 0) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || absListView == null ||  absListView.getAdapter() == null || absListView.getAdapter().getCount() == 0) {
             return false;
         }
 

@@ -5,18 +5,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
+import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
 import retrofit.Response;
@@ -24,6 +31,7 @@ import retrofit.Retrofit;
 
 public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
+    private BGABanner mBanner;
     private RecyclerView mDataRv;
     private NormalRecyclerViewAdapter mAdapter;
     private int mNewPageNumber = 0;
@@ -33,6 +41,7 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_recyclerview);
         mRefreshLayout = getViewById(R.id.refreshLayout);
+        mBanner = getViewById(R.id.banner);
         mDataRv = getViewById(R.id.data);
     }
 
@@ -52,7 +61,9 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
+        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+
+        initBanner();
 
         mDataRv.addItemDecoration(new Divider(this));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -65,6 +76,29 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        });
+    }
+
+    private void initBanner() {
+        final List<View> views = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            views.add(View.inflate(this, R.layout.view_image, null));
+        }
+        mBanner.setViews(views);
+        mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
+            @Override
+            public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
+                BannerModel bannerModel = response.body();
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                for (int i = 0; i < views.size(); i++) {
+                    imageLoader.displayImage(bannerModel.imgs.get(i), (ImageView) views.get(i));
+                }
+                mBanner.setTips(bannerModel.tips);
             }
 
             @Override
@@ -123,11 +157,16 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                mRefreshLayout.endRefreshing();
-                dismissLoadingDialog();
-                mAdapter.addNewDatas(response.body());
-                mDataRv.smoothScrollToPosition(0);
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                        dismissLoadingDialog();
+                        mAdapter.addNewDatas(response.body());
+                        mDataRv.smoothScrollToPosition(0);
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
@@ -150,10 +189,15 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                mRefreshLayout.endLoadingMore();
-                dismissLoadingDialog();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                        dismissLoadingDialog();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override

@@ -5,20 +5,33 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgaindicator.BGAFixedIndicator;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
+import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavListViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavRecyclerViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavScrollViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavWebViewFragment;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
-    private ViewPager mContentVp;
+    private BGABanner mBanner;
     private BGAFixedIndicator mIndicator;
+    private ViewPager mContentVp;
 
     private Fragment[] mFragments;
     private String[] mTitles;
@@ -31,6 +44,7 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_viewpager);
         mRefreshLayout = getViewById(R.id.refreshLayout);
+        mBanner = getViewById(R.id.banner);
         mIndicator = getViewById(R.id.indicator);
         mContentVp = getViewById(R.id.vp_viewpager_content);
     }
@@ -42,6 +56,10 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
+
+        initBanner();
+
         mFragments = new Fragment[4];
         mFragments[0] = mRecyclerViewFragment = new StickyNavRecyclerViewFragment();
         mFragments[1] = mListViewFragment = new StickyNavListViewFragment();
@@ -53,11 +71,31 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
         mTitles[1] = "ListView";
         mTitles[2] = "ScrollView";
         mTitles[3] = "WebView";
-
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
-
         mContentVp.setAdapter(new ContentViewPagerAdapter(getSupportFragmentManager()));
         mIndicator.initData(0, mContentVp);
+    }
+
+    private void initBanner() {
+        final List<View> views = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            views.add(View.inflate(this, R.layout.view_image, null));
+        }
+        mBanner.setViews(views);
+        mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
+            @Override
+            public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
+                BannerModel bannerModel = response.body();
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                for (int i = 0; i < views.size(); i++) {
+                    imageLoader.displayImage(bannerModel.imgs.get(i), (ImageView) views.get(i));
+                }
+                mBanner.setTips(bannerModel.tips);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        });
     }
 
     @Override

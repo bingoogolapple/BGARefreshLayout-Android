@@ -18,8 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
 
-import java.lang.reflect.Field;
-
 import cn.bingoogolapple.refreshlayout.util.ScrollingUtil;
 
 /**
@@ -59,11 +57,6 @@ public class BGAStickyNavLayout extends LinearLayout {
 
     public BGARefreshLayout mRefreshLayout;
 
-    /**
-     * 是否已经设置内容控件滚动监听器
-     */
-    private boolean mIsInitedContentViewScrollListener = false;
-
     public BGAStickyNavLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
@@ -100,74 +93,24 @@ public class BGAStickyNavLayout extends LinearLayout {
 
         if (mContentView instanceof AbsListView) {
             mDirectAbsListView = (AbsListView) mContentView;
+            mDirectAbsListView.setOnScrollListener(mLvOnScrollListener);
         } else if (mContentView instanceof RecyclerView) {
             mDirectRecyclerView = (RecyclerView) mContentView;
+            mDirectRecyclerView.addOnScrollListener(mRvOnScrollListener);
         } else if (mContentView instanceof ScrollView) {
             mDirectScrollView = (ScrollView) mContentView;
         } else if (mContentView instanceof WebView) {
             mDirectWebView = (WebView) mContentView;
         } else if (mContentView instanceof ViewPager) {
             mDirectViewPager = (ViewPager) mContentView;
-        } else {
-            mDirectNormalView = mContentView;
-        }
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        if (!mIsInitedContentViewScrollListener) {
-            setDirectRecyclerViewOnScrollListener();
-            setDirectAbsListViewOnScrollListener();
-            mIsInitedContentViewScrollListener = true;
-        }
-    }
-
-    private void setDirectRecyclerViewOnScrollListener() {
-        if (mDirectRecyclerView != null) {
-            mDirectRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            mDirectViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mDirectRecyclerView)) {
-                        mRefreshLayout.beginLoadingMore();
-                    }
+                public void onPageSelected(int position) {
+                    regetNestedContentView();
                 }
             });
-        }
-    }
-
-    private void setDirectAbsListViewOnScrollListener() {
-        if (mDirectAbsListView != null) {
-            try {
-                // 通过反射获取开发者自定义的滚动监听器，并将其替换成自己的滚动监听器，触发滚动时也要通知开发者自定义的滚动监听器（非侵入式，不让开发者继承特定的控件）
-                // mAbsListView.getClass().getDeclaredField("mOnScrollListener")获取不到mOnScrollListener，必须通过AbsListView.class.getDeclaredField("mOnScrollListener")获取
-                Field field = AbsListView.class.getDeclaredField("mOnScrollListener");
-                field.setAccessible(true);
-                // 开发者自定义的滚动监听器
-                final AbsListView.OnScrollListener onScrollListener = (AbsListView.OnScrollListener) field.get(mDirectAbsListView);
-                mDirectAbsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                        if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleAbsListViewLoadingMore(mDirectAbsListView)) {
-                            mRefreshLayout.beginLoadingMore();
-                        }
-
-                        if (onScrollListener != null) {
-                            onScrollListener.onScrollStateChanged(absListView, scrollState);
-                        }
-                    }
-
-                    @Override
-                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                        if (onScrollListener != null) {
-                            onScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } else {
+            mDirectNormalView = mContentView;
         }
     }
 
@@ -361,6 +304,10 @@ public class BGAStickyNavLayout extends LinearLayout {
     }
 
     public boolean isContentViewToTop() {
+        if (mDirectNormalView != null) {
+            return true;
+        }
+
         if (ScrollingUtil.isScrollViewOrWebViewToTop(mDirectWebView)) {
             return true;
         }
@@ -385,7 +332,9 @@ public class BGAStickyNavLayout extends LinearLayout {
     }
 
     private boolean isViewPagerContentViewToTop() {
-        regetNestedContentView();
+        if (mNestedContentView == null) {
+            regetNestedContentView();
+        }
 
         if (mDirectNormalView != null) {
             return true;
@@ -429,15 +378,31 @@ public class BGAStickyNavLayout extends LinearLayout {
 
             if (mNestedContentView instanceof AbsListView) {
                 mNestedAbsListView = (AbsListView) mNestedContentView;
-                mNestedAbsListView.setOnScrollListener(mNestedLvOnScrollListener);
+                mNestedAbsListView.setOnScrollListener(mLvOnScrollListener);
+
+                if (!isHeaderViewCompleteInvisible()) {
+                    mNestedAbsListView.smoothScrollToPosition(0);
+                }
             } else if (mNestedContentView instanceof RecyclerView) {
                 mNestedRecyclerView = (RecyclerView) mNestedContentView;
-                mNestedRecyclerView.removeOnScrollListener(mNestedRvOnScrollListener);
-                mNestedRecyclerView.addOnScrollListener(mNestedRvOnScrollListener);
+                mNestedRecyclerView.removeOnScrollListener(mRvOnScrollListener);
+                mNestedRecyclerView.addOnScrollListener(mRvOnScrollListener);
+
+                if (!isHeaderViewCompleteInvisible()) {
+                    mNestedRecyclerView.scrollToPosition(0);
+                }
             } else if (mNestedContentView instanceof ScrollView) {
                 mNestedScrollView = (ScrollView) mNestedContentView;
+
+                if (!isHeaderViewCompleteInvisible()) {
+                    mNestedScrollView.scrollTo(mNestedScrollView.getScrollX(), 0);
+                }
             } else if (mNestedContentView instanceof WebView) {
                 mNestedWebView = (WebView) mNestedContentView;
+
+                if (!isHeaderViewCompleteInvisible()) {
+                    mNestedWebView.scrollTo(mNestedWebView.getScrollX(), 0);
+                }
             } else {
                 mNestedNormalView = mNestedContentView;
             }
@@ -450,19 +415,19 @@ public class BGAStickyNavLayout extends LinearLayout {
         mRefreshLayout = refreshLayout;
     }
 
-    private RecyclerView.OnScrollListener mNestedRvOnScrollListener = new RecyclerView.OnScrollListener() {
+    private RecyclerView.OnScrollListener mRvOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mNestedRecyclerView)) {
+            if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleRecyclerViewLoadingMore(recyclerView)) {
                 mRefreshLayout.beginLoadingMore();
             }
         }
     };
 
-    private AbsListView.OnScrollListener mNestedLvOnScrollListener = new AbsListView.OnScrollListener() {
+    private AbsListView.OnScrollListener mLvOnScrollListener = new AbsListView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-            if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleAbsListViewLoadingMore(mNestedAbsListView)) {
+            if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleAbsListViewLoadingMore(absListView)) {
                 mRefreshLayout.beginLoadingMore();
             }
         }
@@ -498,7 +463,9 @@ public class BGAStickyNavLayout extends LinearLayout {
         }
 
         if (mDirectViewPager != null) {
-            regetNestedContentView();
+            if (mNestedContentView == null) {
+                regetNestedContentView();
+            }
 
             if (mNestedNormalView != null) {
                 return true;

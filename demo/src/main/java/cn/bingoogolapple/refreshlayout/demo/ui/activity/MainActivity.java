@@ -32,7 +32,7 @@ import cn.bingoogolapple.refreshlayout.demo.ui.fragment.RefreshWebViewFragment;
  */
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final int LOADING_DURATION = 3000;
+    public static final int LOADING_DURATION = 2000;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;

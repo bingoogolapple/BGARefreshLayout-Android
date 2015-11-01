@@ -21,6 +21,8 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
@@ -138,11 +140,16 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                mRefreshLayout.endRefreshing();
-                dismissLoadingDialog();
-                mAdapter.addNewDatas(response.body());
-                mDataRv.smoothScrollToPosition(0);
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                        dismissLoadingDialog();
+                        mAdapter.addNewDatas(response.body());
+                        mDataRv.smoothScrollToPosition(0);
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override
@@ -165,10 +172,15 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                mRefreshLayout.endLoadingMore();
-                dismissLoadingDialog();
-                mAdapter.addMoreDatas(response.body());
+            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                ThreadUtil.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                        dismissLoadingDialog();
+                        mAdapter.addMoreDatas(response.body());
+                    }
+                }, MainActivity.LOADING_DURATION);
             }
 
             @Override

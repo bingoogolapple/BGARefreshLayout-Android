@@ -113,6 +113,7 @@ public class NormalListViewActivity extends BaseActivity implements AdapterView.
             showToast("没有最新数据了");
             return;
         }
+
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {

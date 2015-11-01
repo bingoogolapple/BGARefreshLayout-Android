@@ -2,29 +2,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     style="@style/MatchMatch"
-    android:background="@color/test_spacing1"
     android:paddingBottom="@dimen/test_padding_margin"
     android:paddingTop="@dimen/test_padding_margin">
 
-    <cn.bingoogolapple.refreshlayout.BGAStickyNavLayout
-        style="@style/MatchAuto"
-        android:layout_marginBottom="@dimen/test_padding_margin"
-        android:layout_marginTop="@dimen/test_padding_margin"
-        android:background="@color/test_spacing2"
-        android:paddingBottom="@dimen/test_padding_margin"
-        android:paddingTop="@dimen/test_padding_margin">
+    <cn.bingoogolapple.refreshlayout.BGAStickyNavLayout style="@style/MatchAuto">
 
-        <TextView
-            style="@style/MatchWrap"
-            android:layout_marginBottom="@dimen/test_padding_margin"
-            android:layout_marginTop="@dimen/test_padding_margin"
-            android:background="@color/test_spacing3"
-            android:gravity="center"
-            android:paddingBottom="50dp"
-            android:paddingTop="50dp"
-            android:text="顶部视图"
-            android:textColor="@android:color/white"
-            android:textSize="30sp" />
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:banner_pointAutoPlayInterval="3000"
+            app:banner_pointGravity="bottom|right"
+            app:banner_pointTopBottomMargin="10dp"
+            app:banner_tipTextSize="12sp"
+            app:banner_transitionEffect="accordion" />
 
         <cn.bingoogolapple.bgaindicator.BGAFixedIndicator
             android:id="@+id/indicator"
@@ -40,8 +31,8 @@
             app:indicator_dividerWidth="2dp"
             app:indicator_hasDivider="true"
             app:indicator_textColor="@color/selector_tab"
-            app:indicator_textSizeNormal="14sp"
-            app:indicator_textSizeSelected="18sp"
+            app:indicator_textSizeNormal="12sp"
+            app:indicator_textSizeSelected="14sp"
             app:indicator_triangleColor="@color/srl_red_light"
             app:indicator_triangleHeight="2dp"
             app:indicator_triangleHorizontalMargin="5dp" />

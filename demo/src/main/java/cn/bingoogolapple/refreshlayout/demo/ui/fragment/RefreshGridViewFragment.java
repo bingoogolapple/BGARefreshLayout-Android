@@ -18,6 +18,8 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
+import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
+import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -107,9 +109,15 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
             }
             mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                    mRefreshLayout.endRefreshing();
-                    mAdapter.addNewDatas(response.body());
+                public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                    // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
+                    ThreadUtil.runInUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshLayout.endRefreshing();
+                            mAdapter.addNewDatas(response.body());
+                        }
+                    }, MainActivity.LOADING_DURATION);
                 }
 
                 @Override
@@ -140,9 +148,15 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
             }
             mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
                 @Override
-                public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
-                    mRefreshLayout.endLoadingMore();
-                    mAdapter.addMoreDatas(response.body());
+                public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+                    // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
+                    ThreadUtil.runInUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshLayout.endLoadingMore();
+                            mAdapter.addMoreDatas(response.body());
+                        }
+                    }, MainActivity.LOADING_DURATION);
                 }
 
                 @Override

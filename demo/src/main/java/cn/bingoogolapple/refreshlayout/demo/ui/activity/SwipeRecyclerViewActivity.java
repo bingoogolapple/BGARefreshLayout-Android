@@ -5,17 +5,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
+import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeRecyclerViewAdapter;
+import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
 import retrofit.Callback;
@@ -24,6 +30,7 @@ import retrofit.Retrofit;
 
 public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
+    private BGABanner mBanner;
     private RecyclerView mDataRv;
     private SwipeRecyclerViewAdapter mAdapter;
     private int mNewPageNumber = 0;
@@ -33,6 +40,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_recyclerview);
         mRefreshLayout = getViewById(R.id.refreshLayout);
+        mBanner = getViewById(R.id.banner);
         mDataRv = getViewById(R.id.data);
     }
 
@@ -64,6 +72,8 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
 
+        initBanner();
+
         mDataRv.addItemDecoration(new Divider(this));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -75,6 +85,29 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
                 mAdapter.setDatas(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        });
+    }
+
+    private void initBanner() {
+        final List<View> views = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            views.add(View.inflate(this, R.layout.view_image, null));
+        }
+        mBanner.setViews(views);
+        mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
+            @Override
+            public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
+                BannerModel bannerModel = response.body();
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                for (int i = 0; i < views.size(); i++) {
+                    imageLoader.displayImage(bannerModel.imgs.get(i), (ImageView) views.get(i));
+                }
+                mBanner.setTips(bannerModel.tips);
             }
 
             @Override

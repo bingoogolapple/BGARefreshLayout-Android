@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item
+        android:drawable="@mipmap/bga_refresh_mt_change_to_release_refresh_01"
+        android:duration="100" />
+    <item
+        android:drawable="@mipmap/bga_refresh_mt_change_to_release_refresh_02"
+        android:duration="100" />
+    <item
+        android:drawable="@mipmap/bga_refresh_mt_change_to_release_refresh_03"
+        android:duration="100" />
+    <item
+        android:drawable="@mipmap/bga_refresh_mt_change_to_release_refresh_04"
+        android:duration="100" />
+    <item
+        android:drawable="@mipmap/bga_refresh_mt_change_to_release_refresh_05"
+        android:duration="100" />
+</animation-list>

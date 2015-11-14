@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,9 +97,8 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
             @Override
             public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
                 BannerModel bannerModel = response.body();
-                ImageLoader imageLoader = ImageLoader.getInstance();
                 for (int i = 0; i < views.size(); i++) {
-                    imageLoader.displayImage(bannerModel.imgs.get(i), (ImageView) views.get(i));
+                    Glide.with(NormalRecyclerViewActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) views.get(i));
                 }
                 mBanner.setTips(bannerModel.tips);
             }

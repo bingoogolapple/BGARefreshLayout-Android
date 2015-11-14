@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.9 *(2014-11-14)*
+Version 1.0.9 *(2014-11-15)*
 ----------------------------
 
 - 添加BGAMeiTuanRefreshViewHolder美团下拉刷新样式

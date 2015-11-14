@@ -8,7 +8,7 @@
         android:id="@+id/iv_item_staggered_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@mipmap/staggered_holder"/>
 
     <TextView

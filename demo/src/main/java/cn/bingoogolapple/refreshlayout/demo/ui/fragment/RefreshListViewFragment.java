@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +71,8 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
-        moocStyleRefreshViewHolder.setUltimateColor(getResources().getColor(R.color.custom_imoocstyle));
-        moocStyleRefreshViewHolder.setOriginalBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.custom_mooc_icon));
+        moocStyleRefreshViewHolder.setUltimateColor(R.color.custom_imoocstyle);
+        moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.custom_mooc_icon);
 //        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_imoocstyle);
         moocStyleRefreshViewHolder.setSpringDistanceScale(0.2f);
 //        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_imoocstyle);

@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,9 +44,10 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
-        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
-        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
+        stickinessRefreshViewHolder.setStickinessColor(R.color.custom_stickiness);
+        stickinessRefreshViewHolder.setRotateImage(R.mipmap.custom_stickiness_roate);
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
     }
 

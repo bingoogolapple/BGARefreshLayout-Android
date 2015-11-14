@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 1.0.9 *(2014-11-14)*
+----------------------------
+
+- 添加BGAMeiTuanRefreshViewHolder美团下拉刷新样式
+- 修改BGAMoocStyleRefreshViewHolder的方法public void setOriginalBitmap(Bitmap originalBitmap)为public void setOriginalImage(@DrawableRes int resId)
+- 修改BGAMoocStyleRefreshViewHolder的方法public void setUltimateColor(int ultimateColor)为public void setUltimateColor(@ColorRes int resId)
+- 修改BGAStickinessRefreshViewHolder的方法public void setRotateDrawable(Drawable rotateDrawable)为public void setRotateImage(@DrawableRes int resId)
+- 修改BGAStickinessRefreshViewHolder的方法public void setStickinessColor(int stickinessColor)为public void setStickinessColor(@ColorRes int resId)
+
 Version 1.0.8 *(2014-11-1)*
 ----------------------------
 

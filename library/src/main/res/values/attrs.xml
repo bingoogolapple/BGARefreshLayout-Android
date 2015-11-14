@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="BGAMoocStyleRefreshView">
-        <attr name="mv_ultimateColor" format="reference|color"/>
-        <attr name="mv_originalImg" format="reference" />
-    </declare-styleable>
-</resources>

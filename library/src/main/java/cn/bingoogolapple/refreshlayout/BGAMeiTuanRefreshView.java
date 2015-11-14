@@ -2,6 +2,8 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.annotation.AnimRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -19,6 +21,9 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
     private AnimationDrawable mChangeToReleaseRefreshAd;
     private AnimationDrawable mRefreshingAd;
 
+    private int mChangeToReleaseRefreshAnimResId;
+    private int mRefreshingAnimResId;
+
     public BGAMeiTuanRefreshView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -28,6 +33,19 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
         super.onFinishInflate();
         mPullDownView = (ImageView) findViewById(R.id.iv_meituan_pull_down);
         mReleaseRefreshingView = (ImageView) findViewById(R.id.iv_meituan_release_refreshing);
+    }
+
+    public void setPullDownImageResource(@DrawableRes int resId) {
+        mPullDownView.setImageResource(resId);
+    }
+
+    public void setChangeToReleaseRefreshAnimResId(@AnimRes int resId) {
+        mChangeToReleaseRefreshAnimResId = resId;
+        mReleaseRefreshingView.setImageResource(mChangeToReleaseRefreshAnimResId);
+    }
+
+    public void setRefreshingAnimResId(@AnimRes int resId) {
+        mRefreshingAnimResId = resId;
     }
 
     public void handleScale(float scale) {
@@ -51,7 +69,7 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
     }
 
     public void changeToReleaseRefresh() {
-        mReleaseRefreshingView.setImageResource(R.anim.bga_refresh_mt_change_to_release_refresh);
+        mReleaseRefreshingView.setImageResource(mChangeToReleaseRefreshAnimResId);
         mChangeToReleaseRefreshAd = (AnimationDrawable) mReleaseRefreshingView.getDrawable();
 
         mReleaseRefreshingView.setVisibility(VISIBLE);
@@ -63,7 +81,7 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
     public void changeToRefreshing() {
         stopChangeToReleaseRefreshAd();
 
-        mReleaseRefreshingView.setImageResource(R.anim.bga_refresh_mt_refreshing);
+        mReleaseRefreshingView.setImageResource(mRefreshingAnimResId);
         mRefreshingAd = (AnimationDrawable) mReleaseRefreshingView.getDrawable();
 
         mReleaseRefreshingView.setVisibility(VISIBLE);

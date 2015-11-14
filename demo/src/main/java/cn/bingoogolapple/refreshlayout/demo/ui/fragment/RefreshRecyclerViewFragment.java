@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -97,8 +96,8 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         mRefreshLayout.setCustomHeaderView(headerView, true);
 
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
-        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
-        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
+        stickinessRefreshViewHolder.setStickinessColor(R.color.custom_stickiness);
+        stickinessRefreshViewHolder.setRotateImage(R.mipmap.custom_stickiness_roate);
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
 
         mDataRv.addItemDecoration(new Divider(mApp));

@@ -45,7 +45,10 @@ public class WebViewActivity extends BaseActivity implements BGARefreshLayout.BG
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, false));
+        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, false);
+        moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
+        moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
+        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
 
         mContentWv.getSettings().setJavaScriptEnabled(true);
         mContentWv.loadUrl("https://github.com/bingoogolapple");

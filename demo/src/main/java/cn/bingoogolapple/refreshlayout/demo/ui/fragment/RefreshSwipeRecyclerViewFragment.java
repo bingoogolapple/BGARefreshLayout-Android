@@ -67,7 +67,11 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+
+        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
+        moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
+        moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
+        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
 
         mDataRv.addItemDecoration(new Divider(mApp));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mApp);

@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,8 +17,9 @@
 package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
@@ -29,14 +30,8 @@ import android.view.View;
  */
 public class BGAMoocStyleRefreshViewHolder extends BGARefreshViewHolder {
     private BGAMoocStyleRefreshView mMoocRefreshView;
-    /**
-     * 原始的图片
-     */
-    private Bitmap mOriginalBitmap;
-    /**
-     * 最终生成图片的填充颜色
-     */
-    private int mUltimateColor = -1;
+    private int mUltimateColorResId = -1;
+    private int mOriginalImageResId = -1;
 
     public BGAMoocStyleRefreshViewHolder(Context context, boolean isLoadingMoreEnabled) {
         super(context, isLoadingMoreEnabled);
@@ -53,33 +48,38 @@ public class BGAMoocStyleRefreshViewHolder extends BGARefreshViewHolder {
             if (mRefreshViewBackgroundDrawableRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundDrawableRes);
             }
+
             mMoocRefreshView = (BGAMoocStyleRefreshView) mRefreshHeaderView.findViewById(R.id.moocView);
-            if (mOriginalBitmap != null) {
-                mMoocRefreshView.setOriginalBitmap(mOriginalBitmap);
+            if (mOriginalImageResId != -1) {
+                mMoocRefreshView.setOriginalImage(mOriginalImageResId);
+            } else {
+                throw new RuntimeException("请调用" + BGAMoocStyleRefreshViewHolder.class.getSimpleName() + "的setOriginalImage方法设置原始图片资源");
             }
-            if (mUltimateColor != -1) {
-                mMoocRefreshView.setUltimateColor(mUltimateColor);
+            if (mUltimateColorResId != -1) {
+                mMoocRefreshView.setUltimateColor(mUltimateColorResId);
+            } else {
+                throw new RuntimeException("请调用" + BGAMoocStyleRefreshViewHolder.class.getSimpleName() + "的setUltimateColor方法设置最终生成图片的填充颜色资源");
             }
         }
         return mRefreshHeaderView;
     }
 
     /**
-     * 设置原始的图片
+     * 设置原始的图片资源
      *
-     * @param originalBitmap
+     * @param resId
      */
-    public void setOriginalBitmap(Bitmap originalBitmap) {
-        mOriginalBitmap = originalBitmap;
+    public void setOriginalImage(@DrawableRes int resId) {
+        mOriginalImageResId = resId;
     }
 
     /**
-     * 设置最终生成图片的填充颜色
+     * 设置最终生成图片的填充颜色资源
      *
-     * @param ultimateColor
+     * @param resId
      */
-    public void setUltimateColor(int ultimateColor) {
-        mUltimateColor = ultimateColor;
+    public void setUltimateColor(@ColorRes int resId) {
+        mUltimateColorResId = resId;
     }
 
     @Override

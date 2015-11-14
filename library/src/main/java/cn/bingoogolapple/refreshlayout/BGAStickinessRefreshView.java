@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -69,8 +71,6 @@ public class BGAStickinessRefreshView extends View {
     private int mEdge = 0;
     private int mTopSize = 0;
 
-    private int mStickinessColor = 0xFF999999;
-
     public BGAStickinessRefreshView(Context context) {
         this(context, null);
     }
@@ -83,7 +83,6 @@ public class BGAStickinessRefreshView extends View {
         super(context, attrs, defStyle);
         initBounds();
         initPaint();
-        initRotateDrawable();
         initSize();
     }
 
@@ -96,25 +95,7 @@ public class BGAStickinessRefreshView extends View {
 
     private void initPaint() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(mStickinessColor);
         mPath = new Path();
-    }
-
-    public void setStickinessColor(int stickinessColor) {
-        mStickinessColor = stickinessColor;
-        if (mPaint == null) {
-            initPaint();
-        } else {
-            mPaint.setColor(mStickinessColor);
-        }
-    }
-
-    private void initRotateDrawable() {
-        mRotateDrawable = getContext().getResources().getDrawable(R.mipmap.bga_refresh_stickiness);
-    }
-
-    public void setRotateDrawable(Drawable rotateDrawable) {
-        mRotateDrawable = rotateDrawable;
     }
 
     private void initSize() {
@@ -123,6 +104,14 @@ public class BGAStickinessRefreshView extends View {
         mTopSize = mRotateDrawableSize + 2 * mEdge;
 
         mMaxBottomHeight = (int) (2.4f * mRotateDrawableSize);
+    }
+
+    public void setStickinessColor(@ColorRes int resId) {
+        mPaint.setColor(getResources().getColor(resId));
+    }
+
+    public void setRotateImage(@DrawableRes int resId) {
+        mRotateDrawable = getResources().getDrawable(resId);
     }
 
     @Override
@@ -155,7 +144,10 @@ public class BGAStickinessRefreshView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        if (mRotateDrawable == null) {
+            return;
+        }
+
         mPath.reset();
 
         mTopBound.round(mRotateDrawableBound);

@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,8 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.view.View;
 
 /**
@@ -29,8 +30,8 @@ import android.view.View;
 public class BGAStickinessRefreshViewHolder extends BGARefreshViewHolder {
     private BGAStickinessRefreshView mStickinessRefreshView;
 
-    private Drawable mRotateDrawable;
-    private int mStickinessColor = -1;
+    private int mRotateImageResId = -1;
+    private int mStickinessColorResId = -1;
 
     public BGAStickinessRefreshViewHolder(Context context, boolean isLoadingMoreEnabled) {
         super(context, isLoadingMoreEnabled);
@@ -47,24 +48,39 @@ public class BGAStickinessRefreshViewHolder extends BGARefreshViewHolder {
             if (mRefreshViewBackgroundDrawableRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundDrawableRes);
             }
+
             mStickinessRefreshView = (BGAStickinessRefreshView) mRefreshHeaderView.findViewById(R.id.stickinessRefreshView);
             mStickinessRefreshView.setStickinessRefreshViewHolder(this);
-            if (mRotateDrawable != null) {
-                mStickinessRefreshView.setRotateDrawable(mRotateDrawable);
+            if (mRotateImageResId != -1) {
+                mStickinessRefreshView.setRotateImage(mRotateImageResId);
+            } else {
+                throw new RuntimeException("请调用" + BGAStickinessRefreshViewHolder.class.getSimpleName() + "的setRotateImage方法设置旋转图片资源");
             }
-            if (mStickinessColor != -1) {
-                mStickinessRefreshView.setStickinessColor(mStickinessColor);
+            if (mStickinessColorResId != -1) {
+                mStickinessRefreshView.setStickinessColor(mStickinessColorResId);
+            } else {
+                throw new RuntimeException("请调用" + BGAStickinessRefreshViewHolder.class.getSimpleName() + "的setStickinessColor方法设置黏性颜色资源");
             }
         }
         return mRefreshHeaderView;
     }
 
-    public void setRotateDrawable(Drawable rotateDrawable) {
-        mRotateDrawable = rotateDrawable;
+    /**
+     * 设置旋转图片资源
+     *
+     * @param resId
+     */
+    public void setRotateImage(@DrawableRes int resId) {
+        mRotateImageResId = resId;
     }
 
-    public void setStickinessColor(int stickinessColor) {
-        mStickinessColor = stickinessColor;
+    /**
+     * 设置黏性颜色资源
+     *
+     * @param resId
+     */
+    public void setStickinessColor(@ColorRes int resId) {
+        mStickinessColorResId = resId;
     }
 
     @Override

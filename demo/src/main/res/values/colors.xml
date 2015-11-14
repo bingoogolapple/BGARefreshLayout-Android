@@ -6,6 +6,10 @@
 
 
     <color name="custom_imoocstyle">#eb4f38</color>
+    <color name="imoocstyle">#CA0612</color>
+
+    <color name="custom_stickiness">#11cd6e</color>
+    <color name="custom_stickiness2">#999999</color>
 
     <color name="test_spacing1">#9674FC</color>
     <color name="test_spacing2">#179641</color>

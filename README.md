@@ -1,23 +1,24 @@
 :running:BGARefreshLayout-Android:running:
 ============
 
-[![Join the chat at https://gitter.im/bingoogolapple/BGARefreshLayout-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGARefreshLayout-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion)
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
 
 开发者使用BGARefreshLayout-Android可以对各种控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
-### 目前已经实现了三种下拉刷新效果:
+### 目前已经实现了四种下拉刷新效果:
 
-* 新浪微博下拉刷新风格（可设置背景、各种状态是的文本）
-* 慕课网下拉刷新风格（使用时可设置其中的logo和颜色成自己公司的风格）
-* 类似qq好友列表黏性下拉刷新风格（三阶贝塞尔曲线没怎么调好，刚开始下拉时效果不太好）
+* 新浪微博下拉刷新风格（可设置各种状态是的文本，可设置整个刷新头部的背景）
+* 慕课网下拉刷新风格（可设置其中的logo和颜色成自己公司的风格，可设置整个刷新头部的背景）
+* 美团下拉刷新风格（可设置其中的图片和动画成自己公司的风格，可设置整个刷新头部的背景）
+* 类似qq好友列表黏性下拉刷新风格（三阶贝塞尔曲线没怎么调好，刚开始下拉时效果不太好，可设置整个刷新头部的背景）
 
 ### 一种上拉加载更多效果
 
 * 新浪微博上拉加载更多（可设置背景、状态文本）
 
-***开发者也可以继承BGARefreshViewHolder这个抽象类，实现相应地抽象方法做出格式各样的下拉刷新效果【例如实现handleScale(float scale, int moveYDistance)方法，根据scale实现各种下拉刷新动画】和上拉加载更多特效，可参考BGAMoocStyleRefreshViewHolder、BGANormalRefreshViewHolder、BGAStickinessRefreshViewHolder的实现方式。***
+***开发者也可以继承BGARefreshViewHolder这个抽象类，实现相应地抽象方法做出格式各样的下拉刷新效果【例如实现handleScale(float scale, int moveYDistance)方法，根据scale实现各种下拉刷新动画】和上拉加载更多特效，可参考BGAMoocStyleRefreshViewHolder、BGANormalRefreshViewHolder、BGAStickinessRefreshViewHolder、BGAMeiTuanRefreshViewHolder的实现方式。***
 
 ### 目前存在的问题
 
@@ -27,6 +28,7 @@
 
 ### 效果图
 ![Image of StickyViewPager示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/viewpager_sticky_nav.gif)
+![Image of 美团下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/meituan.gif)
 ![Image of StickyNavRecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/recyclerview_sticky_nav.gif)
 ![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout1.gif)
 ![Image of 瀑布流示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout6.gif)

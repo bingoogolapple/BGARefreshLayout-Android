@@ -15,8 +15,8 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.NormalRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
@@ -95,12 +95,10 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         }, 2000);
         mRefreshLayout.setCustomHeaderView(headerView, true);
 
-//        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
-//        stickinessRefreshViewHolder.setStickinessColor(Color.parseColor("#11cd6e"));
-//        stickinessRefreshViewHolder.setRotateDrawable(getResources().getDrawable(R.mipmap.custom_stickiness_roate));
-//        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
-
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
+        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.custom_stickiness);
+        stickinessRefreshViewHolder.setRotateImage(R.mipmap.custom_stickiness_roate);
+        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
 
         mDataRv.addItemDecoration(new Divider(mApp));
 

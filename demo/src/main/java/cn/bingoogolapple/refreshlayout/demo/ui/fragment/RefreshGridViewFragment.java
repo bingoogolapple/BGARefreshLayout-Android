@@ -73,9 +73,10 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-//        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
-        mRefreshLayout.setRefreshViewHolder(new BGAMoocStyleRefreshViewHolder(mApp, true));
-//        mRefreshLayout.setRefreshViewHolder(new BGAStickinessRefreshViewHolder(this, true));
+        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
+        moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
+        moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
+        mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
 
         mDataGv.setAdapter(mAdapter);
     }

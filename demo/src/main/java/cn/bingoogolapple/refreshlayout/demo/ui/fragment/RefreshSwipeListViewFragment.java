@@ -11,7 +11,7 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGAMeiTuanRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeAdapterViewAdapter;
@@ -69,7 +69,12 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
+        BGAMeiTuanRefreshViewHolder meiTuanRefreshViewHolder = new BGAMeiTuanRefreshViewHolder(mApp, true);
+        meiTuanRefreshViewHolder.setPullDownImageResource(R.mipmap.bga_refresh_mt_pull_down);
+        meiTuanRefreshViewHolder.setChangeToReleaseRefreshAnimResId(R.anim.bga_refresh_mt_change_to_release_refresh);
+        meiTuanRefreshViewHolder.setRefreshingAnimResId(R.anim.bga_refresh_mt_refreshing);
+
+        mRefreshLayout.setRefreshViewHolder(meiTuanRefreshViewHolder);
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
 
         mDataLv.setAdapter(mAdapter);

@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,16 +18,17 @@ package cn.bingoogolapple.refreshlayout;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -94,40 +95,10 @@ public class BGAMoocStyleRefreshView extends View {
      * 是否正在刷新
      */
     private boolean mIsRefreshing = false;
-    /**
-     * 最终生成图片的填充颜色
-     */
-    private int mUltimateColor;
-
-
-    public BGAMoocStyleRefreshView(Context context) {
-        this(context, null);
-    }
 
     public BGAMoocStyleRefreshView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BGAMoocStyleRefreshView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        initAttrs(context, attrs);
-
+        super(context, attrs);
         initPaint();
-        initCanvas();
-    }
-
-    private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGAMoocStyleRefreshView);
-
-        BitmapDrawable originalBitmap = (BitmapDrawable) typedArray.getDrawable(R.styleable.BGAMoocStyleRefreshView_mv_originalImg);
-        if (originalBitmap == null) {
-            throw new RuntimeException(BGAMoocStyleRefreshView.class.getSimpleName() + "必须设置原始图片");
-        }
-        mOriginalBitmap = originalBitmap.getBitmap();
-
-        mUltimateColor = typedArray.getColor(R.styleable.BGAMoocStyleRefreshView_mv_ultimateColor, Color.rgb(27, 128, 255));
-
-        typedArray.recycle();
     }
 
     private void initPaint() {
@@ -135,15 +106,6 @@ public class BGAMoocStyleRefreshView extends View {
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(mUltimateColor);
-    }
-
-    public void setUltimateColor(int ultimateColor) {
-        mUltimateColor = ultimateColor;
-        if (mPaint == null) {
-            initPaint();
-        }
-        mPaint.setColor(mUltimateColor);
     }
 
     private void initCanvas() {
@@ -164,13 +126,31 @@ public class BGAMoocStyleRefreshView extends View {
         mCanvas.setBitmap(mUltimateBitmap);
     }
 
-    public void setOriginalBitmap(Bitmap originalBitmap) {
-        mOriginalBitmap = originalBitmap;
+    /**
+     * 设置最终生成图片的填充颜色资源
+     *
+     * @param resId
+     */
+    public void setUltimateColor(@ColorRes int resId) {
+        mPaint.setColor(getResources().getColor(resId));
+    }
+
+    /**
+     * 设置原始图片资源
+     *
+     * @param resId
+     */
+    public void setOriginalImage(@DrawableRes int resId) {
+        mOriginalBitmap = BitmapFactory.decodeResource(getResources(), resId);
         initCanvas();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (mUltimateBitmap == null) {
+            return;
+        }
+
         drawUltimateBitmap();
         // 将目标图绘制在当前画布上，起点为左边距，上边距的交点
         canvas.drawBitmap(mUltimateBitmap, getPaddingLeft(), getPaddingTop(), null);

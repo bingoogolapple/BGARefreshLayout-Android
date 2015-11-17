@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.bingoogolapple.refreshlayout.BGARefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_recyclerview_refresh"
     style="@style/MatchMatch">
 
@@ -9,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:overScrollMode="never"
         android:padding="5dp"
         android:scrollbars="none" />
 </cn.bingoogolapple.refreshlayout.BGARefreshLayout>

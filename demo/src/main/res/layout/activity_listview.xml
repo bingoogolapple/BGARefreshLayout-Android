@@ -65,6 +65,7 @@
             android:layout_marginTop="@dimen/test_padding_margin"
             android:background="@android:color/white"
             android:divider="@mipmap/list_divider"
+            android:overScrollMode="never"
             android:paddingBottom="@dimen/test_padding_margin"
             android:paddingTop="@dimen/test_padding_margin"
             android:scrollbars="none"

@@ -5,6 +5,7 @@
 
     <ScrollView
         style="@style/MatchAuto"
+        android:overScrollMode="never"
         android:padding="5dp"
         android:scrollbars="none">
 

@@ -13,14 +13,14 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
 
     // 以下三个库是必须依赖的
-    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.0.9@aar'
-//    compile project(':library')
+//    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.0@aar'
+    compile project(':library')
 
 
     // 以下几个库是演示案例所使用到的

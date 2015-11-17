@@ -134,6 +134,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
             showToast("没有更多数据了");
             return false;
         }
+        showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {

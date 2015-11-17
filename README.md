@@ -7,6 +7,8 @@
 
 开发者使用BGARefreshLayout-Android可以对各种控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
+[测试BGARefreshLayout与Activity、Fragment、ViewPager的各种嵌套的Demo](https://github.com/bingoogolapple/BGARefreshLayoutDemo)
+
 ### 目前已经实现了四种下拉刷新效果:
 
 * 新浪微博下拉刷新风格（可设置各种状态是的文本，可设置整个刷新头部的背景）

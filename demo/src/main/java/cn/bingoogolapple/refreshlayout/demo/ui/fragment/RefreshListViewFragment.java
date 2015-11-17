@@ -47,7 +47,7 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
         // 设置正在加载更多时不显示加载更多控件
-        mRefreshLayout.setIsShowLoadingMoreView(false);
+//        mRefreshLayout.setIsShowLoadingMoreView(false);
 
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
@@ -134,6 +134,7 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
             showToast("没有更多数据了");
             return false;
         }
+        showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
@@ -142,6 +143,7 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
                     @Override
                     public void run() {
                         mRefreshLayout.endLoadingMore();
+                        dismissLoadingDialog();
                         mAdapter.addMoreDatas(response.body());
                     }
                 }, MainActivity.LOADING_DURATION);

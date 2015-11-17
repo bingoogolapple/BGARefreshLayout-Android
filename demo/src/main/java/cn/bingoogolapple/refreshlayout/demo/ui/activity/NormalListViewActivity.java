@@ -136,6 +136,7 @@ public class NormalListViewActivity extends BaseActivity implements AdapterView.
             showToast("没有更多数据了");
             return false;
         }
+
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {

@@ -490,4 +490,19 @@ public class BGAStickyNavLayout extends LinearLayout {
 
         return false;
     }
+
+    public void scrollToBottom() {
+        ScrollingUtil.scrollToBottom(mDirectScrollView);
+        ScrollingUtil.scrollToBottom(mDirectRecyclerView);
+        ScrollingUtil.scrollToBottom(mDirectAbsListView);
+
+        if (mDirectViewPager != null) {
+            if (mNestedContentView == null) {
+                regetNestedContentView();
+            }
+            ScrollingUtil.scrollToBottom(mNestedScrollView);
+            ScrollingUtil.scrollToBottom(mNestedRecyclerView);
+            ScrollingUtil.scrollToBottom(mNestedAbsListView);
+        }
+    }
 }

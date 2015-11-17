@@ -26,6 +26,7 @@
             android:id="@+id/lv_gridview_data"
             style="@style/MatchAuto"
             android:numColumns="2"
+            android:overScrollMode="never"
             android:scrollbars="none" />
     </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 </LinearLayout>

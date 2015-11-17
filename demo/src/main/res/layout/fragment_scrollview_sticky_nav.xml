@@ -1,10 +1,10 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch"
     android:layout_marginBottom="@dimen/test_padding_margin"
     android:layout_marginTop="@dimen/test_padding_margin"
     android:background="@color/test_spacing3"
+    android:overScrollMode="never"
     android:paddingBottom="@dimen/test_padding_margin"
     android:paddingTop="@dimen/test_padding_margin"
     android:scrollbars="none">

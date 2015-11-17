@@ -93,4 +93,37 @@ public class ScrollingUtil {
         }
         return false;
     }
+
+    public static void scrollToBottom(final ScrollView scrollView) {
+        if (scrollView != null) {
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
+        }
+    }
+
+    public static void scrollToBottom(final AbsListView absListView) {
+        if (absListView != null) {
+            if (absListView.getAdapter() != null && absListView.getAdapter().getCount() > 0) {
+                absListView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        absListView.setSelection(absListView.getAdapter().getCount() - 1);
+                    }
+                });
+            }
+        }
+    }
+
+    public static void scrollToBottom(RecyclerView recyclerView) {
+        if (recyclerView != null) {
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
+                layoutManager.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+            }
+        }
+    }
 }

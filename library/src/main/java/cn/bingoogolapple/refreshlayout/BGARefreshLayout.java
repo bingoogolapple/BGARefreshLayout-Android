@@ -315,7 +315,7 @@ public class BGARefreshLayout extends LinearLayout {
     }
 
     public boolean shouldHandleAbsListViewLoadingMore(AbsListView absListView) {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || absListView == null ||  absListView.getAdapter() == null || absListView.getAdapter().getCount() == 0) {
+        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || absListView == null || absListView.getAdapter() == null || absListView.getAdapter().getCount() == 0) {
             return false;
         }
 
@@ -790,24 +790,11 @@ public class BGARefreshLayout extends LinearLayout {
         mRefreshViewHolder.changeToLoadingMore();
         mLoadMoreFooterView.setVisibility(VISIBLE);
 
-        if (mScrollView != null) {
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                }
-            });
-        }
-        if (mRecyclerView != null) {
-            RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
-            if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 0) {
-                layoutManager.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
-            }
-        }
-        if (mAbsListView != null) {
-            if (mAbsListView.getAdapter() != null && mAbsListView.getAdapter().getCount() > 0) {
-                mAbsListView.scrollBy(0, mLoadMoreFooterViewHeight);
-            }
+        ScrollingUtil.scrollToBottom(mScrollView);
+        ScrollingUtil.scrollToBottom(mRecyclerView);
+        ScrollingUtil.scrollToBottom(mAbsListView);
+        if (mStickyNavLayout != null) {
+            mStickyNavLayout.scrollToBottom();
         }
     }
 
@@ -831,12 +818,6 @@ public class BGARefreshLayout extends LinearLayout {
             mIsLoadingMore = false;
             mRefreshViewHolder.onEndLoadingMore();
             mLoadMoreFooterView.setVisibility(GONE);
-
-            if (mAbsListView != null) {
-                if (mAbsListView.getAdapter() != null && mAbsListView.getAdapter().getCount() > 0) {
-                    mAbsListView.scrollBy(0, -mLoadMoreFooterViewHeight);
-                }
-            }
         }
     };
 

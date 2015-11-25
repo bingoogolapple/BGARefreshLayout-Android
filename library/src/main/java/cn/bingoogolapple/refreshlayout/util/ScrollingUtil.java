@@ -60,14 +60,14 @@ public class ScrollingUtil {
 
             if (manager instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0 && firstChildTop == 0) {
+                if (layoutManager.findFirstCompletelyVisibleItemPosition() < 1 && firstChildTop == 0) {
                     return true;
                 }
             } else if (manager instanceof StaggeredGridLayoutManager) {
                 StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
 
                 int[] out = layoutManager.findFirstCompletelyVisibleItemPositions(null);
-                if (out[0] == 0) {
+                if (out[0] < 1) {
                     return true;
                 }
             }

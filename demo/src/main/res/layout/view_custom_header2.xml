@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchWrap.Vertical"
-    android:background="#f00">
+    android:background="@color/test_spacing1">
 
     <TextView
         android:id="@+id/tv_custom_header2_title"
@@ -13,16 +13,16 @@
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_custom_header2_test"
-        style="@style/MatchWrap"
+        style="@style/TestBtn"
         android:text="测试点击" />
 
     <TextView
         android:id="@+id/tv_custom_header2_desc"
         style="@style/MatchWrap"
         android:layout_marginBottom="10dp"
-        android:background="#00f"
+        android:background="@color/test_spacing2"
         android:minLines="1"
         android:text="测试描述文本"
         android:textColor="@android:color/white"

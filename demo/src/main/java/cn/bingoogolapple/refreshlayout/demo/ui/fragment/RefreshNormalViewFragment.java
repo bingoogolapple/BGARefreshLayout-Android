@@ -44,7 +44,7 @@ public class RefreshNormalViewFragment extends BaseFragment implements BGARefres
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
-        stickinessRefreshViewHolder.setStickinessColor(R.color.custom_stickiness2);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
         stickinessRefreshViewHolder.setRotateImage(R.mipmap.bga_refresh_stickiness);
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
 

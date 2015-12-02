@@ -20,9 +20,7 @@
 
         <TextView
             android:id="@+id/tv_scrollview_clickablelabel"
-            style="@style/TestTv"
-            android:background="#f00"
-            android:clickable="true"
+            style="@style/TestBtn"
             android:text="可点击的文本" />
 
         <TextView style="@style/TestTv" />

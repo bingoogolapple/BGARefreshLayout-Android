@@ -2,12 +2,14 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#1380dc" />
+            <solid android:color="@color/colorPrimaryDarkTrans" />
+            <corners android:radius="@dimen/small" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#0c97ff" />
+            <solid android:color="@color/colorPrimaryDark" />
+            <corners android:radius="@dimen/small" />
         </shape>
     </item>
 

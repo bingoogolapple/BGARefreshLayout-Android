@@ -16,7 +16,7 @@
 
         <LinearLayout
             style="@style/MatchWrap.Horizontal"
-            android:background="@color/test_spacing4"
+            android:background="@color/colorPrimary"
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 

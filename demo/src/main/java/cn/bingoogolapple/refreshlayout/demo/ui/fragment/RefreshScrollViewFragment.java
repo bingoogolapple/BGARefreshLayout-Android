@@ -44,8 +44,8 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
-        stickinessRefreshViewHolder.setStickinessColor(R.color.custom_stickiness);
-        stickinessRefreshViewHolder.setRotateImage(R.mipmap.custom_stickiness_roate);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
+        stickinessRefreshViewHolder.setRotateImage(R.mipmap.bga_refresh_stickiness);
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
 
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);

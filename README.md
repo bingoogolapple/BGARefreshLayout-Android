@@ -1,9 +1,9 @@
 :running:BGARefreshLayout-Android:running:
 ============
 
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion)
->关于我<br/>
->微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGARefreshLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1909)
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-refreshlayout/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-refreshlayout)
 
 开发者使用BGARefreshLayout-Android可以对各种控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
@@ -207,6 +207,12 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 * [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner-Android)
 * [对AdapterView和RecyclerView通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
 * [类似新浪微博消息列表，带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
+
+### 关于我
+
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
+| ------------ | ------------- | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## License
 

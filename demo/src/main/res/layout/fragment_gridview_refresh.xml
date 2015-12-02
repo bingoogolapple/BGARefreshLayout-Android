@@ -2,21 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch.Vertical">
 
-    <Button
+    <TextView
         android:id="@+id/beginRefreshing"
-        style="@style/MatchWrap"
-        android:layout_margin="@dimen/small"
-        android:background="@color/colorPrimary"
-        android:text="BeginRefreshing"
-        android:textColor="@android:color/white" />
+        style="@style/TestBtn"
+        android:text="BeginRefreshing" />
 
-    <Button
+    <TextView
         android:id="@+id/beginLoadingMore"
-        style="@style/MatchWrap"
-        android:layout_margin="@dimen/small"
-        android:background="@color/colorPrimary"
-        android:text="BeginLoadingMore"
-        android:textColor="@android:color/white" />
+        style="@style/TestBtn"
+        android:text="BeginLoadingMore" />
 
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rl_gridview_refresh"

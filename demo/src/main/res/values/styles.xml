@@ -21,4 +21,14 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="TestBtn" parent="MatchWrap">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/textSize_14</item>
+        <item name="android:padding">@dimen/middle</item>
+        <item name="android:layout_margin">@dimen/small</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

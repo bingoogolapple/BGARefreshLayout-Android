@@ -96,8 +96,8 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         mRefreshLayout.setCustomHeaderView(headerView, true);
 
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
-        stickinessRefreshViewHolder.setStickinessColor(R.color.custom_stickiness);
-        stickinessRefreshViewHolder.setRotateImage(R.mipmap.custom_stickiness_roate);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
+        stickinessRefreshViewHolder.setRotateImage(R.mipmap.bga_refresh_stickiness);
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
 
         mDataRv.addItemDecoration(new Divider(mApp));

@@ -15,8 +15,5 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
 }
 
-apply from: 'android-artifacts.gradle'
-// 上传到Maven中央仓库  gradle -q uploadArchives
-apply from: 'central-publish.gradle'
-// 上传到jCenter       gradle bintrayUpload
-apply from: 'bintray-publish.gradle'
+// gradle uploadArchives
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'

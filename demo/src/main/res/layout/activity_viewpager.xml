@@ -23,17 +23,17 @@
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/test_padding_margin"
             android:layout_marginTop="@dimen/test_padding_margin"
-            android:background="@color/test_spacing4"
+            android:background="@color/colorPrimary"
             android:paddingBottom="@dimen/test_padding_margin"
             android:paddingTop="@dimen/test_padding_margin"
-            app:indicator_dividerColor="@color/srl_blue_bright"
+            app:indicator_dividerColor="@color/colorPrimaryDarkTrans"
             app:indicator_dividerVerticalMargin="5dp"
             app:indicator_dividerWidth="2dp"
             app:indicator_hasDivider="true"
             app:indicator_textColor="@color/selector_tab"
             app:indicator_textSizeNormal="12sp"
             app:indicator_textSizeSelected="14sp"
-            app:indicator_triangleColor="@color/srl_red_light"
+            app:indicator_triangleColor="@color/srl_green_light"
             app:indicator_triangleHeight="2dp"
             app:indicator_triangleHorizontalMargin="5dp" />
 
@@ -42,7 +42,7 @@
             style="@style/MatchMatch"
             android:layout_marginBottom="@dimen/test_padding_margin"
             android:layout_marginTop="@dimen/test_padding_margin"
-            android:background="@color/test_spacing3"
+            android:background="@color/test_spacing1"
             android:paddingBottom="@dimen/test_padding_margin"
             android:paddingTop="@dimen/test_padding_margin" />
 

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import cn.bingoogolapple.refreshlayout.demo.App;
+import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -75,6 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void showLoadingDialog() {
         if (mLoadingDialog == null) {
             mLoadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            mLoadingDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
             mLoadingDialog.setCancelable(false);
             mLoadingDialog.setTitleText("数据加载中...");
         }

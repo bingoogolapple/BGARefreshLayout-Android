@@ -29,7 +29,7 @@
             style="@style/MatchWrap.Horizontal"
             android:layout_marginBottom="@dimen/test_padding_margin"
             android:layout_marginTop="@dimen/test_padding_margin"
-            android:background="@color/test_spacing4"
+            android:background="@color/colorPrimary"
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 
@@ -79,9 +79,7 @@
 
                 <TextView
                     android:id="@+id/tv_scrollview_clickablelabel"
-                    style="@style/TestTv"
-                    android:background="#f00"
-                    android:clickable="true"
+                    style="@style/TestBtn"
                     android:text="可点击的文本" />
 
                 <TextView style="@style/TestTv" />

@@ -1,9 +1,9 @@
 :running:BGARefreshLayout-Android:running:
 ============
 
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion)
->关于我<br/>
->微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGARefreshLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1909)
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-refreshlayout/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-refreshlayout)
 
 开发者使用BGARefreshLayout-Android可以对各种控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
@@ -26,21 +26,13 @@
 
 * 当配置自定义头部广告位可滚动时，内容区域和广告位还不能平滑过度。
 
-> 为了减少大家的clone项目的时间，我将测试用的Json数据和图片放到七牛云存储的，如果大家也想将自己开源库的测试数据放到七牛云存储，[可以点击这个链接注册七牛云存储](https://portal.qiniu.com/signup?code=3ldz2di58f1oy)，注册是免费的，并且会免费送一定的存储空间和下载流量，这样我在七牛云存储上的GitHub测试数据空间也可以每个月多5G的下载流量，谢谢大家支持。
-
 ### 效果图
-![Image of StickyViewPager示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/viewpager_sticky_nav.gif)
-![Image of 美团下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/meituan.gif)
-![Image of StickyNavRecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/recyclerview_sticky_nav.gif)
-![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout1.gif)
-![Image of 瀑布流示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout6.gif)
-![Image of 普通ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout2.gif)
-![Image of 普通RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout3.gif)
-![Image of 滑动ListView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout4.gif)
-![Image of 滑动RecyclerView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout5.gif)
-![Image of WebView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refresh_webview.gif)
-![Image of ScrollView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout7.gif)
-![Image of NormalView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/refreshlayout8.gif)
+![Image of StickyViewPager示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout1.gif)
+![Image of 慕课网下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout2.gif)
+![Image of 美团下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout3.gif)
+![Image of 黏性下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout4.gif)
+![Image of 瀑布流示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout5.gif)
+![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout6.gif)
 
 ### 基本使用
 
@@ -48,7 +40,7 @@
 
 > 没有支持eclipse，建议还在用eclipse的小伙伴都开始转android studio吧
 
-**在build.gradle添加以下依赖（请使用最新版RecyclerView。新版RecyclerView的addOnScrollListener比旧版的setOnScrollListener的扩展性更强。可以让开发者更具项目需求再次添加自定义滚动监听器。这一点比ListView的设计好很多，在处理ListView时还得用反射获取开发者设置的自定义滚动监听器。）**
+**latestVersion是指对应库的最新版本号,别再问我为什么找不到xxxxxxxlatestVersion了!**
 
 ```groovy
 dependencies {
@@ -207,6 +199,12 @@ public class ModuleNameActivity extends AppCompatActivity implements BGARefreshL
 * [Splash界面滑动导航+自动轮播效果](https://github.com/bingoogolapple/BGABanner-Android)
 * [对AdapterView和RecyclerView通用的Adapter和ViewHolder](https://github.com/bingoogolapple/BGAAdapter-Android)
 * [类似新浪微博消息列表，带弹簧效果的左右滑动控件](https://github.com/bingoogolapple/BGASwipeItemLayout-Android)
+
+### 关于我
+
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
+| ------------ | ------------- | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## License
 

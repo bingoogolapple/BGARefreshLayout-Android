@@ -185,10 +185,8 @@ public class BGAStickyNavLayout extends LinearLayout {
         int navViewTopOnScreenY = location[1] - params.topMargin;
 
         if (navViewTopOnScreenY == contentOnScreenTopY) {
-//            debug("头部视图完全隐藏  navViewTopOnScreenY = " + navViewTopOnScreenY + "   contentOnScreenTopY = " + contentOnScreenTopY);
             return true;
         } else {
-//            debug("头部视图没有完全隐藏  navViewTopOnScreenY = " + navViewTopOnScreenY + "   contentOnScreenTopY = " + contentOnScreenTopY);
             return false;
         }
     }
@@ -381,7 +379,7 @@ public class BGAStickyNavLayout extends LinearLayout {
                 mNestedAbsListView.setOnScrollListener(mLvOnScrollListener);
 
                 if (!isHeaderViewCompleteInvisible()) {
-                    mNestedAbsListView.smoothScrollToPosition(0);
+                    mNestedAbsListView.setSelection(0);
                 }
             } else if (mNestedContentView instanceof RecyclerView) {
                 mNestedRecyclerView = (RecyclerView) mNestedContentView;

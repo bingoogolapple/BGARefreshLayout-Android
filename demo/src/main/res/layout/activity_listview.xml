@@ -29,7 +29,7 @@
             style="@style/MatchWrap.Horizontal"
             android:layout_marginBottom="@dimen/test_padding_margin"
             android:layout_marginTop="@dimen/test_padding_margin"
-            android:background="@color/test_spacing4"
+            android:background="@color/colorPrimary"
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 

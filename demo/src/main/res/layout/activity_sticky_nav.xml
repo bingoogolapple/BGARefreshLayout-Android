@@ -1,83 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch.Vertical"
-    android:background="@color/test_spacing2"
     android:gravity="center">
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="normalRecyclerViewDemo"
-        android:padding="10dp"
-        android:text="NormalRecyclerViewDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="NormalRecyclerViewDemo" />
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="normalListViewDemo"
-        android:padding="10dp"
-        android:text="NormalListViewDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="NormalListViewDemo" />
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="swipeRecyclerViewDemo"
-        android:padding="10dp"
-        android:text="SwipeRecyclerViewDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="SwipeRecyclerViewDemo" />
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="swipeListViewDemo"
-        android:padding="10dp"
-        android:text="SwipeListViewDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="SwipeListViewDemo" />
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="scrollViewDemo"
-        android:padding="10dp"
-        android:text="ScrollViewDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="ScrollViewDemo" />
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="webViewDemo"
-        android:padding="10dp"
-        android:text="WebViewDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="WebViewDemo" />
 
     <TextView
-        style="@style/MatchWrap"
-        android:layout_marginBottom="10dp"
-        android:background="@color/test_spacing3"
-        android:gravity="center"
+        style="@style/TestBtn"
         android:onClick="viewPagerDemo"
-        android:padding="10dp"
-        android:text="ViewPagerDemo"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:text="ViewPagerDemo" />
 
 </LinearLayout>

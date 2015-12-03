@@ -49,6 +49,8 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
 
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
+
+        mRefreshLayout.setPullDownRefreshEnable(false);
     }
 
     @Override

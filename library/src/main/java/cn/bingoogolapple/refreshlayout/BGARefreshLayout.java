@@ -129,6 +129,11 @@ public class BGARefreshLayout extends LinearLayout {
      */
     private boolean mIsShowLoadingMoreView = true;
 
+    /**
+     * 下拉刷新是否可用
+     */
+    private boolean mPullDownRefreshEnable = true;
+
     private Handler mHandler;
 
     public BGARefreshLayout(Context context) {
@@ -413,7 +418,7 @@ public class BGARefreshLayout extends LinearLayout {
                     int interceptTouchMoveDistanceY = (int) (event.getRawY() - mInterceptTouchDownY);
                     // 可以没有上拉加载更多，但是必须有下拉刷新，否则就不拦截事件
                     if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null) {
-                        if ((interceptTouchMoveDistanceY > 0 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < 0 && shouldHandleLoadingMore()) || interceptTouchMoveDistanceY < 0 && !isWholeHeaderViewCompleteInvisible()) {
+                        if ((interceptTouchMoveDistanceY > 0 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < 0 && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < 0 && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > 0 && shouldInterceptToMoveCustomHeaderViewDown())) {
 
                             // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
                             event.setAction(MotionEvent.ACTION_CANCEL);
@@ -449,10 +454,14 @@ public class BGARefreshLayout extends LinearLayout {
      * @return
      */
     private boolean shouldHandleRefresh() {
-        if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mRefreshHeaderView == null || mDelegate == null) {
+        if (!mPullDownRefreshEnable || mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mRefreshHeaderView == null || mDelegate == null) {
             return false;
         }
 
+        return isContentViewToTop();
+    }
+
+    private boolean isContentViewToTop() {
         // 内容是普通控件，满足
         if (mNormalView != null) {
             return true;
@@ -479,6 +488,14 @@ public class BGARefreshLayout extends LinearLayout {
         }
 
         return false;
+    }
+
+    private boolean shouldInterceptToMoveCustomHeaderViewDown() {
+        return isContentViewToTop() && mCustomHeaderView != null && mIsCustomHeaderViewScrollable && !isCustomHeaderViewCompleteVisible();
+    }
+
+    private boolean shouldInterceptToMoveCustomHeaderViewUp() {
+        return isContentViewToTop() && mCustomHeaderView != null && mIsCustomHeaderViewScrollable && !isWholeHeaderViewCompleteInvisible();
     }
 
     @Override
@@ -638,7 +655,7 @@ public class BGARefreshLayout extends LinearLayout {
             }
 
             int wholeHeaderDiffY = (int) event.getY() - mWholeHeaderDownY;
-            if (!isWholeHeaderViewCompleteInvisible() || (wholeHeaderDiffY > 0 && shouldHandleRefresh() && !isCustomHeaderViewCompleteVisible())) {
+            if ((mPullDownRefreshEnable && !isWholeHeaderViewCompleteInvisible()) || (wholeHeaderDiffY > 0 && shouldInterceptToMoveCustomHeaderViewDown()) || (wholeHeaderDiffY < 0 && shouldInterceptToMoveCustomHeaderViewUp())) {
 
                 int paddingTop = mWholeHeaderViewDownPaddingTop + wholeHeaderDiffY;
                 if (paddingTop < mMinWholeHeaderViewPaddingTop - mCustomHeaderView.getMeasuredHeight()) {
@@ -830,6 +847,20 @@ public class BGARefreshLayout extends LinearLayout {
         mIsShowLoadingMoreView = isShowLoadingMoreView;
     }
 
+    /**
+     * 设置下拉刷新是否可用
+     *
+     * @param pullDownRefreshEnable
+     */
+    public void setPullDownRefreshEnable(boolean pullDownRefreshEnable) {
+        mPullDownRefreshEnable = pullDownRefreshEnable;
+    }
+
+    /**
+     * 设置下拉刷新上拉加载更多代理
+     *
+     * @param delegate
+     */
     public void setDelegate(BGARefreshLayoutDelegate delegate) {
         mDelegate = delegate;
     }

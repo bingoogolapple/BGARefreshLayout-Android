@@ -52,9 +52,8 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mDataRv.addItemDecoration(new Divider(mApp));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mApp);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mDataRv.setLayoutManager(linearLayoutManager);
+//        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
+        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
         mDataRv.setAdapter(mAdapter);
     }
 
@@ -137,7 +136,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         mMorePageNumber++;
-        if (mMorePageNumber > 5) {
+        if (mMorePageNumber > 4) {
             ((ViewPagerActivity) getActivity()).endLoadingMore();
             showToast("没有更多数据了");
             return false;

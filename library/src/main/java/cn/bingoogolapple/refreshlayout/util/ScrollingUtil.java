@@ -118,11 +118,15 @@ public class ScrollingUtil {
         }
     }
 
-    public static void scrollToBottom(RecyclerView recyclerView) {
+    public static void scrollToBottom(final RecyclerView recyclerView) {
         if (recyclerView != null) {
-            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
             if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
-                layoutManager.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                    }
+                });
             }
         }
     }

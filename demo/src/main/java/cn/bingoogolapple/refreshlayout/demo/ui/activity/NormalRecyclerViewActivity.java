@@ -68,9 +68,9 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         initBanner();
 
         mDataRv.addItemDecoration(new Divider(this));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mDataRv.setLayoutManager(linearLayoutManager);
+
+//        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
+        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
 
         mDataRv.setAdapter(mAdapter);
 
@@ -181,7 +181,7 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         mMorePageNumber++;
-        if (mMorePageNumber > 5) {
+        if (mMorePageNumber > 4) {
             mRefreshLayout.endLoadingMore();
             showToast("没有更多数据了");
             return false;

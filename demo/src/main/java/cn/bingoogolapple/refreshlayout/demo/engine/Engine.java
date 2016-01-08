@@ -5,9 +5,9 @@ import java.util.List;
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com

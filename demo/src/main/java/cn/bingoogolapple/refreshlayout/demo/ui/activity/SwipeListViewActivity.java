@@ -16,9 +16,8 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeAdapterViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SwipeListViewActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
@@ -70,7 +69,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
 
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -130,7 +129,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
                 mAdapter.addNewDatas(response.body());
             }
@@ -152,7 +151,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addMoreDatas(response.body());
             }

@@ -19,9 +19,8 @@ import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -86,7 +85,7 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -106,7 +105,7 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
                     public void run() {
@@ -133,7 +132,7 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
                     public void run() {

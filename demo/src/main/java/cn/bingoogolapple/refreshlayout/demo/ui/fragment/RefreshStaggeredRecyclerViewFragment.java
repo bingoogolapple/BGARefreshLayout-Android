@@ -18,9 +18,8 @@ import cn.bingoogolapple.refreshlayout.demo.engine.DataEngine;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -68,7 +67,7 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
         mMorePageNumber = 0;
         mEngine.loadDefaultStaggeredData().enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(Response<List<StaggeredModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<StaggeredModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -88,7 +87,7 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
         }
         mEngine.loadNewStaggeredData(mNewPageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(final Response<List<StaggeredModel>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<StaggeredModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
                     public void run() {
@@ -116,7 +115,7 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
         }
         mEngine.loadMoreStaggeredData(mMorePageNumber).enqueue(new Callback<List<StaggeredModel>>() {
             @Override
-            public void onResponse(final Response<List<StaggeredModel>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<StaggeredModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
                     public void run() {

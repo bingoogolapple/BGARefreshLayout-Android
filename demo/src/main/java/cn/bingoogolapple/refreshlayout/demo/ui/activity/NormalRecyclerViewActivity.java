@@ -25,9 +25,8 @@ import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
@@ -77,7 +76,7 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
 
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -95,7 +94,7 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         mBanner.setViews(views);
         mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
+            public void onResponse(Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
                 for (int i = 0; i < views.size(); i++) {
                     Glide.with(NormalRecyclerViewActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) views.get(i));
@@ -159,7 +158,7 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
                     public void run() {
@@ -191,7 +190,7 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
                     public void run() {

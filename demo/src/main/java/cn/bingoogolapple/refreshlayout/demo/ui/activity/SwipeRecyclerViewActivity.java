@@ -24,9 +24,8 @@ import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     private BGARefreshLayout mRefreshLayout;
@@ -83,7 +82,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
 
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
@@ -101,7 +100,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         mBanner.setViews(views);
         mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response, Retrofit retrofit) {
+            public void onResponse(Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
                 for (int i = 0; i < views.size(); i++) {
                     Glide.with(SwipeRecyclerViewActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) views.get(i));
@@ -163,7 +162,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
                 mAdapter.addNewDatas(response.body());
                 mDataRv.smoothScrollToPosition(0);
@@ -186,7 +185,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addMoreDatas(response.body());
             }

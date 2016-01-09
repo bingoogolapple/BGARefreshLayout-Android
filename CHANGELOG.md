@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.1.3 *(2015-01-10)*
+----------------------------
+
+- 解决GridLayoutManager加载更多时，最后一行只显示第一个item
+- 处理BGAStickyNavLayout中嵌套RecyclerView时findLastCompletelyVisibleItemPosition失效问题
+- 处理BGAStickyNavLayout中嵌套AbsListView时lastChild.getBottom() <= absListView.getMeasuredHeight()失效问题
+
 Version 1.1.2 *(2014-12-03)*
 ----------------------------
 

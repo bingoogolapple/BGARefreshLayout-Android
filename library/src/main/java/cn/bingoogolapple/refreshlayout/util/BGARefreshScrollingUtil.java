@@ -114,13 +114,23 @@ public class BGARefreshScrollingUtil {
     }
 
     public static boolean isAbsListViewToBottom(AbsListView absListView) {
-        if (absListView != null && absListView.getAdapter() != null) {
-            int lastChildBottom = 0;
-            if (absListView.getChildCount() > 0) {
-                // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
-                lastChildBottom = absListView.getChildAt(absListView.getChildCount() - 1).getBottom();
+        if (absListView != null && absListView.getAdapter() != null && absListView.getChildCount() > 0 && absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1) {
+            View lastChild = absListView.getChildAt(absListView.getChildCount() - 1);
+
+            BGAStickyNavLayout stickyNavLayout = getStickyNavLayout(absListView);
+            if (stickyNavLayout != null) {
+                // 处理BGAStickyNavLayout中lastChild.getBottom() <= absListView.getMeasuredHeight()失效问题
+
+                // 0表示x，1表示y
+                int[] location = new int[2];
+                lastChild.getLocationOnScreen(location);
+                int lastChildBottomOnScreen = location[1] + lastChild.getMeasuredHeight();
+                stickyNavLayout.getLocationOnScreen(location);
+                int stickyNavLayoutBottomOnScreen = location[1] + stickyNavLayout.getMeasuredHeight();
+                return lastChildBottomOnScreen + absListView.getPaddingBottom() <= stickyNavLayoutBottomOnScreen;
+            } else {
+                return lastChild.getBottom() <= absListView.getMeasuredHeight();
             }
-            return absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1 && lastChildBottom <= absListView.getMeasuredHeight();
         }
         return false;
     }

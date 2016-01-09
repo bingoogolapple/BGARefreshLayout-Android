@@ -16,7 +16,7 @@ import retrofit2.http.Path;
  */
 public interface Engine {
 
-    @GET("refreshlayout/api/defaultdata5.json")
+    @GET("refreshlayout/api/defaultdata6.json")
     Call<List<RefreshModel>> loadInitDatas();
 
     @GET("refreshlayout/api/newdata{pageNumber}.json")

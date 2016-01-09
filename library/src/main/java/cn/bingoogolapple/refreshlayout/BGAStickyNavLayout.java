@@ -1,3 +1,19 @@
+/**
+ * Copyright 2015 bingoogolapple
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
@@ -18,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
 
-import cn.bingoogolapple.refreshlayout.util.ScrollingUtil;
+import cn.bingoogolapple.refreshlayout.util.BGARefreshScrollingUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -306,19 +322,19 @@ public class BGAStickyNavLayout extends LinearLayout {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mDirectWebView)) {
+        if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mDirectWebView)) {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mDirectScrollView)) {
+        if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mDirectScrollView)) {
             return true;
         }
 
-        if (ScrollingUtil.isAbsListViewToTop(mDirectAbsListView)) {
+        if (BGARefreshScrollingUtil.isAbsListViewToTop(mDirectAbsListView)) {
             return true;
         }
 
-        if (ScrollingUtil.isRecyclerViewToTop(mDirectRecyclerView)) {
+        if (BGARefreshScrollingUtil.isRecyclerViewToTop(mDirectRecyclerView)) {
             return true;
         }
 
@@ -338,19 +354,19 @@ public class BGAStickyNavLayout extends LinearLayout {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mNestedWebView)) {
+        if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mNestedWebView)) {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mNestedScrollView)) {
+        if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mNestedScrollView)) {
             return true;
         }
 
-        if (ScrollingUtil.isAbsListViewToTop(mNestedAbsListView)) {
+        if (BGARefreshScrollingUtil.isAbsListViewToTop(mNestedAbsListView)) {
             return true;
         }
 
-        if (ScrollingUtil.isRecyclerViewToTop(mNestedRecyclerView)) {
+        if (BGARefreshScrollingUtil.isRecyclerViewToTop(mNestedRecyclerView)) {
             return true;
         }
 
@@ -444,11 +460,11 @@ public class BGAStickyNavLayout extends LinearLayout {
             return true;
         }
 
-        if (ScrollingUtil.isWebViewToBottom(mDirectWebView)) {
+        if (BGARefreshScrollingUtil.isWebViewToBottom(mDirectWebView)) {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewToBottom(mDirectScrollView)) {
+        if (BGARefreshScrollingUtil.isScrollViewToBottom(mDirectScrollView)) {
             return true;
         }
 
@@ -469,11 +485,11 @@ public class BGAStickyNavLayout extends LinearLayout {
                 return true;
             }
 
-            if (ScrollingUtil.isWebViewToBottom(mNestedWebView)) {
+            if (BGARefreshScrollingUtil.isWebViewToBottom(mNestedWebView)) {
                 return true;
             }
 
-            if (ScrollingUtil.isScrollViewToBottom(mNestedScrollView)) {
+            if (BGARefreshScrollingUtil.isScrollViewToBottom(mNestedScrollView)) {
                 return true;
             }
 
@@ -490,17 +506,17 @@ public class BGAStickyNavLayout extends LinearLayout {
     }
 
     public void scrollToBottom() {
-        ScrollingUtil.scrollToBottom(mDirectScrollView);
-        ScrollingUtil.scrollToBottom(mDirectRecyclerView);
-        ScrollingUtil.scrollToBottom(mDirectAbsListView);
+        BGARefreshScrollingUtil.scrollToBottom(mDirectScrollView);
+        BGARefreshScrollingUtil.scrollToBottom(mDirectRecyclerView);
+        BGARefreshScrollingUtil.scrollToBottom(mDirectAbsListView);
 
         if (mDirectViewPager != null) {
             if (mNestedContentView == null) {
                 regetNestedContentView();
             }
-            ScrollingUtil.scrollToBottom(mNestedScrollView);
-            ScrollingUtil.scrollToBottom(mNestedRecyclerView);
-            ScrollingUtil.scrollToBottom(mNestedAbsListView);
+            BGARefreshScrollingUtil.scrollToBottom(mNestedScrollView);
+            BGARefreshScrollingUtil.scrollToBottom(mNestedRecyclerView);
+            BGARefreshScrollingUtil.scrollToBottom(mNestedAbsListView);
         }
     }
 }

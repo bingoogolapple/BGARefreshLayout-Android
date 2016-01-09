@@ -1,7 +1,7 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,8 +69,8 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
 
         mDataRv.addItemDecoration(new Divider(this));
 
-//        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
-        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
+        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
+//        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
 
         mDataRv.setAdapter(mAdapter);
 

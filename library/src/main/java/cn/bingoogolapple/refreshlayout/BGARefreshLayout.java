@@ -19,9 +19,7 @@ package cn.bingoogolapple.refreshlayout;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -36,7 +34,7 @@ import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.reflect.Field;
 
-import cn.bingoogolapple.refreshlayout.util.ScrollingUtil;
+import cn.bingoogolapple.refreshlayout.util.BGARefreshScrollingUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -324,41 +322,14 @@ public class BGARefreshLayout extends LinearLayout {
             return false;
         }
 
-        int lastChildBottom = 0;
-        if (absListView.getChildCount() > 0) {
-            // 如果AdapterView的子控件数量不为0，获取最后一个子控件的bottom
-            lastChildBottom = absListView.getChildAt(absListView.getChildCount() - 1).getBottom();
-        }
-        return absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1 && lastChildBottom <= absListView.getMeasuredHeight();
+        return BGARefreshScrollingUtil.isAbsListViewToBottom(absListView);
     }
 
     public boolean shouldHandleRecyclerViewLoadingMore(RecyclerView recyclerView) {
         if (mIsLoadingMore || mCurrentRefreshStatus == RefreshStatus.REFRESHING || mLoadMoreFooterView == null || mDelegate == null || recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
             return false;
         }
-
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if (manager == null || manager.getItemCount() == 0) {
-            return false;
-        }
-
-        if (manager instanceof LinearLayoutManager) {
-            LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-            if (layoutManager.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
-                return true;
-            }
-        } else if (manager instanceof StaggeredGridLayoutManager) {
-            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
-
-            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
-            int lastPosition = layoutManager.getItemCount() - 1;
-            for (int position : out) {
-                if (position == lastPosition) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return BGARefreshScrollingUtil.isRecyclerViewToBottom(recyclerView);
     }
 
     /**
@@ -376,11 +347,11 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (ScrollingUtil.isWebViewToBottom(mWebView)) {
+        if (BGARefreshScrollingUtil.isWebViewToBottom(mWebView)) {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewToBottom(mScrollView)) {
+        if (BGARefreshScrollingUtil.isScrollViewToBottom(mScrollView)) {
             return true;
         }
 
@@ -467,23 +438,23 @@ public class BGARefreshLayout extends LinearLayout {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mWebView)) {
+        if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mWebView)) {
             return true;
         }
 
-        if (ScrollingUtil.isScrollViewOrWebViewToTop(mScrollView)) {
+        if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mScrollView)) {
             return true;
         }
 
-        if (ScrollingUtil.isAbsListViewToTop(mAbsListView)) {
+        if (BGARefreshScrollingUtil.isAbsListViewToTop(mAbsListView)) {
             return true;
         }
 
-        if (ScrollingUtil.isRecyclerViewToTop(mRecyclerView)) {
+        if (BGARefreshScrollingUtil.isRecyclerViewToTop(mRecyclerView)) {
             return true;
         }
 
-        if (ScrollingUtil.isStickyNavLayoutToTop(mStickyNavLayout)) {
+        if (BGARefreshScrollingUtil.isStickyNavLayoutToTop(mStickyNavLayout)) {
             return true;
         }
 
@@ -807,9 +778,9 @@ public class BGARefreshLayout extends LinearLayout {
         mRefreshViewHolder.changeToLoadingMore();
         mLoadMoreFooterView.setVisibility(VISIBLE);
 
-        ScrollingUtil.scrollToBottom(mScrollView);
-        ScrollingUtil.scrollToBottom(mRecyclerView);
-        ScrollingUtil.scrollToBottom(mAbsListView);
+        BGARefreshScrollingUtil.scrollToBottom(mScrollView);
+        BGARefreshScrollingUtil.scrollToBottom(mRecyclerView);
+        BGARefreshScrollingUtil.scrollToBottom(mAbsListView);
         if (mStickyNavLayout != null) {
             mStickyNavLayout.scrollToBottom();
         }

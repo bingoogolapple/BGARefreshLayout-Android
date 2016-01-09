@@ -25,6 +25,8 @@
 ### 目前存在的问题
 
 * 当配置自定义头部广告位可滚动时，内容区域和广告位还不能平滑过度。
+* 当BGAStickyNavLayout中嵌套RecyclerView或AbsListView，并且第一页的最后一个item刚好在最底部时，加载更多视图会悬浮在最后一个item上面
+* 正在刷新或加载更多时，用户上下滑动不会让下拉刷新视图和加载更多视图跟着滑动
 
 ### 效果图
 ![Image of StickyViewPager示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout1.gif)

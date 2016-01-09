@@ -125,7 +125,7 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         mMorePageNumber++;
-        if (mMorePageNumber > 5) {
+        if (mMorePageNumber > 4) {
             mRefreshLayout.endLoadingMore();
             showToast("没有更多数据了");
             return false;

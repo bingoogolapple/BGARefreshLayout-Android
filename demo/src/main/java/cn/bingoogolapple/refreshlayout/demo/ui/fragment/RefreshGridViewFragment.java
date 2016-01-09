@@ -141,7 +141,7 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
         if (mIsNetworkEnabled) {
             // 如果网络可用，则异步加载网络数据，并返回true，显示正在加载更多
             mMorePageNumber++;
-            if (mMorePageNumber > 5) {
+            if (mMorePageNumber > 4) {
                 mRefreshLayout.endLoadingMore();
                 showToast("没有更多数据了");
                 return false;

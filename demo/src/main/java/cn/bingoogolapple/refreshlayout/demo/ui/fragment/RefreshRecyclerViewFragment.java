@@ -2,7 +2,7 @@ package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -101,11 +101,8 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
 
         mDataRv.addItemDecoration(new Divider(mApp));
 
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(mApp, 2);
-//        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-//        mDataRv.setLayoutManager(gridLayoutManager);
-
-        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
+        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
+//        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
 
         mDataRv.setAdapter(mAdapter);
     }
@@ -161,7 +158,7 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         mMorePageNumber++;
-        if (mMorePageNumber > 5) {
+        if (mMorePageNumber > 4) {
             mRefreshLayout.endLoadingMore();
             showToast("没有更多数据了");
             return false;

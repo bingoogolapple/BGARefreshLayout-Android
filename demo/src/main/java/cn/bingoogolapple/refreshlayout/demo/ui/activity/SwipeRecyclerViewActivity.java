@@ -24,6 +24,7 @@ import cn.bingoogolapple.refreshlayout.demo.adapter.SwipeRecyclerViewAdapter;
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -82,12 +83,12 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
 
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
             }
         });
     }
@@ -100,7 +101,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         mBanner.setViews(views);
         mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
                 for (int i = 0; i < views.size(); i++) {
                     Glide.with(SwipeRecyclerViewActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) views.get(i));
@@ -109,7 +110,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -162,14 +163,14 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
                 mAdapter.addNewDatas(response.body());
                 mDataRv.smoothScrollToPosition(0);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
                 mRefreshLayout.endRefreshing();
             }
         });
@@ -185,13 +186,13 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
                 mAdapter.addMoreDatas(response.body());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
                 mRefreshLayout.endLoadingMore();
             }
         });

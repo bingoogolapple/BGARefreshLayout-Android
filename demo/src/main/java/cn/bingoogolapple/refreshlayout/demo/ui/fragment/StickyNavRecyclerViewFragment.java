@@ -20,6 +20,7 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
 import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
 import cn.bingoogolapple.refreshlayout.demo.widget.Divider;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -63,12 +64,12 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
             }
         });
     }
@@ -112,7 +113,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
@@ -126,7 +127,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
                 ((ViewPagerActivity) getActivity()).endRefreshing();
                 dismissLoadingDialog();
             }
@@ -145,7 +146,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
@@ -158,7 +159,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
                 ((ViewPagerActivity) getActivity()).endLoadingMore();
                 dismissLoadingDialog();
             }

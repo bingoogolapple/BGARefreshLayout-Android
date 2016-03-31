@@ -9,6 +9,28 @@
 
 [测试BGARefreshLayout与Activity、Fragment、ViewPager的各种嵌套的Demo](https://github.com/bingoogolapple/BGARefreshLayoutDemo)
 
+## 常见问题-加载更多视图无法显示
+> 1.BGARefreshLayout的直接子控件的高度请使用android:layout_height="0dp"和android:layout_weight="1"
+
+```xml
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_modulename_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- BGARefreshLayout的直接子控件 -->
+    <AnyView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+```
+> 2.如果是在Fragment中使用BGARefreshLayout
+
+```
+请在onCreateView方法中初始化BGARefreshLayout，不要在onActivityCreated方法中初始化
+```
+
 ### 目前已经实现了四种下拉刷新效果:
 
 * 新浪微博下拉刷新风格（可设置各种状态是的文本，可设置整个刷新头部的背景）

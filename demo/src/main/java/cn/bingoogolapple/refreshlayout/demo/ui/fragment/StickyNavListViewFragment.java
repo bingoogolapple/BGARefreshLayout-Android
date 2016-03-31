@@ -17,6 +17,7 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
 import cn.bingoogolapple.refreshlayout.demo.util.ThreadUtil;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -58,12 +59,12 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setDatas(response.body());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
             }
         });
     }
@@ -106,7 +107,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
@@ -119,7 +120,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
                 ((ViewPagerActivity) getActivity()).endRefreshing();
             }
         });
@@ -136,7 +137,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
             @Override
-            public void onResponse(final Response<List<RefreshModel>> response) {
+            public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
                     @Override
@@ -149,7 +150,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<RefreshModel>> call, Throwable t) {
                 ((ViewPagerActivity) getActivity()).endLoadingMore();
             }
         });

@@ -23,6 +23,7 @@ import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavListViewFragmen
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavRecyclerViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavScrollViewFragment;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.StickyNavWebViewFragment;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -82,7 +83,7 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
         mBanner.setViews(views);
         mEngine.getBannerModel().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
                 for (int i = 0; i < views.size(); i++) {
                     Glide.with(ViewPagerActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) views.get(i));
@@ -91,7 +92,7 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }

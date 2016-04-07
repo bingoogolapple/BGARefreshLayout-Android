@@ -134,6 +134,8 @@ public class BGARefreshLayout extends LinearLayout {
 
     private Handler mHandler;
 
+    private BGARefreshScaleDelegate mRefreshScaleDelegate;
+
     public BGARefreshLayout(Context context) {
         this(context, null);
     }
@@ -582,6 +584,10 @@ public class BGARefreshLayout extends LinearLayout {
                 handleRefreshStatusChanged();
 
                 mRefreshViewHolder.handleScale(1.0f, refreshDiffY);
+
+                if (mRefreshScaleDelegate != null) {
+                    mRefreshScaleDelegate.onRefreshScaleChanged(1.0f, refreshDiffY);
+                }
             } else if (paddingTop < 0) {
                 // 下拉刷新控件没有完全显示，并且当前状态没有处于下拉刷新状态
                 if (mCurrentRefreshStatus != RefreshStatus.PULL_DOWN) {
@@ -601,6 +607,10 @@ public class BGARefreshLayout extends LinearLayout {
                  * scale         1 到 0
                  */
                 mRefreshViewHolder.handleScale(scale, refreshDiffY);
+
+                if (mRefreshScaleDelegate != null) {
+                    mRefreshScaleDelegate.onRefreshScaleChanged(scale, refreshDiffY);
+                }
             }
             paddingTop = Math.min(paddingTop, mMaxWholeHeaderViewPaddingTop);
             mWholeHeaderView.setPadding(0, paddingTop, 0, 0);
@@ -849,6 +859,14 @@ public class BGARefreshLayout extends LinearLayout {
          * @return 如果要开始加载更多则返回true，否则返回false。（返回false的场景：没有网络、一共只有x页数据并且已经加载了x页数据了）
          */
         boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout);
+    }
+
+    public void setRefreshScaleDelegate(BGARefreshScaleDelegate refreshScaleDelegate) {
+        mRefreshScaleDelegate = refreshScaleDelegate;
+    }
+
+    public interface BGARefreshScaleDelegate {
+        void onRefreshScaleChanged(float scale, int moveYDistance);
     }
 
     public enum RefreshStatus {

@@ -48,6 +48,12 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
+        mRefreshLayout.setRefreshScaleDelegate(new BGARefreshLayout.BGARefreshScaleDelegate() {
+            @Override
+            public void onRefreshScaleChanged(float scale, int moveYDistance) {
+                Log.i(TAG, "scale:" + scale + " moveYDistance:" + moveYDistance);
+            }
+        });
 
         mDataGv.setOnItemClickListener(this);
         mDataGv.setOnItemLongClickListener(this);

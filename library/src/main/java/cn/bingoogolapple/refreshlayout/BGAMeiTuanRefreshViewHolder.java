@@ -18,7 +18,6 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.view.View;
 
@@ -55,7 +54,7 @@ public class BGAMeiTuanRefreshViewHolder extends BGARefreshViewHolder {
      *
      * @param resId
      */
-    public void setChangeToReleaseRefreshAnimResId(@AnimRes int resId) {
+    public void setChangeToReleaseRefreshAnimResId(@DrawableRes int resId) {
         mChangeToReleaseRefreshAnimResId = resId;
     }
 
@@ -64,7 +63,7 @@ public class BGAMeiTuanRefreshViewHolder extends BGARefreshViewHolder {
      *
      * @param resId
      */
-    public void setRefreshingAnimResId(@AnimRes int resId) {
+    public void setRefreshingAnimResId(@DrawableRes int resId) {
         mRefreshingAnimResId = resId;
     }
 

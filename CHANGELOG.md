@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.1.4 *(2015-04-08)*
+----------------------------
+
+- 开放返回当前状态getCurrentRefreshStatus方法和isLoadingMore方法
+- 解决使用ItemDecoration设置top后下拉刷新失效
+
 Version 1.1.3 *(2015-01-10)*
 ----------------------------
 

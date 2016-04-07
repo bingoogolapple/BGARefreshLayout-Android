@@ -134,6 +134,8 @@ public class BGARefreshLayout extends LinearLayout {
 
     private Handler mHandler;
 
+    private BGARefreshScaleDelegate mRefreshScaleDelegate;
+
     public BGARefreshLayout(Context context) {
         this(context, null);
     }
@@ -582,6 +584,10 @@ public class BGARefreshLayout extends LinearLayout {
                 handleRefreshStatusChanged();
 
                 mRefreshViewHolder.handleScale(1.0f, refreshDiffY);
+
+                if (mRefreshScaleDelegate != null) {
+                    mRefreshScaleDelegate.onRefreshScaleChanged(1.0f, refreshDiffY);
+                }
             } else if (paddingTop < 0) {
                 // 下拉刷新控件没有完全显示，并且当前状态没有处于下拉刷新状态
                 if (mCurrentRefreshStatus != RefreshStatus.PULL_DOWN) {
@@ -601,6 +607,10 @@ public class BGARefreshLayout extends LinearLayout {
                  * scale         1 到 0
                  */
                 mRefreshViewHolder.handleScale(scale, refreshDiffY);
+
+                if (mRefreshScaleDelegate != null) {
+                    mRefreshScaleDelegate.onRefreshScaleChanged(scale, refreshDiffY);
+                }
             }
             paddingTop = Math.min(paddingTop, mMaxWholeHeaderViewPaddingTop);
             mWholeHeaderView.setPadding(0, paddingTop, 0, 0);
@@ -836,6 +846,33 @@ public class BGARefreshLayout extends LinearLayout {
         mDelegate = delegate;
     }
 
+    /**
+     * 设置下拉刷新控件可见时，上下拉进度的代理
+     *
+     * @param refreshScaleDelegate
+     */
+    public void setRefreshScaleDelegate(BGARefreshScaleDelegate refreshScaleDelegate) {
+        mRefreshScaleDelegate = refreshScaleDelegate;
+    }
+
+    /**
+     * 获取当前下拉刷新的状态
+     *
+     * @return
+     */
+    public RefreshStatus getCurrentRefreshStatus() {
+        return mCurrentRefreshStatus;
+    }
+
+    /**
+     * 是否处于正在加载更多状态
+     *
+     * @return
+     */
+    public boolean isLoadingMore() {
+        return mIsLoadingMore;
+    }
+
     public interface BGARefreshLayoutDelegate {
         /**
          * 开始刷新
@@ -849,6 +886,16 @@ public class BGARefreshLayout extends LinearLayout {
          * @return 如果要开始加载更多则返回true，否则返回false。（返回false的场景：没有网络、一共只有x页数据并且已经加载了x页数据了）
          */
         boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout);
+    }
+
+    public interface BGARefreshScaleDelegate {
+        /**
+         * 下拉刷新控件可见时，处理上下拉进度
+         *
+         * @param scale         下拉过程0 到 1，回弹过程1 到 0，没有加上弹簧距离移动时的比例
+         * @param moveYDistance 整个下拉刷新控件paddingTop变化的值，如果有弹簧距离，会大于整个下拉刷新控件的高度
+         */
+        void onRefreshScaleChanged(float scale, int moveYDistance);
     }
 
     public enum RefreshStatus {

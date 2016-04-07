@@ -19,7 +19,7 @@ public class Divider extends RecyclerView.ItemDecoration {
     // 如果等于分割线的宽度或高度的话可以不用重写该方法
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (parent.getChildPosition(view) == parent.getChildCount() - 1) {
+        if (parent.getChildAdapterPosition(view) == parent.getAdapter().getItemCount() - 1) {
             outRect.set(0, 0, 0, 0);
         } else {
             outRect.set(0, 0, 0, mDividerDrawable.getIntrinsicHeight());

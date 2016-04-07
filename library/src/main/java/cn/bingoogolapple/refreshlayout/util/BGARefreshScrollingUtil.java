@@ -16,15 +16,17 @@
 
 package cn.bingoogolapple.refreshlayout.util;
 
+import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
+
+import java.lang.reflect.Field;
 
 import cn.bingoogolapple.refreshlayout.BGAStickyNavLayout;
 
@@ -59,15 +61,6 @@ public class BGARefreshScrollingUtil {
 
     public static boolean isRecyclerViewToTop(RecyclerView recyclerView) {
         if (recyclerView != null) {
-            int firstChildTop = 0;
-            if (recyclerView.getChildCount() > 0) {
-                // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
-
-                // 解决item的topMargin不为0时不能触发下拉刷新
-                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) recyclerView.getChildAt(0).getLayoutParams();
-                firstChildTop = recyclerView.getChildAt(0).getTop() - layoutParams.topMargin - recyclerView.getPaddingTop();
-            }
-
             RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
             if (manager == null) {
                 return true;
@@ -78,6 +71,17 @@ public class BGARefreshScrollingUtil {
 
             if (manager instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
+
+                int firstChildTop = 0;
+                if (recyclerView.getChildCount() > 0) {
+                    // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
+
+                    // 解决item的topMargin不为0时不能触发下拉刷新
+                    View firstChild = recyclerView.getChildAt(0);
+                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) firstChild.getLayoutParams();
+                    firstChildTop = firstChild.getTop() - layoutParams.topMargin - getRecyclerViewItemTopInset(layoutParams) - recyclerView.getPaddingTop();
+                }
+
                 if (layoutManager.findFirstCompletelyVisibleItemPosition() < 1 && firstChildTop == 0) {
                     return true;
                 }
@@ -91,6 +95,25 @@ public class BGARefreshScrollingUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * 通过反射获取RecyclerView的item的topInset
+     *
+     * @param layoutParams
+     * @return
+     */
+    private static int getRecyclerViewItemTopInset(RecyclerView.LayoutParams layoutParams) {
+        try {
+            Field field = RecyclerView.LayoutParams.class.getDeclaredField("mDecorInsets");
+            field.setAccessible(true);
+            // 开发者自定义的滚动监听器
+            Rect decorInsets = (Rect) field.get(layoutParams);
+            return decorInsets.top;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static boolean isStickyNavLayoutToTop(BGAStickyNavLayout stickyNavLayout) {

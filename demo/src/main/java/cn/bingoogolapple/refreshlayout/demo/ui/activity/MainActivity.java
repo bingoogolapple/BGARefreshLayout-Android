@@ -86,6 +86,9 @@ public class MainActivity extends BaseActivity {
                         case R.id.navigation_main_webview:
                             mViewPager.setCurrentItem(8, false);
                             break;
+                        case R.id.navigation_main_stickyNav_change:
+                            startActivity(new Intent(MainActivity.this, StickWithChangeActivity.class));
+                            break;
                         default:
                             break;
                     }

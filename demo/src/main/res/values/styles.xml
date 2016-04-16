@@ -31,4 +31,8 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="myApp_Title_Style" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

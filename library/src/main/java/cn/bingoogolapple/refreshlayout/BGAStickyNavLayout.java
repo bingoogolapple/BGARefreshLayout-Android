@@ -72,6 +72,8 @@ public class BGAStickyNavLayout extends LinearLayout {
     private float mLastTouchY;
 
     public BGARefreshLayout mRefreshLayout;
+    private int marginTopToShow;
+    private OnBGANavScrollListener mScrollListener;
 
     public BGAStickyNavLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -130,10 +132,38 @@ public class BGAStickyNavLayout extends LinearLayout {
         }
     }
 
+    /**
+     * 当{@link #mHeaderView mHeaderView}的大小大于{@code match_parent}时，
+     * <br/>
+     * 自适应拉伸{@link #mHeaderView mHeaderView}的高度
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        measureChild(mContentView, widthMeasureSpec, MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec) - getNavViewHeight(), MeasureSpec.EXACTLY));
+        if (getChildCount() > 0) {
+            int height = getPaddingTop() + getPaddingBottom();
+            for (int i = 0; i < getChildCount(); i++) {
+                View view = getChildAt(i);
+                int h;
+                if (i == 2) {
+                    h = MeasureSpec.getSize(heightMeasureSpec) - getChildAt(i - 1).getMeasuredHeight() - getMarginTopToShow();
+                    view.measure(
+                            widthMeasureSpec,
+                            MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY));
+                } else {
+                    h = view.getMeasuredHeight();
+                    view.measure(widthMeasureSpec,
+                            MeasureSpec.makeMeasureSpec(h, MeasureSpec.UNSPECIFIED));
+                }
+                height += h;
+            }
+            setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), height);
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+//        measureChild(mContentView, widthMeasureSpec,
+//                MeasureSpec.makeMeasureSpec(
+//                        MeasureSpec.getSize(heightMeasureSpec) - getNavViewHeight() - marginTopToShow,
+//                        MeasureSpec.EXACTLY));
     }
 
     @Override
@@ -163,6 +193,33 @@ public class BGAStickyNavLayout extends LinearLayout {
         if (y != getScrollY()) {
             super.scrollTo(x, y);
         }
+
+        if (mScrollListener != null) {
+            mScrollListener.onScroll(x, y);
+        }
+    }
+
+
+    /**
+     * 返回手动控制{@link #mNavView mNavView}到顶部(x,0)的可控高度
+     *
+     * @return {@link #marginTopToShow marginTopToShow}
+     * @see OnBGANavScrollListener#onScroll(int, int)
+     * @see #scrollTo(int, int)
+     */
+    public int getMarginTopToShow() {
+        return marginTopToShow;
+    }
+
+    /**
+     * 设置手动控制{@link #mNavView mNavView}到顶部(x,0)的可控高度
+     *
+     * @param marginTopToShow
+     * @see OnBGANavScrollListener#onScroll(int, int)
+     * @see #scrollTo(int, int)
+     */
+    public void setMarginTopToShow(int marginTopToShow) {
+        this.marginTopToShow = marginTopToShow;
     }
 
     /**
@@ -170,9 +227,9 @@ public class BGAStickyNavLayout extends LinearLayout {
      *
      * @return
      */
-    private int getHeaderViewHeight() {
+    public int getHeaderViewHeight() {
         MarginLayoutParams layoutParams = (MarginLayoutParams) mHeaderView.getLayoutParams();
-        return mHeaderView.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
+        return mHeaderView.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin - marginTopToShow;
     }
 
     /**
@@ -180,7 +237,7 @@ public class BGAStickyNavLayout extends LinearLayout {
      *
      * @return
      */
-    private int getNavViewHeight() {
+    public int getNavViewHeight() {
         MarginLayoutParams layoutParams = (MarginLayoutParams) mNavView.getLayoutParams();
         return mNavView.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
     }
@@ -190,7 +247,7 @@ public class BGAStickyNavLayout extends LinearLayout {
      *
      * @return
      */
-    private boolean isHeaderViewCompleteInvisible() {
+    public boolean isHeaderViewCompleteInvisible() {
         // 0表示x，1表示y
         int[] location = new int[2];
         getLocationOnScreen(location);
@@ -200,7 +257,7 @@ public class BGAStickyNavLayout extends LinearLayout {
         MarginLayoutParams params = (MarginLayoutParams) mNavView.getLayoutParams();
         int navViewTopOnScreenY = location[1] - params.topMargin;
 
-        if (navViewTopOnScreenY == contentOnScreenTopY) {
+        if ((navViewTopOnScreenY - marginTopToShow) == contentOnScreenTopY) {
             return true;
         } else {
             return false;
@@ -345,7 +402,7 @@ public class BGAStickyNavLayout extends LinearLayout {
         return false;
     }
 
-    private boolean isViewPagerContentViewToTop() {
+    public boolean isViewPagerContentViewToTop() {
         if (mNestedContentView == null) {
             regetNestedContentView();
         }
@@ -518,5 +575,15 @@ public class BGAStickyNavLayout extends LinearLayout {
             BGARefreshScrollingUtil.scrollToBottom(mNestedRecyclerView);
             BGARefreshScrollingUtil.scrollToBottom(mNestedAbsListView);
         }
+    }
+
+
+    public interface OnBGANavScrollListener {
+        void onScroll(int x, int y);
+    }
+
+
+    public void setScrollListener(OnBGANavScrollListener mScrollListener) {
+        this.mScrollListener = mScrollListener;
     }
 }

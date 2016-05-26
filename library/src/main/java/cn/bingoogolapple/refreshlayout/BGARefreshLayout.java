@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AbsListView;
@@ -136,6 +137,8 @@ public class BGARefreshLayout extends LinearLayout {
 
     private BGARefreshScaleDelegate mRefreshScaleDelegate;
 
+    private int mTouchSlop;
+
     public BGARefreshLayout(Context context) {
         this(context, null);
     }
@@ -143,6 +146,7 @@ public class BGARefreshLayout extends LinearLayout {
     public BGARefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(LinearLayout.VERTICAL);
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mHandler = new Handler(Looper.getMainLooper());
         initWholeHeaderView();
     }
@@ -391,7 +395,7 @@ public class BGARefreshLayout extends LinearLayout {
                     int interceptTouchMoveDistanceY = (int) (event.getRawY() - mInterceptTouchDownY);
                     // 可以没有上拉加载更多，但是必须有下拉刷新，否则就不拦截事件
                     if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null) {
-                        if ((interceptTouchMoveDistanceY > 0 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < 0 && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < 0 && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > 0 && shouldInterceptToMoveCustomHeaderViewDown())) {
+                        if ((interceptTouchMoveDistanceY > mTouchSlop && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < -mTouchSlop && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < -mTouchSlop && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > mTouchSlop && shouldInterceptToMoveCustomHeaderViewDown())) {
 
                             // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
                             event.setAction(MotionEvent.ACTION_CANCEL);

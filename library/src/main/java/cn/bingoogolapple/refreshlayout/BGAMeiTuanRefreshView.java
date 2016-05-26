@@ -18,7 +18,6 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -55,12 +54,12 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
         mPullDownView.setImageResource(resId);
     }
 
-    public void setChangeToReleaseRefreshAnimResId(@AnimRes int resId) {
+    public void setChangeToReleaseRefreshAnimResId(@DrawableRes int resId) {
         mChangeToReleaseRefreshAnimResId = resId;
         mReleaseRefreshingView.setImageResource(mChangeToReleaseRefreshAnimResId);
     }
 
-    public void setRefreshingAnimResId(@AnimRes int resId) {
+    public void setRefreshingAnimResId(@DrawableRes int resId) {
         mRefreshingAnimResId = resId;
     }
 

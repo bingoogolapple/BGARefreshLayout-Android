@@ -390,8 +390,9 @@ public class BGARefreshLayout extends LinearLayout {
 
                     int interceptTouchMoveDistanceY = (int) (event.getRawY() - mInterceptTouchDownY);
                     // 可以没有上拉加载更多，但是必须有下拉刷新，否则就不拦截事件
+                    //FIXME:这里把判断的距离提高的20px，防止父布局里的按钮点击没反应！！！
                     if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null) {
-                        if ((interceptTouchMoveDistanceY > 0 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < 0 && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < 0 && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > 0 && shouldInterceptToMoveCustomHeaderViewDown())) {
+                        if ((interceptTouchMoveDistanceY > 20 && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < -20 && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < -20 && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > 20 && shouldInterceptToMoveCustomHeaderViewDown())) {
 
                             // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
                             event.setAction(MotionEvent.ACTION_CANCEL);

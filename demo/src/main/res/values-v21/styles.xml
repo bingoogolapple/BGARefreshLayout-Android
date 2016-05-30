@@ -3,6 +3,8 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- 底部导航栏的颜色 -->
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
 
 </resources>

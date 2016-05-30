@@ -1,0 +1,23 @@
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_app_barLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="1dp"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:elevation="1dp">
+
+    <!--<include layout="@layout/widget_toolbar_layout" />-->
+
+    <include layout="@layout/widget_toolbar_with_center" />
+
+
+    <View
+        android:id="@+id/widget_lines"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+</android.support.design.widget.AppBarLayout>

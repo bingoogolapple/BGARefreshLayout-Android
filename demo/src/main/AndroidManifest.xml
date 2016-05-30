@@ -31,6 +31,7 @@
         <activity android:name=".ui.activity.ScrollViewActivity" />
         <activity android:name=".ui.activity.WebViewActivity" />
         <activity android:name=".ui.activity.ViewPagerActivity" />
+        <activity android:name=".ui.activity.StickWithChangeActivity" />
     </application>
 
 </manifest>

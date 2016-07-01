@@ -47,7 +47,7 @@ public class StickyNavWebViewFragment extends BaseFragment implements BGARefresh
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
     }
 
     @Override

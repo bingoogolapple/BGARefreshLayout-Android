@@ -83,7 +83,7 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {

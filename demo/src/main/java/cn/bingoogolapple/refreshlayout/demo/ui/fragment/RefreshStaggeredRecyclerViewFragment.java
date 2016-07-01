@@ -63,7 +63,7 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadDefaultStaggeredData().enqueue(new Callback<List<StaggeredModel>>() {

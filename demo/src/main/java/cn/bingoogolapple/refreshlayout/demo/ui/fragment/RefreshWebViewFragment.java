@@ -56,7 +56,7 @@ public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLa
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
     }
 
     @Override

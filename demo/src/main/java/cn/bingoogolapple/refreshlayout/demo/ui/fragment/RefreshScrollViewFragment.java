@@ -54,7 +54,7 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
 
     }
 

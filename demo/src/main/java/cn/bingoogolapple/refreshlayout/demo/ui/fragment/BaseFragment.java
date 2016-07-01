@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -27,21 +27,95 @@ public abstract class BaseFragment extends Fragment {
     protected Engine mEngine;
     protected BaseActivity mActivity;
 
+    protected boolean mIsPrepared = false;
+    protected boolean mIsFirstResume = true;
+    protected boolean mIsFirstVisible = true;
+    protected boolean mIsFirstInvisible = true;
 
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
-        mActivity = (BaseActivity) activity;
+        mActivity = (BaseActivity) getActivity();
         mEngine = mApp.getEngine();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initPrepare();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mIsFirstResume) {
+            mIsFirstResume = false;
+            return;
+        }
+        if (getUserVisibleHint()) {
+            onUserVisible();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (getUserVisibleHint()) {
+            onUserInvisible();
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            onUserVisible();
+            if (mIsFirstVisible) {
+                mIsFirstVisible = false;
+                initPrepare();
+            } else {
+                onUserVisible();
+            }
+        } else {
+            if (mIsFirstInvisible) {
+                mIsFirstInvisible = false;
+                onFirstUserInvisible();
+            } else {
+                onUserInvisible();
+            }
         }
+    }
+
+    public synchronized void initPrepare() {
+        if (mIsPrepared) {
+            onFirstUserVisible();
+        } else {
+            mIsPrepared = true;
+        }
+    }
+
+    /**
+     * 第一次对用户可见时会调用该方法
+     */
+    protected abstract void onFirstUserVisible();
+
+    /**
+     * 对用户可见时会调用该方法，除了第一次
+     */
+    public void onUserVisible() {
+    }
+
+    /**
+     * 第一次对用户不可见时会调用该方法
+     */
+    public void onFirstUserInvisible() {
+    }
+
+    /**
+     * 对用户不可见时会调用该方法，除了第一次
+     */
+    public void onUserInvisible() {
     }
 
     @Override
@@ -81,10 +155,6 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract void processLogic(Bundle savedInstanceState);
 
-    /**
-     * 当fragment对用户可见时，会调用该方法，可在该方法中懒加载网络数据
-     */
-    protected abstract void onUserVisible();
 
     /**
      * 查找View

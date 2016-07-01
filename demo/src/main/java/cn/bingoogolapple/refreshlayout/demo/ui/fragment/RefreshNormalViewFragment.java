@@ -52,7 +52,7 @@ public class RefreshNormalViewFragment extends BaseFragment implements BGARefres
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
 
     }
 

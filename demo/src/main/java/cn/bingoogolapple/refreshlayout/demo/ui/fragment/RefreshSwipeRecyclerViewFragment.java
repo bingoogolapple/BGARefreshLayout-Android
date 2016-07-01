@@ -82,7 +82,7 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {

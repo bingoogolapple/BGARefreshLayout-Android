@@ -59,7 +59,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {

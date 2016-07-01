@@ -40,7 +40,7 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
     }
 
     @Override

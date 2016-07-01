@@ -109,7 +109,7 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
     }
 
     @Override
-    protected void onUserVisible() {
+    protected void onFirstUserVisible() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {

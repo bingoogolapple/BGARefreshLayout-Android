@@ -28,7 +28,7 @@ dependencies {
 //    compile project(':library')
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
-    compile 'cn.bingoogolapple:bga-banner:2.0.4@aar'
+    compile 'cn.bingoogolapple:bga-banner:2.0.9@aar'
     compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.4@aar'
     compile 'cn.bingoogolapple:bga-indicator:1.0.1@aar'

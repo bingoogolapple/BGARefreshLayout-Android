@@ -6,9 +6,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.refreshlayout.demo.App;
 import cn.bingoogolapple.refreshlayout.demo.R;
@@ -27,19 +24,18 @@ public class DataEngine {
     public static View getCustomHeaderView(final Context context) {
         View headerView = View.inflate(context, R.layout.view_custom_header, null);
         final BGABanner banner = (BGABanner) headerView.findViewById(R.id.banner);
-        final List<View> views = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            views.add(View.inflate(context, R.layout.view_image, null));
-        }
-        banner.setViews(views);
+        banner.setAdapter(new BGABanner.Adapter() {
+            @Override
+            public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
+                Glide.with(banner.getContext()).load(model).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) view);
+            }
+        });
+
         App.getInstance().getEngine().getBannerModel().enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                for (int i = 0; i < views.size(); i++) {
-                    Glide.with(context).load(bannerModel.imgs.get(i)).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) views.get(i));
-                }
-                banner.setTips(bannerModel.tips);
+                banner.setData(R.layout.view_image, bannerModel.imgs, bannerModel.tips);
             }
 
             @Override

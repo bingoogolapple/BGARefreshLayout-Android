@@ -119,7 +119,6 @@ public class MainActivity extends BaseActivity {
         mViewPager.setAdapter(new ContentViewPagerAdapter(getSupportFragmentManager(), this));
     }
 
-
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {

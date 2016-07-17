@@ -60,7 +60,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
-                mAdapter.setDatas(response.body());
+                mAdapter.setData(response.body());
             }
 
             @Override
@@ -114,7 +114,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endRefreshing();
                         dismissLoadingDialog();
-                        mAdapter.addNewDatas(response.body());
+                        mAdapter.addNewData(response.body());
                     }
                 }, MainActivity.LOADING_DURATION);
             }
@@ -144,7 +144,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endLoadingMore();
                         dismissLoadingDialog();
-                        mAdapter.addMoreDatas(response.body());
+                        mAdapter.addMoreData(response.body());
                     }
                 }, MainActivity.LOADING_DURATION);
             }

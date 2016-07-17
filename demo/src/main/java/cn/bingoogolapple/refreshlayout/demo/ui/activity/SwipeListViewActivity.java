@@ -71,7 +71,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
-                mAdapter.setDatas(response.body());
+                mAdapter.setData(response.body());
             }
 
             @Override
@@ -132,7 +132,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(response.body());
+                mAdapter.addNewData(response.body());
             }
 
             @Override
@@ -154,7 +154,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+                mAdapter.addMoreData(response.body());
             }
 
             @Override

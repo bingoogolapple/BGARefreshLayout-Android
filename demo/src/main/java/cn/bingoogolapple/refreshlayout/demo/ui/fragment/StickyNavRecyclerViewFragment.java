@@ -65,7 +65,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
-                mAdapter.setDatas(response.body());
+                mAdapter.setData(response.body());
             }
 
             @Override
@@ -120,7 +120,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endRefreshing();
                         dismissLoadingDialog();
-                        mAdapter.addNewDatas(response.body());
+                        mAdapter.addNewData(response.body());
                         mDataRv.smoothScrollToPosition(0);
                     }
                 }, MainActivity.LOADING_DURATION);
@@ -153,7 +153,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endLoadingMore();
                         dismissLoadingDialog();
-                        mAdapter.addMoreDatas(response.body());
+                        mAdapter.addMoreData(response.body());
                     }
                 }, MainActivity.LOADING_DURATION);
             }

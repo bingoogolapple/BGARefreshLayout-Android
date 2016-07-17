@@ -84,7 +84,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
-                mAdapter.setDatas(response.body());
+                mAdapter.setData(response.body());
             }
 
             @Override
@@ -165,7 +165,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
-                mAdapter.addNewDatas(response.body());
+                mAdapter.addNewData(response.body());
                 mDataRv.smoothScrollToPosition(0);
             }
 
@@ -188,7 +188,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
-                mAdapter.addMoreDatas(response.body());
+                mAdapter.addMoreData(response.body());
             }
 
             @Override

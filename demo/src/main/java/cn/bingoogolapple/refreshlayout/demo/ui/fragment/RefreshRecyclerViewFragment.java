@@ -115,7 +115,7 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
-                mAdapter.setDatas(response.body());
+                mAdapter.setData(response.body());
             }
 
             @Override
@@ -142,7 +142,7 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
                     public void run() {
                         mRefreshLayout.endRefreshing();
                         dismissLoadingDialog();
-                        mAdapter.addNewDatas(response.body());
+                        mAdapter.addNewData(response.body());
                         mDataRv.smoothScrollToPosition(0);
                     }
                 }, MainActivity.LOADING_DURATION);
@@ -174,7 +174,7 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
                     public void run() {
                         mRefreshLayout.endLoadingMore();
                         dismissLoadingDialog();
-                        mAdapter.addMoreDatas(response.body());
+                        mAdapter.addMoreData(response.body());
                     }
                 }, MainActivity.LOADING_DURATION);
             }

@@ -16,12 +16,16 @@
 
 package cn.bingoogolapple.refreshlayout.util;
 
+import android.content.Context;
 import android.graphics.Rect;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
@@ -74,6 +78,16 @@ public class BGARefreshScrollingUtil {
 
                 int firstChildTop = 0;
                 if (recyclerView.getChildCount() > 0) {
+                    // 处理item高度超过一屏幕时的情况
+                    View firstVisibleChild = recyclerView.getChildAt(0);
+                    if (firstVisibleChild != null && firstVisibleChild.getMeasuredHeight() >= recyclerView.getMeasuredHeight()) {
+                        if (android.os.Build.VERSION.SDK_INT < 14) {
+                            return !(ViewCompat.canScrollVertically(recyclerView, -1) || recyclerView.getScrollY() > 0);
+                        } else {
+                            return !ViewCompat.canScrollVertically(recyclerView, -1);
+                        }
+                    }
+
                     // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
 
                     // 解决item的topMargin不为0时不能触发下拉刷新
@@ -166,20 +180,29 @@ public class BGARefreshScrollingUtil {
             }
 
             if (manager instanceof LinearLayoutManager) {
-                LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
+                // 处理item高度超过一屏幕时的情况
+                View lastVisibleChild = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+                if (lastVisibleChild != null && lastVisibleChild.getMeasuredHeight() >= recyclerView.getMeasuredHeight()) {
+                    if (android.os.Build.VERSION.SDK_INT < 14) {
+                        return !(ViewCompat.canScrollVertically(recyclerView, 1) || recyclerView.getScrollY() < 0);
+                    } else {
+                        return !ViewCompat.canScrollVertically(recyclerView, 1);
+                    }
+                }
 
+                LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
                 if (layoutManager.findLastCompletelyVisibleItemPosition() == layoutManager.getItemCount() - 1) {
                     BGAStickyNavLayout stickyNavLayout = getStickyNavLayout(recyclerView);
                     if (stickyNavLayout != null) {
                         // 处理BGAStickyNavLayout中findLastCompletelyVisibleItemPosition失效问题
-                        View lastChild = layoutManager.getChildAt(layoutManager.findLastCompletelyVisibleItemPosition());
-                        if (lastChild == null) {
+                        View lastCompletelyVisibleChild = layoutManager.getChildAt(layoutManager.findLastCompletelyVisibleItemPosition());
+                        if (lastCompletelyVisibleChild == null) {
                             return true;
                         } else {
                             // 0表示x，1表示y
                             int[] location = new int[2];
-                            lastChild.getLocationOnScreen(location);
-                            int lastChildBottomOnScreen = location[1] + lastChild.getMeasuredHeight();
+                            lastCompletelyVisibleChild.getLocationOnScreen(location);
+                            int lastChildBottomOnScreen = location[1] + lastCompletelyVisibleChild.getMeasuredHeight();
                             stickyNavLayout.getLocationOnScreen(location);
                             int stickyNavLayoutBottomOnScreen = location[1] + stickyNavLayout.getMeasuredHeight();
                             return lastChildBottomOnScreen <= stickyNavLayoutBottomOnScreen;
@@ -250,5 +273,12 @@ public class BGARefreshScrollingUtil {
             viewParent = viewParent.getParent();
         }
         return null;
+    }
+
+    public static int getScreenHeight(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        return dm.heightPixels;
     }
 }

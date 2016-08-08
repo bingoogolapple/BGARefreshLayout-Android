@@ -51,12 +51,12 @@
 * 正在刷新或加载更多时，用户上下滑动不会让下拉刷新视图和加载更多视图跟着滑动
 
 ### 效果图
-![Image of StickyViewPager示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout1.gif)
-![Image of 慕课网下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout2.gif)
-![Image of 美团下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout3.gif)
-![Image of 黏性下拉刷新示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout4.gif)
-![Image of 瀑布流示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout5.gif)
-![Image of GridView示例](http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/screenshots/bga_refreshlayout6.gif)
+![bga_refreshlayout1](https://cloud.githubusercontent.com/assets/8949716/17475813/6f7e338c-5d8f-11e6-846f-889414742b78.gif)
+![bga_refreshlayout2](https://cloud.githubusercontent.com/assets/8949716/17475812/6f79b0aa-5d8f-11e6-8934-ab5f61bff177.gif)
+![bga_refreshlayout3](https://cloud.githubusercontent.com/assets/8949716/17475814/6f900742-5d8f-11e6-832e-eaded3640154.gif)
+![bga_refreshlayout4](https://cloud.githubusercontent.com/assets/8949716/17475815/6fb4a0c0-5d8f-11e6-94c9-5eaed30c5060.gif)
+![bga_refreshlayout5](https://cloud.githubusercontent.com/assets/8949716/17475816/6fbb501e-5d8f-11e6-9dc5-fcb5b497247e.gif)
+![bga_refreshlayout6](https://cloud.githubusercontent.com/assets/8949716/17475817/6fe51674-5d8f-11e6-994b-b8248f164181.gif)
 
 ### 基本使用
 

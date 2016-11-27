@@ -14,7 +14,7 @@ android {
 
 dependencies {
     // -------------------- 以下三个库是必须依赖的 ----------------------------
-    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-refreshlayout:1.1.6@aar'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
@@ -26,13 +26,13 @@ dependencies {
 
     // 以下几个库是演示案例所使用到的
 //    compile project(':library')
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile 'cn.bingoogolapple:bga-banner:2.0.9@aar'
-    compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:cardview-v7:25.0.1'
+    compile 'cn.bingoogolapple:bga-banner:2.1.0@aar'
+    compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
     compile 'cn.bingoogolapple:bga-swipeitemlayout:1.0.4@aar'
     compile 'cn.bingoogolapple:bga-indicator:1.0.1@aar'
-    compile 'com.android.support:cardview-v7:24.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'cn.pedant.sweetalert:library:1.3'

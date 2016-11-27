@@ -27,7 +27,7 @@ public class SwipeRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshMode
     }
 
     @Override
-    public void setItemChildListener(BGAViewHolderHelper viewHolderHelper) {
+    public void setItemChildListener(BGAViewHolderHelper viewHolderHelper, int viewType) {
         BGASwipeItemLayout swipeItemLayout = viewHolderHelper.getView(R.id.sil_item_swipe_root);
         swipeItemLayout.setDelegate(new BGASwipeItemLayout.BGASwipeItemLayoutDelegate() {
             @Override

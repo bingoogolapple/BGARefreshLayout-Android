@@ -18,7 +18,7 @@ public class NormalRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshMod
     }
 
     @Override
-    public void setItemChildListener(BGAViewHolderHelper viewHolderHelper) {
+    public void setItemChildListener(BGAViewHolderHelper viewHolderHelper, int viewType) {
         viewHolderHelper.setItemChildClickListener(R.id.tv_item_normal_delete);
         viewHolderHelper.setItemChildLongClickListener(R.id.tv_item_normal_delete);
     }

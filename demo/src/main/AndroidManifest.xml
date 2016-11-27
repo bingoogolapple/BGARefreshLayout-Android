@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="cn.bingoogolapple.refreshlayout.demo">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="cn.bingoogolapple.refreshlayout.demo">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".App"
@@ -15,22 +15,23 @@
         tools:replace="android:icon">
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Transparent.Splash">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.StickyNavActivity" />
-        <activity android:name=".ui.activity.NormalRecyclerViewActivity" />
-        <activity android:name=".ui.activity.NormalListViewActivity" />
-        <activity android:name=".ui.activity.SwipeRecyclerViewActivity" />
-        <activity android:name=".ui.activity.SwipeListViewActivity" />
-        <activity android:name=".ui.activity.ScrollViewActivity" />
-        <activity android:name=".ui.activity.WebViewActivity" />
-        <activity android:name=".ui.activity.ViewPagerActivity" />
+        <activity android:name=".ui.activity.StickyNavActivity"/>
+        <activity android:name=".ui.activity.NormalRecyclerViewActivity"/>
+        <activity android:name=".ui.activity.NormalListViewActivity"/>
+        <activity android:name=".ui.activity.SwipeRecyclerViewActivity"/>
+        <activity android:name=".ui.activity.SwipeListViewActivity"/>
+        <activity android:name=".ui.activity.ScrollViewActivity"/>
+        <activity android:name=".ui.activity.WebViewActivity"/>
+        <activity android:name=".ui.activity.ViewPagerActivity"/>
     </application>
 
 </manifest>

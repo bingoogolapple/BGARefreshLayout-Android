@@ -93,7 +93,8 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
                 ((TextView) getViewById(R.id.tv_custom_header2_desc)).setText(R.string.test_custom_header_desc);
             }
         }, 2000);
-        mRefreshLayout.setCustomHeaderView(headerView, true);
+//        mRefreshLayout.setCustomHeaderView(headerView, true);
+        mAdapter.addHeaderView(headerView);
 
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(mApp, true);
         stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
@@ -105,7 +106,7 @@ public class RefreshRecyclerViewFragment extends BaseFragment implements BGARefr
         mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
 //        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
 
-        mDataRv.setAdapter(mAdapter);
+        mDataRv.setAdapter(mAdapter.getHeaderAndFooterAdapter());
     }
 
     @Override

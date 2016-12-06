@@ -56,10 +56,6 @@ public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLa
     }
 
     @Override
-    protected void onFirstUserVisible() {
-    }
-
-    @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         mContentWv.reload();
     }

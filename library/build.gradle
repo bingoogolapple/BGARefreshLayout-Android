@@ -8,11 +8,15 @@ android {
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.0.1'
-    compile 'com.nineoldandroids:library:2.4.0'
+    provided 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
 }
 
 // gradle uploadArchives

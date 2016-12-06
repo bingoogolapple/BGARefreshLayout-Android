@@ -81,7 +81,7 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
     }
 
     @Override
-    protected void onFirstUserVisible() {
+    protected void onLazyLoadOnce() {
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {

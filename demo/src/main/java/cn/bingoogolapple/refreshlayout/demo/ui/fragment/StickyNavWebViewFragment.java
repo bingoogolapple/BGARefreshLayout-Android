@@ -47,10 +47,6 @@ public class StickyNavWebViewFragment extends BaseFragment implements BGARefresh
     }
 
     @Override
-    protected void onFirstUserVisible() {
-    }
-
-    @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         mContentWv.reload();
     }

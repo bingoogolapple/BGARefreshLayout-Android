@@ -6,7 +6,6 @@
     <TextView
         android:id="@+id/tv_custom_header2_title"
         style="@style/MatchWrap"
-        android:layout_marginTop="10dp"
         android:background="#0f0"
         android:minLines="1"
         android:text="测试标题文本"

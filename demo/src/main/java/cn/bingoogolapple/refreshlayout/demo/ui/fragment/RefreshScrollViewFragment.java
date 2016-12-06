@@ -54,11 +54,6 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
     }
 
     @Override
-    protected void onFirstUserVisible() {
-
-    }
-
-    @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 

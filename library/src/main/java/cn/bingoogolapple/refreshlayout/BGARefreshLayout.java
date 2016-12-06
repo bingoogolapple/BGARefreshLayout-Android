@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.bingoogolapple.refreshlayout;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,8 +30,6 @@ import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
-import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.reflect.Field;
 

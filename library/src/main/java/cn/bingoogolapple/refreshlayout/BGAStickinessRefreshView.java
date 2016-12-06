@@ -16,6 +16,8 @@
 
 package cn.bingoogolapple.refreshlayout;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -30,16 +32,12 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ValueAnimator;
-
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/5/21 22:34
  * 描述:黏性下拉刷新控件
  */
 public class BGAStickinessRefreshView extends View {
-    private static final String TAG = BGAStickinessRefreshView.class.getSimpleName();
     private BGAStickinessRefreshViewHolder mStickinessRefreshViewHolder;
     private RectF mTopBound;
     private RectF mBottomBound;

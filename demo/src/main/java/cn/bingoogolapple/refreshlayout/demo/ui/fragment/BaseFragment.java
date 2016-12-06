@@ -27,10 +27,7 @@ public abstract class BaseFragment extends Fragment {
     protected Engine mEngine;
     protected BaseActivity mActivity;
 
-    protected boolean mIsPrepared = false;
-    protected boolean mIsFirstResume = true;
-    protected boolean mIsFirstVisible = true;
-    protected boolean mIsFirstInvisible = true;
+    protected boolean mIsLoadedData = false;
 
     @Override
     public void onAttach(Context context) {
@@ -42,20 +39,18 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initPrepare();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isResumed()) {
+            handleOnVisibilityChangedToUser(isVisibleToUser);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mIsFirstResume) {
-            mIsFirstResume = false;
-            return;
-        }
         if (getUserVisibleHint()) {
-            onUserVisible();
+            handleOnVisibilityChangedToUser(true);
         }
     }
 
@@ -63,59 +58,45 @@ public abstract class BaseFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (getUserVisibleHint()) {
-            onUserInvisible();
+            handleOnVisibilityChangedToUser(false);
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
+    /**
+     * 处理对用户是否可见
+     *
+     * @param isVisibleToUser
+     */
+    private void handleOnVisibilityChangedToUser(boolean isVisibleToUser) {
         if (isVisibleToUser) {
-            if (mIsFirstVisible) {
-                mIsFirstVisible = false;
-                initPrepare();
-            } else {
-                onUserVisible();
+            // 对用户可见
+            if (!mIsLoadedData) {
+                mIsLoadedData = true;
+                onLazyLoadOnce();
             }
+            onVisibleToUser();
         } else {
-            if (mIsFirstInvisible) {
-                mIsFirstInvisible = false;
-                onFirstUserInvisible();
-            } else {
-                onUserInvisible();
-            }
-        }
-    }
-
-    public synchronized void initPrepare() {
-        if (mIsPrepared) {
-            onFirstUserVisible();
-        } else {
-            mIsPrepared = true;
+            // 对用户不可见
+            onInvisibleToUser();
         }
     }
 
     /**
-     * 第一次对用户可见时会调用该方法
+     * 懒加载一次。如果只想在对用户可见时才加载数据，并且只加载一次数据，在子类中重写该方法
      */
-    protected abstract void onFirstUserVisible();
-
-    /**
-     * 对用户可见时会调用该方法，除了第一次
-     */
-    public void onUserVisible() {
+    protected void onLazyLoadOnce() {
     }
 
     /**
-     * 第一次对用户不可见时会调用该方法
+     * 对用户可见时触发该方法。如果只想在对用户可见时才加载数据，在子类中重写该方法
      */
-    public void onFirstUserInvisible() {
+    protected void onVisibleToUser() {
     }
 
     /**
-     * 对用户不可见时会调用该方法，除了第一次
+     * 对用户不可见时触发该方法
      */
-    public void onUserInvisible() {
+    protected void onInvisibleToUser() {
     }
 
     @Override
@@ -154,7 +135,6 @@ public abstract class BaseFragment extends Fragment {
      * @param savedInstanceState
      */
     protected abstract void processLogic(Bundle savedInstanceState);
-
 
     /**
      * 查找View

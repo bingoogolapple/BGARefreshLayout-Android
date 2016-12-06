@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.bingoogolapple.refreshlayout.util;
 
 import android.content.Context;
@@ -43,7 +42,6 @@ public class BGARefreshScrollingUtil {
 
     private BGARefreshScrollingUtil() {
     }
-
 
     public static boolean isScrollViewOrWebViewToTop(View view) {
         return view != null && view.getScrollY() == 0;

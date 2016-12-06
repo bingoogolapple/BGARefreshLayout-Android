@@ -40,10 +40,6 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
     }
 
     @Override
-    protected void onFirstUserVisible() {
-    }
-
-    @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         new AsyncTask<Void, Void, Void>() {
 

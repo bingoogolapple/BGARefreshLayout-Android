@@ -3,6 +3,7 @@ package cn.bingoogolapple.refreshlayout.demo.engine;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -24,10 +25,22 @@ public class DataEngine {
     public static View getCustomHeaderView(final Context context) {
         View headerView = View.inflate(context, R.layout.view_custom_header, null);
         final BGABanner banner = (BGABanner) headerView.findViewById(R.id.banner);
-        banner.setAdapter(new BGABanner.Adapter() {
+        banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
-            public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
-                Glide.with(banner.getContext()).load(model).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) view);
+            public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+                Glide.with(itemView.getContext())
+                        .load(model)
+                        .placeholder(R.mipmap.holder)
+                        .error(R.mipmap.holder)
+                        .dontAnimate()
+                        .centerCrop()
+                        .into(itemView);
+            }
+        });
+        banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
+            @Override
+            public void onBannerItemClick(BGABanner banner, ImageView imageView, String model, int position) {
+                Toast.makeText(banner.getContext(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
             }
         });
 

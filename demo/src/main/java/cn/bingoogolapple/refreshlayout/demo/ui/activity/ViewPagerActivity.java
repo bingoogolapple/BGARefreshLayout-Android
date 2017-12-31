@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgaindicator.BGAFixedIndicator;
@@ -74,10 +74,14 @@ public class ViewPagerActivity extends BaseActivity implements BGARefreshLayout.
     }
 
     private void initBanner() {
-        mBanner.setAdapter(new BGABanner.Adapter() {
+        mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
-            public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
-                Glide.with(banner.getContext()).load(model).placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().thumbnail(0.1f).into((ImageView) view);
+            public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+                Glide.with(itemView.getContext())
+                        .load(model)
+                        .apply(new RequestOptions().placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate())
+                        .thumbnail(0.1f)
+                        .into(itemView);
             }
         });
 

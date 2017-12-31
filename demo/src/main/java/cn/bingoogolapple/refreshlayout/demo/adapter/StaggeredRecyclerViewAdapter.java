@@ -4,9 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;
 
@@ -25,6 +26,9 @@ public class StaggeredRecyclerViewAdapter extends BGARecyclerViewAdapter<Stagger
     public void fillData(BGAViewHolderHelper viewHolderHelper, int position, StaggeredModel model) {
         viewHolderHelper.setText(R.id.tv_item_staggered_desc, model.desc);
         // 这里不知道当前图片的尺寸，加载成功后会乱跳
-        Glide.with(mContext).load(model.icon).placeholder(R.mipmap.staggered_holder).error(R.mipmap.staggered_holder).dontAnimate().into((ImageView) viewHolderHelper.getView(R.id.iv_item_staggered_icon));
+        Glide.with(mContext)
+                .load(model.icon)
+                .apply(new RequestOptions().placeholder(R.mipmap.staggered_holder).error(R.mipmap.staggered_holder).dontAnimate())
+                .into((ImageView) viewHolderHelper.getView(R.id.iv_item_staggered_icon));
     }
 }

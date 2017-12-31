@@ -3,7 +3,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGARefreshLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1909)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-refreshlayout/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-refreshlayout)
+[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion)
 
 开发者使用 BGARefreshLayout-Android 可以对各种控件实现多种下拉刷新效果、上拉加载更多以及配置自定义头部广告位
 
@@ -61,16 +61,13 @@
 ### 基本使用
 
 #### 1.添加 Gradle 依赖
-
-> 没有支持 Eclipse，建议还在用 Eclipse 的小伙伴都开始转 Android Studio 吧
-
-**latestVersion 是指对应库的最新版本号,别再问我为什么找不到 xxxxxxxlatestVersion 了!**
+[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-refreshlayout/_latestVersion) bga-refreshlayout 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
 
 ```groovy
 dependencies {
-    compile 'com.android.support:recyclerview-v7:latestVersion'
-    compile 'com.android.support:appcompat-v7:latestVersion'
-    compile 'cn.bingoogolapple:bga-refreshlayout:latestVersion@aar'
+    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'com.android.support:support-v4:27.0.2'
+    implementation 'cn.bingoogolapple:bga-refreshlayout:latestVersion@aar'
 }
 ```
 

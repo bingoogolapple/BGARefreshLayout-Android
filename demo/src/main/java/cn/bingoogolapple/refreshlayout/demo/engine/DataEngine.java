@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.refreshlayout.demo.App;
@@ -24,16 +25,13 @@ public class DataEngine {
 
     public static View getCustomHeaderView(final Context context) {
         View headerView = View.inflate(context, R.layout.view_custom_header, null);
-        final BGABanner banner = (BGABanner) headerView.findViewById(R.id.banner);
+        final BGABanner banner = headerView.findViewById(R.id.banner);
         banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
                 Glide.with(itemView.getContext())
                         .load(model)
-                        .placeholder(R.mipmap.holder)
-                        .error(R.mipmap.holder)
-                        .dontAnimate()
-                        .centerCrop()
+                        .apply(new RequestOptions().placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate().centerCrop())
                         .into(itemView);
             }
         });

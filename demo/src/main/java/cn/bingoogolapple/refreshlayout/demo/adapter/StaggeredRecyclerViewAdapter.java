@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;

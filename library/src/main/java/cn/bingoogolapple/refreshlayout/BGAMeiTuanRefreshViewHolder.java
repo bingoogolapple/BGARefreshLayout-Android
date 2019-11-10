@@ -17,7 +17,7 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import android.view.View;
 
 /**

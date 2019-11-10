@@ -15,7 +15,7 @@
  */
 package cn.bingoogolapple.refreshlayout.adapters;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 

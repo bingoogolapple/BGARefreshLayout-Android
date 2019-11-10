@@ -1,6 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.util;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.widget.Toast;
 
 import cn.bingoogolapple.refreshlayout.demo.App;

@@ -17,8 +17,8 @@ package cn.bingoogolapple.refreshlayout;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.support.annotation.DrawableRes;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.DrawableRes;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;

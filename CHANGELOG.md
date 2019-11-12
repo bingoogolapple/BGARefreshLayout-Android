@@ -4,7 +4,7 @@ Change Log
 Version 2.0.0 *(2019-11-10)*
 ----------------------------
 
-- 支持 androidx
+- 支持 androidx，依赖由 cn.bingoogolapple:bga-refreshlayout 改为 cn.bingoogolapple:bga-refreshlayout-androidx
 
 Version 1.1.8 *(2018-01-01)*
 ----------------------------

@@ -15,10 +15,10 @@ dependencies {
     // -------------------- 以下三个库是必须依赖的 ----------------------------
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-//    implementation 'cn.bingoogolapple:bga-refreshlayout:2.0.0@aar'
+    implementation 'cn.bingoogolapple:bga-refreshlayout-androidx:2.0.0@aar'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
 
-    implementation project(':library')
+//    implementation project(':library')
 
     // 以下几个库是演示案例所使用到的
     implementation 'com.google.android.material:material:1.0.0'

@@ -61,14 +61,16 @@
 ### 基本使用
 
 #### 1.添加 Gradle 依赖
-* 非 androidx 项目用 cn.bingoogolapple:bga-refreshlayout:1.1.8
-* androidx 项目用 [![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-refreshlayout-androidx/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-refreshlayout-androidx/_latestVersion) bga-refreshlayout-androidx 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
+
+* 把 `maven { url 'https://jitpack.io' }` 添加到 root build.gradle 的 repositories 中
+* 在 app build.gradle 中添加如下依赖，末尾的「latestVersion」指的是徽章 [![](https://jitpack.io/v/bingoogolapple/BGARefreshLayout-Android.svg)](https://jitpack.io/#bingoogolapple/BGARefreshLayout-Android) 里的版本名称，请自行替换
+
 
 ```groovy
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'cn.bingoogolapple:bga-refreshlayout-androidx:latestVersion@aar'
+    implementation 'com.github.bingoogolapple:BGARefreshLayout-Android:latestVersion'
 }
 ```
 

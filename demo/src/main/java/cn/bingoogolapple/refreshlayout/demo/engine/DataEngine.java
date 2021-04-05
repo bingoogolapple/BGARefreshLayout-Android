@@ -46,6 +46,9 @@ public class DataEngine {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
+                if (bannerModel == null) {
+                    return;
+                }
                 banner.setData(R.layout.view_image, bannerModel.imgs, bannerModel.tips);
             }
 

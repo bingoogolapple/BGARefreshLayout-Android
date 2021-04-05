@@ -15,16 +15,16 @@ dependencies {
     // -------------------- 以下三个库是必须依赖的 ----------------------------
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'cn.bingoogolapple:bga-refreshlayout-androidx:2.0.0@aar'
+//    implementation 'com.github.bingoogolapple:BGARefreshLayout-Android:2.0.1'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
 
-//    implementation project(':library')
+    implementation project(':library')
 
     // 以下几个库是演示案例所使用到的
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'cn.bingoogolapple:bga-banner:3.0.0@aar'
-    implementation 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
+    implementation 'com.github.bingoogolapple:BGABanner-Android:3.0.1'
+    implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
     implementation 'cn.bingoogolapple:bga-swipeitemlayout:1.0.4@aar'
     implementation 'cn.bingoogolapple:bga-indicator:1.0.1@aar'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

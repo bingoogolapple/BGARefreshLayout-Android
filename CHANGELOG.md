@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 2.0.1 *(2021-04-05)*
+----------------------------
+
+- 从 JCenter 迁移到 JitPack，依赖由 cn.bingoogolapple:bga-refreshlayout-androidx 改为 com.github.bingoogolapple:BGARefreshLayout-Android
+
 Version 2.0.0 *(2019-11-10)*
 ----------------------------
 

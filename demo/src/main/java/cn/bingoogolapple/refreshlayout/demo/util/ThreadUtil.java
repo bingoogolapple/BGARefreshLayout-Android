@@ -8,6 +8,7 @@ import android.os.Handler;
  * 描述:
  */
 public class ThreadUtil {
+
     private static Handler sHandler = new Handler();
 
     private ThreadUtil() {

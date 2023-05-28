@@ -1,6 +1,5 @@
 package cn.bingoogolapple.refreshlayout.demo.ui.fragment;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
@@ -30,10 +27,15 @@ import retrofit2.Response;
  * 描述:
  */
 public class RefreshGridViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener {
+
     private BGARefreshLayout mRefreshLayout;
+
     private GridView mDataGv;
+
     private NormalAdapterViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     private boolean mIsNetworkEnabled = false;
@@ -49,15 +51,16 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
         mRefreshLayout.setRefreshScaleDelegate(new BGARefreshLayout.BGARefreshScaleDelegate() {
+
             @Override
             public void onRefreshScaleChanged(float scale, int moveYDistance) {
                 Log.i(TAG, "scale:" + scale + " moveYDistance:" + moveYDistance);
             }
         });
-
         mDataGv.setOnItemClickListener(this);
         mDataGv.setOnItemLongClickListener(this);
         mDataGv.setOnScrollListener(new AbsListView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 Log.i(TAG, "滚动状态变化");
@@ -68,11 +71,9 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
                 Log.i(TAG, "正在滚动");
             }
         });
-
         mAdapter = new NormalAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
         getViewById(R.id.beginRefreshing).setOnClickListener(this);
         getViewById(R.id.beginLoadingMore).setOnClickListener(this);
     }
@@ -83,7 +84,6 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
         moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
         moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-
         mDataGv.setAdapter(mAdapter);
     }
 
@@ -92,6 +92,7 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -107,7 +108,6 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
     public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
         if (mIsNetworkEnabled) {
             // 如果网络可用，则加载网络数据
-
             mNewPageNumber++;
             if (mNewPageNumber > 4) {
                 mRefreshLayout.endRefreshing();
@@ -115,10 +115,12 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
                 return;
             }
             mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
                 @Override
                 public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                     // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
                     ThreadUtil.runInUIThread(new Runnable() {
+
                         @Override
                         public void run() {
                             mRefreshLayout.endRefreshing();
@@ -144,7 +146,6 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         Log.i(TAG, "开始加载更多");
-
         if (mIsNetworkEnabled) {
             // 如果网络可用，则异步加载网络数据，并返回true，显示正在加载更多
             mMorePageNumber++;
@@ -154,10 +155,12 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
                 return false;
             }
             mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
                 @Override
                 public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                     // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
                     ThreadUtil.runInUIThread(new Runnable() {
+
                         @Override
                         public void run() {
                             mRefreshLayout.endLoadingMore();
@@ -177,7 +180,6 @@ public class RefreshGridViewFragment extends BaseFragment implements BGARefreshL
         } else {
             // 模拟网络可用不可用
             mIsNetworkEnabled = !mIsNetworkEnabled;
-
             // 网络不可用，返回false，不显示正在加载更多
             showToast("网络不可用");
             return false;

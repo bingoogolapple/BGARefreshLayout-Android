@@ -8,12 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import cn.bingoogolapple.refreshlayout.demo.App;
 import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.BaseActivity;
 import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
-
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -21,10 +19,15 @@ import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
  * 描述:
  */
 public abstract class BaseFragment extends Fragment {
+
     protected String TAG;
+
     protected App mApp;
+
     protected View mContentView;
+
     protected Engine mEngine;
+
     protected BaseActivity mActivity;
 
     protected boolean mIsLoadedData = false;

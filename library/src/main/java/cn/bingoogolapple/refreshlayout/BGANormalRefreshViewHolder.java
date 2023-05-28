@@ -30,15 +30,23 @@ import android.widget.TextView;
  * 描述:类似新浪微博下拉刷新风格
  */
 public class BGANormalRefreshViewHolder extends BGARefreshViewHolder {
+
     private TextView mHeaderStatusTv;
+
     private ImageView mHeaderArrowIv;
+
     private ImageView mHeaderChrysanthemumIv;
+
     private AnimationDrawable mHeaderChrysanthemumAd;
+
     private RotateAnimation mUpAnim;
+
     private RotateAnimation mDownAnim;
 
     private String mPullDownRefreshText = "下拉刷新";
+
     private String mReleaseRefreshText = "释放更新";
+
     private String mRefreshingText = "加载中...";
 
     /**
@@ -54,7 +62,6 @@ public class BGANormalRefreshViewHolder extends BGARefreshViewHolder {
         mUpAnim = new RotateAnimation(0, -180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         mUpAnim.setDuration(150);
         mUpAnim.setFillAfter(true);
-
         mDownAnim = new RotateAnimation(-180, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         mDownAnim.setFillAfter(true);
     }
@@ -152,5 +159,4 @@ public class BGANormalRefreshViewHolder extends BGARefreshViewHolder {
         mDownAnim.setDuration(0);
         mHeaderArrowIv.startAnimation(mDownAnim);
     }
-
 }

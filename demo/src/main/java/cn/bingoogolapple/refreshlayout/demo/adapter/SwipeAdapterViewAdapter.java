@@ -1,10 +1,8 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
 import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.demo.R;
@@ -17,6 +15,7 @@ import cn.bingoogolapple.swipeitemlayout.BGASwipeItemLayout;
  * 描述:
  */
 public class SwipeAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel> {
+
     /**
      * 当前处于打开状态的item
      */
@@ -30,6 +29,7 @@ public class SwipeAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel>
     protected void setItemChildListener(BGAViewHolderHelper viewHolderHelper) {
         BGASwipeItemLayout swipeItemLayout = viewHolderHelper.getView(R.id.sil_item_swipe_root);
         swipeItemLayout.setDelegate(new BGASwipeItemLayout.BGASwipeItemLayoutDelegate() {
+
             @Override
             public void onBGASwipeItemLayoutOpened(BGASwipeItemLayout swipeItemLayout) {
                 closeOpenedSwipeItemLayoutWithAnim();
@@ -68,5 +68,4 @@ public class SwipeAdapterViewAdapter extends BGAAdapterViewAdapter<RefreshModel>
         }
         mOpenedSil.clear();
     }
-
 }

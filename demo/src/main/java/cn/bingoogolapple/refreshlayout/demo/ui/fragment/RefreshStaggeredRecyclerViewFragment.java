@@ -5,9 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
@@ -28,11 +26,17 @@ import retrofit2.Response;
  * 描述:
  */
 public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
+
     private static final String TAG = RefreshStaggeredRecyclerViewFragment.class.getSimpleName();
+
     private StaggeredRecyclerViewAdapter mAdapter;
+
     private BGARefreshLayout mRefreshLayout;
+
     private RecyclerView mDataRv;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -45,7 +49,6 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mAdapter = new StaggeredRecyclerViewAdapter(mDataRv);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
@@ -55,10 +58,8 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
-
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         mDataRv.setLayoutManager(layoutManager);
-
         mDataRv.setAdapter(mAdapter);
     }
 
@@ -67,6 +68,7 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadDefaultStaggeredData().enqueue(new Callback<List<StaggeredModel>>() {
+
             @Override
             public void onResponse(Call<List<StaggeredModel>> call, Response<List<StaggeredModel>> response) {
                 mAdapter.setData(response.body());
@@ -87,9 +89,11 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
             return;
         }
         mEngine.loadNewStaggeredData(mNewPageNumber).enqueue(new Callback<List<StaggeredModel>>() {
+
             @Override
             public void onResponse(Call<List<StaggeredModel>> call, final Response<List<StaggeredModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endRefreshing();
@@ -115,9 +119,11 @@ public class RefreshStaggeredRecyclerViewFragment extends BaseFragment implement
             return false;
         }
         mEngine.loadMoreStaggeredData(mMorePageNumber).enqueue(new Callback<List<StaggeredModel>>() {
+
             @Override
             public void onResponse(Call<List<StaggeredModel>> call, final Response<List<StaggeredModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endLoadingMore();

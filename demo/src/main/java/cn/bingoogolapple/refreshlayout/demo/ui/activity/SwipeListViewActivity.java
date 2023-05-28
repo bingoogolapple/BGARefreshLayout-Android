@@ -6,9 +6,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
@@ -21,10 +19,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SwipeListViewActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private BGARefreshLayout mRefreshLayout;
+
     private ListView mDataLv;
+
     private SwipeAdapterViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -37,10 +40,10 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
         mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
@@ -52,11 +55,9 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
-
         mAdapter = new SwipeAdapterViewAdapter(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
         findViewById(R.id.retweet).setOnClickListener(this);
         findViewById(R.id.comment).setOnClickListener(this);
         findViewById(R.id.praise).setOnClickListener(this);
@@ -65,10 +66,9 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
-
         mDataLv.setAdapter(mAdapter);
-
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -129,6 +129,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
             return;
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
@@ -151,6 +152,7 @@ public class SwipeListViewActivity extends BaseActivity implements AdapterView.O
             return false;
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();

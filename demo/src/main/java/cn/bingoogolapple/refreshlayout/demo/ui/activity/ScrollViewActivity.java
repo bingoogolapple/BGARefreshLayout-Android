@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 
 public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private BGARefreshLayout mRefreshLayout;
+
     private TextView mClickableLabelTv;
 
     @Override
@@ -54,17 +55,12 @@ public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingMessage();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleReturn(params);
             }
 
             @Override
@@ -82,17 +78,12 @@ public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingMessage();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleReturn(params);
             }
 
             @Override
@@ -103,5 +94,18 @@ public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout
             }
         }.execute();
         return true;
+    }
+
+    private void displayLoadingMessage() {
+        showLoadingDialog();
+    }
+
+    private Void sleepHandleReturn(Void... params) {
+        try {
+            Thread.sleep(MainActivity.LOADING_DURATION);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

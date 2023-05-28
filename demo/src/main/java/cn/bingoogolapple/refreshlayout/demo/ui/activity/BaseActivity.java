@@ -4,9 +4,7 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-
 import com.afollestad.materialdialogs.MaterialDialog;
-
 import cn.bingoogolapple.refreshlayout.demo.App;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
@@ -18,9 +16,13 @@ import cn.bingoogolapple.refreshlayout.demo.util.ToastUtil;
  * 描述:
  */
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
+
     protected String TAG;
+
     protected App mApp;
+
     protected Engine mEngine;
+
     private MaterialDialog mLoadingDialog;
 
     @Override
@@ -71,11 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     public void showLoadingDialog() {
         if (mLoadingDialog == null) {
-            mLoadingDialog = new MaterialDialog.Builder(this)
-                    .widgetColorRes(R.color.colorPrimary)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .build();
+            mLoadingDialog = new MaterialDialog.Builder(this).widgetColorRes(R.color.colorPrimary).progress(true, 0).cancelable(false).build();
         }
         mLoadingDialog.setContent("数据加载中...");
         mLoadingDialog.show();

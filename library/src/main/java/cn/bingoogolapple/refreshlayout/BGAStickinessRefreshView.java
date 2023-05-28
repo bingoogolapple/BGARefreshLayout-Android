@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.bingoogolapple.refreshlayout;
 
 import android.animation.Animator;
@@ -38,35 +37,46 @@ import android.view.View;
  * 描述:黏性下拉刷新控件
  */
 public class BGAStickinessRefreshView extends View {
+
     private BGAStickinessRefreshViewHolder mStickinessRefreshViewHolder;
+
     private RectF mTopBound;
+
     private RectF mBottomBound;
+
     private Rect mRotateDrawableBound;
+
     private Point mCenterPoint;
 
     private Paint mPaint;
+
     private Path mPath;
 
     private Drawable mRotateDrawable;
+
     /**
      * 旋转图片的大小
      */
     private int mRotateDrawableSize;
 
     private int mMaxBottomHeight;
+
     private int mCurrentBottomHeight = 0;
 
     /**
      * 是否正在旋转
      */
     private boolean mIsRotating = false;
+
     private boolean mIsRefreshing = false;
+
     /**
      * 当前旋转角度
      */
     private int mCurrentDegree = 0;
 
     private int mEdge = 0;
+
     private int mTopSize = 0;
 
     public BGAStickinessRefreshView(Context context) {
@@ -100,7 +110,6 @@ public class BGAStickinessRefreshView extends View {
         mEdge = BGARefreshLayout.dp2px(getContext(), 5);
         mRotateDrawableSize = BGARefreshLayout.dp2px(getContext(), 30);
         mTopSize = mRotateDrawableSize + 2 * mEdge;
-
         mMaxBottomHeight = (int) (2.4f * mRotateDrawableSize);
     }
 
@@ -116,7 +125,6 @@ public class BGAStickinessRefreshView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = mTopSize + getPaddingLeft() + getPaddingRight();
         int height = mTopSize + getPaddingTop() + getPaddingBottom() + mMaxBottomHeight;
-
         setMeasuredDimension(width, height);
         measureDraw();
     }
@@ -124,16 +132,13 @@ public class BGAStickinessRefreshView extends View {
     private void measureDraw() {
         mCenterPoint.x = getMeasuredWidth() / 2;
         mCenterPoint.y = getMeasuredHeight() / 2;
-
         mTopBound.left = mCenterPoint.x - mTopSize / 2;
         mTopBound.right = mTopBound.left + mTopSize;
         mTopBound.bottom = getMeasuredHeight() - getPaddingBottom() - mCurrentBottomHeight;
         mTopBound.top = mTopBound.bottom - mTopSize;
-
         float scale = 1.0f - mCurrentBottomHeight * 1.0f / mMaxBottomHeight;
         scale = Math.min(Math.max(scale, 0.2f), 1.0f);
         int mBottomSize = (int) (mTopSize * scale);
-
         mBottomBound.left = mCenterPoint.x - mBottomSize / 2;
         mBottomBound.right = mBottomBound.left + mBottomSize;
         mBottomBound.bottom = mTopBound.bottom + mCurrentBottomHeight;
@@ -145,9 +150,7 @@ public class BGAStickinessRefreshView extends View {
         if (mRotateDrawable == null) {
             return;
         }
-
         mPath.reset();
-
         mTopBound.round(mRotateDrawableBound);
         mRotateDrawable.setBounds(mRotateDrawableBound);
         if (mIsRotating) {
@@ -163,24 +166,18 @@ public class BGAStickinessRefreshView extends View {
             // 从drawable左边缘的中间那个点开始画半圆
             mPath.arcTo(mTopBound, 180, 180);
             // 二阶贝塞尔曲线，第一个是控制点，第二个是终点
-//            mPath.quadTo(mTopBound.right - mTopSize / 8, mTopBound.bottom, mBottomBound.right, mBottomBound.bottom - mBottomBound.height() / 2);
-
+            //            mPath.quadTo(mTopBound.right - mTopSize / 8, mTopBound.bottom, mBottomBound.right, mBottomBound.bottom - mBottomBound.height() / 2);
             // mCurrentBottomHeight   0 到 mMaxBottomHeight
             // scale                  0.2 到 1
             float scale = Math.max(mCurrentBottomHeight * 1.0f / mMaxBottomHeight, 0.2f);
-
             float bottomControlXOffset = mTopSize * ((3 + (float) Math.pow(scale, 7) * 16) / 32);
             float bottomControlY = mTopBound.bottom / 2 + mCenterPoint.y / 2;
             // 三阶贝塞尔曲线，前两个是控制点，最后一个点是终点
             mPath.cubicTo(mTopBound.right - mTopSize / 8, mTopBound.bottom, mTopBound.right - bottomControlXOffset, bottomControlY, mBottomBound.right, mBottomBound.bottom - mBottomBound.height() / 2);
-
             mPath.arcTo(mBottomBound, 0, 180);
-
-//            mPath.quadTo(mTopBound.left + mTopSize / 8, mTopBound.bottom, mTopBound.left, mTopBound.bottom - mTopSize / 2);
+            //            mPath.quadTo(mTopBound.left + mTopSize / 8, mTopBound.bottom, mTopBound.left, mTopBound.bottom - mTopSize / 2);
             mPath.cubicTo(mTopBound.left + bottomControlXOffset, bottomControlY, mTopBound.left + mTopSize / 8, mTopBound.bottom, mTopBound.left, mTopBound.bottom - mTopSize / 2);
-
             canvas.drawPath(mPath, mPaint);
-
             mRotateDrawable.draw(canvas);
         }
     }
@@ -208,13 +205,14 @@ public class BGAStickinessRefreshView extends View {
         ValueAnimator animator = ValueAnimator.ofInt(mCurrentBottomHeight, 0);
         animator.setDuration(mStickinessRefreshViewHolder.getTopAnimDuration());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mCurrentBottomHeight = (int) animation.getAnimatedValue();
-                postInvalidate();
+                setBottomHeightValue(animation);
             }
         });
         animator.addListener(new Animator.AnimatorListener() {
+
             @Override
             public void onAnimationStart(Animator animation) {
                 mIsRefreshing = true;
@@ -244,6 +242,7 @@ public class BGAStickinessRefreshView extends View {
 
     private void startRotating() {
         ViewCompat.postOnAnimation(this, new Runnable() {
+
             @Override
             public void run() {
                 mCurrentDegree += 10;
@@ -268,13 +267,14 @@ public class BGAStickinessRefreshView extends View {
         ValueAnimator animator = ValueAnimator.ofInt(mCurrentBottomHeight, 0);
         animator.setDuration(mStickinessRefreshViewHolder.getTopAnimDuration());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mCurrentBottomHeight = (int) animation.getAnimatedValue();
-                postInvalidate();
+                setBottomHeightValue(animation);
             }
         });
         animator.addListener(new Animator.AnimatorListener() {
+
             @Override
             public void onAnimationStart(Animator animation) {
             }
@@ -299,4 +299,8 @@ public class BGAStickinessRefreshView extends View {
         mStickinessRefreshViewHolder = stickinessRefreshViewHolder;
     }
 
+    private void setBottomHeightValue(ValueAnimator animation) {
+        mCurrentBottomHeight = (int) animation.getAnimatedValue();
+        postInvalidate();
+    }
 }

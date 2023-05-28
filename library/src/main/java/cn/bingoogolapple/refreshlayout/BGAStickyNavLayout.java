@@ -26,7 +26,6 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -41,33 +40,51 @@ import cn.bingoogolapple.refreshlayout.util.BGARefreshScrollingUtil;
  * 描述:
  */
 public class BGAStickyNavLayout extends LinearLayout {
+
     private View mHeaderView;
+
     private View mNavView;
+
     private View mContentView;
 
     private View mDirectNormalView;
+
     private RecyclerView mDirectRecyclerView;
+
     private AbsListView mDirectAbsListView;
+
     private ScrollView mDirectScrollView;
+
     private WebView mDirectWebView;
+
     private ViewPager mDirectViewPager;
 
     private View mNestedContentView;
+
     private View mNestedNormalView;
+
     private RecyclerView mNestedRecyclerView;
+
     private AbsListView mNestedAbsListView;
+
     private ScrollView mNestedScrollView;
+
     private WebView mNestedWebView;
 
     private OverScroller mOverScroller;
+
     private VelocityTracker mVelocityTracker;
+
     private int mTouchSlop;
+
     private int mMaximumVelocity;
+
     private int mMinimumVelocity;
 
     private boolean mIsInControl = true;
 
     private float mLastDispatchY;
+
     private float mLastTouchY;
 
     public BGARefreshLayout mRefreshLayout;
@@ -79,7 +96,6 @@ public class BGAStickyNavLayout extends LinearLayout {
 
     private void init(Context context) {
         setOrientation(VERTICAL);
-
         mOverScroller = new OverScroller(context);
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();
@@ -97,15 +113,12 @@ public class BGAStickyNavLayout extends LinearLayout {
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
-
         if (getChildCount() != 3) {
             throw new IllegalStateException(BGAStickyNavLayout.class.getSimpleName() + "必须有且只有三个子控件");
         }
-
         mHeaderView = getChildAt(0);
         mNavView = getChildAt(1);
         mContentView = getChildAt(2);
-
         if (mContentView instanceof AbsListView) {
             mDirectAbsListView = (AbsListView) mContentView;
             mDirectAbsListView.setOnScrollListener(mLvOnScrollListener);
@@ -119,6 +132,7 @@ public class BGAStickyNavLayout extends LinearLayout {
         } else if (mContentView instanceof ViewPager) {
             mDirectViewPager = (ViewPager) mContentView;
             mDirectViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
                 @Override
                 public void onPageSelected(int position) {
                     regetNestedContentView();
@@ -153,12 +167,10 @@ public class BGAStickyNavLayout extends LinearLayout {
         if (y < 0) {
             y = 0;
         }
-
         int headerViewHeight = getHeaderViewHeight();
         if (y > headerViewHeight) {
             y = headerViewHeight;
         }
-
         if (y != getScrollY()) {
             super.scrollTo(x, y);
         }
@@ -194,11 +206,9 @@ public class BGAStickyNavLayout extends LinearLayout {
         int[] location = new int[2];
         getLocationOnScreen(location);
         int contentOnScreenTopY = location[1] + getPaddingTop();
-
         mNavView.getLocationOnScreen(location);
         MarginLayoutParams params = (MarginLayoutParams) mNavView.getLayoutParams();
         int navViewTopOnScreenY = location[1] - params.topMargin;
-
         if (navViewTopOnScreenY == contentOnScreenTopY) {
             return true;
         } else {
@@ -222,7 +232,7 @@ public class BGAStickyNavLayout extends LinearLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         float currentTouchY = ev.getY();
-        switch (ev.getAction()) {
+        switch(ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastDispatchY = currentTouchY;
                 break;
@@ -232,13 +242,10 @@ public class BGAStickyNavLayout extends LinearLayout {
                 if (isContentViewToTop() && isHeaderViewCompleteInvisible()) {
                     if (differentY >= 0 && !mIsInControl) {
                         mIsInControl = true;
-
                         return resetDispatchTouchEvent(ev);
                     }
-
                     if (differentY <= 0 && mIsInControl) {
                         mIsInControl = false;
-
                         return resetDispatchTouchEvent(ev);
                     }
                 }
@@ -249,10 +256,8 @@ public class BGAStickyNavLayout extends LinearLayout {
 
     private boolean resetDispatchTouchEvent(MotionEvent ev) {
         MotionEvent newEvent = MotionEvent.obtain(ev);
-
         ev.setAction(MotionEvent.ACTION_CANCEL);
         dispatchTouchEvent(ev);
-
         newEvent.setAction(MotionEvent.ACTION_DOWN);
         return dispatchTouchEvent(newEvent);
     }
@@ -260,17 +265,15 @@ public class BGAStickyNavLayout extends LinearLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         float currentTouchY = ev.getY();
-        switch (ev.getAction()) {
+        switch(ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastTouchY = currentTouchY;
                 break;
             case MotionEvent.ACTION_MOVE:
                 float differentY = currentTouchY - mLastTouchY;
-                if (Math.abs(differentY) > mTouchSlop) {
-                    if (!isHeaderViewCompleteInvisible() || (isContentViewToTop() && isHeaderViewCompleteInvisible() && mIsInControl)) {
-                        mLastTouchY = currentTouchY;
-                        return true;
-                    }
+                if (Math.abs(differentY) > mTouchSlop && !isHeaderViewCompleteInvisible() || (isContentViewToTop() && isHeaderViewCompleteInvisible() && mIsInControl)) {
+                    mLastTouchY = currentTouchY;
+                    return true;
                 }
                 break;
         }
@@ -281,14 +284,12 @@ public class BGAStickyNavLayout extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         initVelocityTrackerIfNotExists();
         mVelocityTracker.addMovement(event);
-
         float currentTouchY = event.getY();
-        switch (event.getAction()) {
+        switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (!mOverScroller.isFinished()) {
                     mOverScroller.abortAnimation();
                 }
-
                 mLastTouchY = currentTouchY;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -320,27 +321,21 @@ public class BGAStickyNavLayout extends LinearLayout {
         if (mDirectNormalView != null) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mDirectWebView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mDirectScrollView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isAbsListViewToTop(mDirectAbsListView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isRecyclerViewToTop(mDirectRecyclerView)) {
             return true;
         }
-
         if (mDirectViewPager != null) {
             return isViewPagerContentViewToTop();
         }
-
         return false;
     }
 
@@ -348,27 +343,21 @@ public class BGAStickyNavLayout extends LinearLayout {
         if (mNestedContentView == null) {
             regetNestedContentView();
         }
-
         if (mDirectNormalView != null) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mNestedWebView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isScrollViewOrWebViewToTop(mNestedScrollView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isAbsListViewToTop(mNestedAbsListView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isRecyclerViewToTop(mNestedRecyclerView)) {
             return true;
         }
-
         return false;
     }
 
@@ -381,18 +370,15 @@ public class BGAStickyNavLayout extends LinearLayout {
         if (adapter instanceof FragmentPagerAdapter || adapter instanceof FragmentStatePagerAdapter) {
             Fragment item = (Fragment) adapter.instantiateItem(mDirectViewPager, currentItem);
             mNestedContentView = item.getView();
-
             // 清空之前的
             mNestedNormalView = null;
             mNestedAbsListView = null;
             mNestedRecyclerView = null;
             mNestedScrollView = null;
             mNestedWebView = null;
-
             if (mNestedContentView instanceof AbsListView) {
                 mNestedAbsListView = (AbsListView) mNestedContentView;
                 mNestedAbsListView.setOnScrollListener(mLvOnScrollListener);
-
                 if (!isHeaderViewCompleteInvisible()) {
                     mNestedAbsListView.setSelection(0);
                 }
@@ -400,19 +386,16 @@ public class BGAStickyNavLayout extends LinearLayout {
                 mNestedRecyclerView = (RecyclerView) mNestedContentView;
                 mNestedRecyclerView.removeOnScrollListener(mRvOnScrollListener);
                 mNestedRecyclerView.addOnScrollListener(mRvOnScrollListener);
-
                 if (!isHeaderViewCompleteInvisible()) {
                     mNestedRecyclerView.scrollToPosition(0);
                 }
             } else if (mNestedContentView instanceof ScrollView) {
                 mNestedScrollView = (ScrollView) mNestedContentView;
-
                 if (!isHeaderViewCompleteInvisible()) {
                     mNestedScrollView.scrollTo(mNestedScrollView.getScrollX(), 0);
                 }
             } else if (mNestedContentView instanceof WebView) {
                 mNestedWebView = (WebView) mNestedContentView;
-
                 if (!isHeaderViewCompleteInvisible()) {
                     mNestedWebView.scrollTo(mNestedWebView.getScrollX(), 0);
                 }
@@ -429,6 +412,7 @@ public class BGAStickyNavLayout extends LinearLayout {
     }
 
     private RecyclerView.OnScrollListener mRvOnScrollListener = new RecyclerView.OnScrollListener() {
+
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleRecyclerViewLoadingMore(recyclerView)) {
@@ -438,6 +422,7 @@ public class BGAStickyNavLayout extends LinearLayout {
     };
 
     private AbsListView.OnScrollListener mLvOnScrollListener = new AbsListView.OnScrollListener() {
+
         @Override
         public void onScrollStateChanged(AbsListView absListView, int scrollState) {
             if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING) && mRefreshLayout != null && mRefreshLayout.shouldHandleAbsListViewLoadingMore(absListView)) {
@@ -454,53 +439,41 @@ public class BGAStickyNavLayout extends LinearLayout {
         if (mRefreshLayout == null) {
             return false;
         }
-
         if (mDirectNormalView != null) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isWebViewToBottom(mDirectWebView)) {
             return true;
         }
-
         if (BGARefreshScrollingUtil.isScrollViewToBottom(mDirectScrollView)) {
             return true;
         }
-
         if (mDirectAbsListView != null) {
             return mRefreshLayout.shouldHandleAbsListViewLoadingMore(mDirectAbsListView);
         }
-
         if (mDirectRecyclerView != null) {
             return mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mDirectRecyclerView);
         }
-
         if (mDirectViewPager != null) {
             if (mNestedContentView == null) {
                 regetNestedContentView();
             }
-
             if (mNestedNormalView != null) {
                 return true;
             }
-
             if (BGARefreshScrollingUtil.isWebViewToBottom(mNestedWebView)) {
                 return true;
             }
-
             if (BGARefreshScrollingUtil.isScrollViewToBottom(mNestedScrollView)) {
                 return true;
             }
-
             if (mNestedAbsListView != null) {
                 return mRefreshLayout.shouldHandleAbsListViewLoadingMore(mNestedAbsListView);
             }
-
             if (mNestedRecyclerView != null) {
                 return mRefreshLayout.shouldHandleRecyclerViewLoadingMore(mNestedRecyclerView);
             }
         }
-
         return false;
     }
 
@@ -508,7 +481,6 @@ public class BGAStickyNavLayout extends LinearLayout {
         BGARefreshScrollingUtil.scrollToBottom(mDirectScrollView);
         BGARefreshScrollingUtil.scrollToBottom(mDirectRecyclerView);
         BGARefreshScrollingUtil.scrollToBottom(mDirectAbsListView);
-
         if (mDirectViewPager != null) {
             if (mNestedContentView == null) {
                 regetNestedContentView();

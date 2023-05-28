@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
@@ -17,8 +16,9 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
  * 描述:
  */
 public class StickyNavScrollViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private TextView mClickableLabelTv;
-    
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.fragment_scrollview_sticky_nav);
@@ -28,6 +28,7 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
     @Override
     protected void setListener() {
         getViewById(R.id.tv_scrollview_clickablelabel).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showToast("点击了测试文本");
@@ -45,17 +46,12 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingPopup();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleException(params);
             }
 
             @Override
@@ -73,17 +69,12 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingPopup();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleException(params);
             }
 
             @Override
@@ -94,5 +85,18 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
             }
         }.execute();
         return true;
+    }
+
+    private void displayLoadingPopup() {
+        showLoadingDialog();
+    }
+
+    private Void sleepHandleException(Void... params) {
+        try {
+            Thread.sleep(MainActivity.LOADING_DURATION);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

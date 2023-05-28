@@ -1,7 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.engine;
 
 import java.util.List;
-
 import cn.bingoogolapple.refreshlayout.demo.model.BannerModel;
 import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
 import cn.bingoogolapple.refreshlayout.demo.model.StaggeredModel;

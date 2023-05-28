@@ -6,9 +6,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGAMeiTuanRefreshViewHolder;
@@ -29,11 +27,17 @@ import retrofit2.Response;
  * 描述:
  */
 public class RefreshSwipeListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+
     private static final String TAG = RefreshSwipeListViewFragment.class.getSimpleName();
+
     private BGARefreshLayout mRefreshLayout;
+
     private ListView mDataLv;
+
     private SwipeAdapterViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -46,10 +50,10 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
         mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
@@ -61,7 +65,6 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
-
         mAdapter = new SwipeAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
@@ -73,10 +76,8 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
         meiTuanRefreshViewHolder.setPullDownImageResource(R.mipmap.bga_refresh_mt_pull_down);
         meiTuanRefreshViewHolder.setChangeToReleaseRefreshAnimResId(R.drawable.bga_refresh_mt_change_to_release_refresh);
         meiTuanRefreshViewHolder.setRefreshingAnimResId(R.drawable.bga_refresh_mt_refreshing);
-
         mRefreshLayout.setRefreshViewHolder(meiTuanRefreshViewHolder);
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
-
         mDataLv.setAdapter(mAdapter);
     }
 
@@ -85,6 +86,7 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -105,9 +107,11 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
             return;
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endRefreshing();
@@ -132,9 +136,11 @@ public class RefreshSwipeListViewFragment extends BaseFragment implements BGARef
             return false;
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endLoadingMore();

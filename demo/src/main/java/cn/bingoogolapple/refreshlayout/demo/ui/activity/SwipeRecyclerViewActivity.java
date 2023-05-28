@@ -6,12 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
@@ -30,11 +27,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private BGARefreshLayout mRefreshLayout;
+
     private BGABanner mBanner;
+
     private RecyclerView mDataRv;
+
     private SwipeRecyclerViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -48,14 +51,13 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mAdapter = new SwipeRecyclerViewAdapter(mDataRv);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
         mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) {
@@ -63,7 +65,6 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
                 }
             }
         });
-
         findViewById(R.id.retweet).setOnClickListener(this);
         findViewById(R.id.comment).setOnClickListener(this);
         findViewById(R.id.praise).setOnClickListener(this);
@@ -72,17 +73,14 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
-
         initBanner();
-
         mDataRv.addItemDecoration(new Divider(this));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mDataRv.setLayoutManager(linearLayoutManager);
-
         mDataRv.setAdapter(mAdapter);
-
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -96,17 +94,14 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
 
     private void initBanner() {
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
+
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-                Glide.with(itemView.getContext())
-                        .load(model)
-                        .apply(new RequestOptions().placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate())
-                        .thumbnail(0.1f)
-                        .into(itemView);
+                Glide.with(itemView.getContext()).load(model).apply(new RequestOptions().placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate()).thumbnail(0.1f).into(itemView);
             }
         });
-
         App.getInstance().getEngine().getBannerModel().enqueue(new Callback<BannerModel>() {
+
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -166,6 +161,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
             return;
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
@@ -189,6 +185,7 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
             return false;
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();
@@ -202,5 +199,4 @@ public class SwipeRecyclerViewActivity extends BaseActivity implements BGAOnRVIt
         });
         return true;
     }
-
 }

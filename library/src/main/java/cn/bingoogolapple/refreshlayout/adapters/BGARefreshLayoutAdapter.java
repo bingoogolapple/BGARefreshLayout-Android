@@ -16,7 +16,6 @@
 package cn.bingoogolapple.refreshlayout.adapters;
 
 import androidx.databinding.BindingAdapter;
-
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
@@ -26,9 +25,8 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  */
 public class BGARefreshLayoutAdapter {
 
-    @BindingAdapter({"bga_refresh_delegate"})
+    @BindingAdapter({ "bga_refresh_delegate" })
     public static void setDelegate(BGARefreshLayout refreshLayout, BGARefreshLayout.BGARefreshLayoutDelegate delegate) {
         refreshLayout.setDelegate(delegate);
     }
-
 }

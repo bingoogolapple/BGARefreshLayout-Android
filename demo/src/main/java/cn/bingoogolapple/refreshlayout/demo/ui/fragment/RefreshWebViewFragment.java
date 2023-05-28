@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
@@ -16,8 +15,11 @@ import cn.bingoogolapple.refreshlayout.demo.R;
  * 描述:
  */
 public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private static final String TAG = RefreshWebViewFragment.class.getSimpleName();
+
     private BGARefreshLayout mRefreshLayout;
+
     private WebView mContentWv;
 
     @Override
@@ -31,6 +33,7 @@ public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLa
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
         mContentWv.setWebViewClient(new WebViewClient() {
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -50,7 +53,7 @@ public class RefreshWebViewFragment extends BaseFragment implements BGARefreshLa
         moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
         moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
+        //        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
         mContentWv.getSettings().setJavaScriptEnabled(true);
         mContentWv.loadUrl("https://github.com/bingoogolapple");
     }

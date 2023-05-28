@@ -6,9 +6,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
@@ -29,11 +27,17 @@ import retrofit2.Response;
  * 描述:
  */
 public class RefreshListViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+
     private static final String TAG = RefreshListViewFragment.class.getSimpleName();
+
     private BGARefreshLayout mRefreshLayout;
+
     private ListView mDataLv;
+
     private NormalAdapterViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -47,22 +51,21 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
         // 设置正在加载更多时不显示加载更多控件
-//        mRefreshLayout.setIsShowLoadingMoreView(false);
-
+        //        mRefreshLayout.setIsShowLoadingMoreView(false);
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
         mDataLv.setOnScrollListener(new AbsListView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                Log.i(TAG, "滚动状态变化");
+                //                Log.i(TAG, "滚动状态变化");
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                Log.i(TAG, "正在滚动");
+                //                Log.i(TAG, "正在滚动");
             }
         });
-
         mAdapter = new NormalAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
@@ -73,12 +76,11 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
         BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
         moocStyleRefreshViewHolder.setUltimateColor(R.color.custom_imoocstyle);
         moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.custom_mooc_icon);
-//        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_imoocstyle);
+        //        moocStyleRefreshViewHolder.setLoadMoreBackgroundColorRes(R.color.custom_imoocstyle);
         moocStyleRefreshViewHolder.setSpringDistanceScale(0.2f);
-//        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_imoocstyle);
+        //        moocStyleRefreshViewHolder.setRefreshViewBackgroundColorRes(R.color.custom_imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), true);
-
         mDataLv.setAdapter(mAdapter);
     }
 
@@ -87,6 +89,7 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -107,10 +110,12 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
             return;
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endRefreshing();
@@ -136,10 +141,12 @@ public class RefreshListViewFragment extends BaseFragment implements BGARefreshL
         }
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 测试数据放在七牛云上的比较快，这里加载完数据后模拟延时查看动画效果
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endLoadingMore();

@@ -30,72 +30,89 @@ import android.widget.TextView;
  * 描述:继承该抽象类实现响应的抽象方法，做出各种下拉刷新效果。参考BGANormalRefreshViewHolder、BGAStickinessRefreshViewHolder、BGAMoocStyleRefreshViewHolder、BGAMeiTuanRefreshViewHolder
  */
 public abstract class BGARefreshViewHolder {
+
     /**
      * 手指移动距离与下拉刷新控件paddingTop移动距离的比值
      */
     private static final float PULL_DISTANCE_SCALE = 1.8f;
+
     /**
      * 手指移动距离与下拉刷新控件paddingTop移动距离的比值，默认1.8f
      */
     private float mPullDistanceScale = PULL_DISTANCE_SCALE;
+
     /**
      * 下拉刷新控件paddingTop的弹簧距离与下拉刷新控件高度的比值
      */
     private static final float SPRING_DISTANCE_SCALE = 0.4f;
+
     /**
      * 下拉刷新控件paddingTop的弹簧距离与下拉刷新控件高度的比值，默认0.4f
      */
     private float mSpringDistanceScale = SPRING_DISTANCE_SCALE;
 
     protected Context mContext;
+
     /**
      * 下拉刷新上拉加载更多控件
      */
     protected BGARefreshLayout mRefreshLayout;
+
     /**
      * 下拉刷新控件
      */
     protected View mRefreshHeaderView;
+
     /**
      * 上拉加载更多控件
      */
     protected View mLoadMoreFooterView;
+
     /**
      * 底部加载更多提示控件
      */
     protected TextView mFooterStatusTv;
+
     /**
      * 底部加载更多菊花控件
      */
     protected ImageView mFooterChrysanthemumIv;
+
     /**
      * 底部加载更多菊花drawable
      */
     protected AnimationDrawable mFooterChrysanthemumAd;
+
     /**
      * 正在加载更多时的文本
      */
     protected String mLodingMoreText = "加载中...";
+
     /**
      * 是否开启加载更多功能
      */
     private boolean mIsLoadingMoreEnabled = true;
+
     /**
      * 整个加载更多控件的背景颜色资源id
      */
     private int mLoadMoreBackgroundColorRes = -1;
+
     /**
      * 整个加载更多控件的背景drawable资源id
      */
     private int mLoadMoreBackgroundDrawableRes = -1;
+
     /**
      * 下拉刷新控件的背景颜色资源id
      */
     protected int mRefreshViewBackgroundColorRes = -1;
+
     /**
      * 下拉刷新控件的背景drawable资源id
      */
     protected int mRefreshViewBackgroundDrawableRes = -1;
+
     /**
      * 头部控件移动动画时常
      */
@@ -336,5 +353,4 @@ public abstract class BGARefreshViewHolder {
     public void setRefreshLayout(BGARefreshLayout refreshLayout) {
         mRefreshLayout = refreshLayout;
     }
-
 }

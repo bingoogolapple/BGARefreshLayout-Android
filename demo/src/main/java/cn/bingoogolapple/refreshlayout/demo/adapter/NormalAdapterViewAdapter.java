@@ -1,7 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
 import android.content.Context;
-
 import cn.bingoogolapple.baseadapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.demo.R;

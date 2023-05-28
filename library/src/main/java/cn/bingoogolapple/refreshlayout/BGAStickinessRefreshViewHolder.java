@@ -27,9 +27,11 @@ import android.view.View;
  * 描述:黏性下拉刷新风格、类似手机消息列表下拉刷新风格
  */
 public class BGAStickinessRefreshViewHolder extends BGARefreshViewHolder {
+
     private BGAStickinessRefreshView mStickinessRefreshView;
 
     private int mRotateImageResId = -1;
+
     private int mStickinessColorResId = -1;
 
     public BGAStickinessRefreshViewHolder(Context context, boolean isLoadingMoreEnabled) {
@@ -47,7 +49,6 @@ public class BGAStickinessRefreshViewHolder extends BGARefreshViewHolder {
             if (mRefreshViewBackgroundDrawableRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundDrawableRes);
             }
-
             mStickinessRefreshView = (BGAStickinessRefreshView) mRefreshHeaderView.findViewById(R.id.stickinessRefreshView);
             mStickinessRefreshView.setStickinessRefreshViewHolder(this);
             if (mRotateImageResId != -1) {
@@ -114,5 +115,4 @@ public class BGAStickinessRefreshViewHolder extends BGARefreshViewHolder {
     public boolean canChangeToRefreshingStatus() {
         return mStickinessRefreshView.canChangeToRefreshing();
     }
-
 }

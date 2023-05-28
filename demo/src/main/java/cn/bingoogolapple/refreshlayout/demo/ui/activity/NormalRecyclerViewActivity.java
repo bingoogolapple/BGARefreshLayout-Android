@@ -6,12 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
@@ -31,11 +28,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private BGARefreshLayout mRefreshLayout;
+
     private BGABanner mBanner;
+
     private RecyclerView mDataRv;
+
     private NormalRecyclerViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -48,13 +51,11 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
 
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mAdapter = new NormalRecyclerViewAdapter(mDataRv);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
         findViewById(R.id.retweet).setOnClickListener(this);
         findViewById(R.id.comment).setOnClickListener(this);
         findViewById(R.id.praise).setOnClickListener(this);
@@ -66,17 +67,13 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
         moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
         moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-
         initBanner();
-
         mDataRv.addItemDecoration(new Divider(this));
-
         mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
-//        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
-
+        //        mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
         mDataRv.setAdapter(mAdapter);
-
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -90,17 +87,14 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
 
     private void initBanner() {
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
+
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-                Glide.with(itemView.getContext())
-                        .load(model)
-                        .apply(new RequestOptions().placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate())
-                        .thumbnail(0.1f)
-                        .into(itemView);
+                Glide.with(itemView.getContext()).load(model).apply(new RequestOptions().placeholder(R.mipmap.holder).error(R.mipmap.holder).dontAnimate()).thumbnail(0.1f).into(itemView);
             }
         });
-
         App.getInstance().getEngine().getBannerModel().enqueue(new Callback<BannerModel>() {
+
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -159,12 +153,13 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
             showToast("没有最新数据了");
             return;
         }
-
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endRefreshing();
@@ -191,12 +186,13 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
             showToast("没有更多数据了");
             return false;
         }
-
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endLoadingMore();
@@ -212,7 +208,6 @@ public class NormalRecyclerViewActivity extends BaseActivity implements BGAOnRVI
                 dismissLoadingDialog();
             }
         });
-
         return true;
     }
 }

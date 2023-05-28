@@ -6,10 +6,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-
 import cn.bingoogolapple.refreshlayout.demo.R;
 
 public class Divider extends RecyclerView.ItemDecoration {
+
     private Drawable mDividerDrawable;
 
     public Divider(Context context) {
@@ -48,5 +48,4 @@ public class Divider extends RecyclerView.ItemDecoration {
             mDividerDrawable.draw(c);
         }
     }
-
 }

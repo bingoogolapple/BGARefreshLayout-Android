@@ -399,13 +399,11 @@ public class BGARefreshLayout extends LinearLayout {
                     }
                     int interceptTouchMoveDistanceY = (int) (event.getRawY() - mInterceptTouchDownY);
                     // 可以没有上拉加载更多，但是必须有下拉刷新，否则就不拦截事件
-                    if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null) {
-                        if ((interceptTouchMoveDistanceY > mTouchSlop && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < -mTouchSlop && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < -mTouchSlop && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > mTouchSlop && shouldInterceptToMoveCustomHeaderViewDown())) {
-                            // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
-                            event.setAction(MotionEvent.ACTION_CANCEL);
-                            super.onInterceptTouchEvent(event);
-                            return true;
-                        }
+                    if (Math.abs(event.getRawX() - mInterceptTouchDownX) < Math.abs(interceptTouchMoveDistanceY) && mRefreshHeaderView != null && (interceptTouchMoveDistanceY > mTouchSlop && shouldHandleRefresh()) || (interceptTouchMoveDistanceY < -mTouchSlop && shouldHandleLoadingMore()) || (interceptTouchMoveDistanceY < -mTouchSlop && !isWholeHeaderViewCompleteInvisible()) || (interceptTouchMoveDistanceY > mTouchSlop && shouldInterceptToMoveCustomHeaderViewDown())) {
+                        // ACTION_DOWN时没有消耗掉事件，子控件会处于按下状态，这里设置ACTION_CANCEL，使子控件取消按下状态
+                        event.setAction(MotionEvent.ACTION_CANCEL);
+                        super.onInterceptTouchEvent(event);
+                        return true;
                     }
                 }
                 break;

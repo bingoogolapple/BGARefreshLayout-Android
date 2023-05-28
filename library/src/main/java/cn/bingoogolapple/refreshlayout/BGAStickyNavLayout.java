@@ -271,11 +271,9 @@ public class BGAStickyNavLayout extends LinearLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
                 float differentY = currentTouchY - mLastTouchY;
-                if (Math.abs(differentY) > mTouchSlop) {
-                    if (!isHeaderViewCompleteInvisible() || (isContentViewToTop() && isHeaderViewCompleteInvisible() && mIsInControl)) {
-                        mLastTouchY = currentTouchY;
-                        return true;
-                    }
+                if (Math.abs(differentY) > mTouchSlop && !isHeaderViewCompleteInvisible() || (isContentViewToTop() && isHeaderViewCompleteInvisible() && mIsInControl)) {
+                    mLastTouchY = currentTouchY;
+                    return true;
                 }
                 break;
         }

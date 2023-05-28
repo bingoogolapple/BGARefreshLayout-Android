@@ -1,10 +1,8 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.demo.R;
@@ -17,6 +15,7 @@ import cn.bingoogolapple.swipeitemlayout.BGASwipeItemLayout;
  * 描述:
  */
 public class SwipeRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshModel> {
+
     /**
      * 当前处于打开状态的item
      */
@@ -30,6 +29,7 @@ public class SwipeRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshMode
     public void setItemChildListener(BGAViewHolderHelper viewHolderHelper, int viewType) {
         BGASwipeItemLayout swipeItemLayout = viewHolderHelper.getView(R.id.sil_item_swipe_root);
         swipeItemLayout.setDelegate(new BGASwipeItemLayout.BGASwipeItemLayoutDelegate() {
+
             @Override
             public void onBGASwipeItemLayoutOpened(BGASwipeItemLayout swipeItemLayout) {
                 closeOpenedSwipeItemLayoutWithAnim();
@@ -61,5 +61,4 @@ public class SwipeRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshMode
         }
         mOpenedSil.clear();
     }
-
 }

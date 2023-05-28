@@ -29,13 +29,17 @@ import android.widget.RelativeLayout;
  * 描述:
  */
 public class BGAMeiTuanRefreshView extends RelativeLayout {
+
     private ImageView mPullDownView;
+
     private ImageView mReleaseRefreshingView;
 
     private AnimationDrawable mChangeToReleaseRefreshAd;
+
     private AnimationDrawable mRefreshingAd;
 
     private int mChangeToReleaseRefreshAnimResId;
+
     private int mRefreshingAnimResId;
 
     public BGAMeiTuanRefreshView(Context context, AttributeSet attrs) {
@@ -72,7 +76,6 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
     public void changeToIdle() {
         stopChangeToReleaseRefreshAd();
         stopRefreshingAd();
-
         mPullDownView.setVisibility(VISIBLE);
         mReleaseRefreshingView.setVisibility(INVISIBLE);
     }
@@ -85,22 +88,17 @@ public class BGAMeiTuanRefreshView extends RelativeLayout {
     public void changeToReleaseRefresh() {
         mReleaseRefreshingView.setImageResource(mChangeToReleaseRefreshAnimResId);
         mChangeToReleaseRefreshAd = (AnimationDrawable) mReleaseRefreshingView.getDrawable();
-
         mReleaseRefreshingView.setVisibility(VISIBLE);
         mPullDownView.setVisibility(INVISIBLE);
-
         mChangeToReleaseRefreshAd.start();
     }
 
     public void changeToRefreshing() {
         stopChangeToReleaseRefreshAd();
-
         mReleaseRefreshingView.setImageResource(mRefreshingAnimResId);
         mRefreshingAd = (AnimationDrawable) mReleaseRefreshingView.getDrawable();
-
         mReleaseRefreshingView.setVisibility(VISIBLE);
         mPullDownView.setVisibility(INVISIBLE);
-
         mRefreshingAd.start();
     }
 

@@ -1,7 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo;
 
 import android.app.Application;
-
 import cn.bingoogolapple.refreshlayout.demo.engine.Engine;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -12,18 +11,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 描述:
  */
 public class App extends Application {
+
     private static App sInstance;
+
     private Engine mEngine;
 
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-
-        mEngine = new Retrofit.Builder()
-                .baseUrl("http://bgashare.bingoogolapple.cn/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(Engine.class);
+        mEngine = new Retrofit.Builder().baseUrl("http://bgashare.bingoogolapple.cn/").addConverterFactory(GsonConverterFactory.create()).build().create(Engine.class);
     }
 
     public static App getInstance() {
@@ -33,5 +30,4 @@ public class App extends Application {
     public Engine getEngine() {
         return mEngine;
     }
-
 }

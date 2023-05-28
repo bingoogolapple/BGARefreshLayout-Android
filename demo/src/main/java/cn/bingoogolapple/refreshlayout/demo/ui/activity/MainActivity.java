@@ -12,7 +12,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
-
 import cn.bingoogolapple.bgabanner.BGAViewPager;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.ui.fragment.RefreshGridViewFragment;
@@ -31,12 +30,19 @@ import cn.bingoogolapple.refreshlayout.demo.ui.fragment.RefreshWebViewFragment;
  * 描述:
  */
 public class MainActivity extends BaseActivity {
+
     private static final String TAG = MainActivity.class.getSimpleName();
+
     public static final int LOADING_DURATION = 2000;
+
     private DrawerLayout mDrawerLayout;
+
     private ActionBarDrawerToggle mDrawerToggle;
+
     private NavigationView mNavigationView;
+
     private Toolbar mToolbar;
+
     private BGAViewPager mViewPager;
 
     @Override
@@ -51,6 +57,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setListener() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 hideDrawer();
@@ -58,7 +65,7 @@ public class MainActivity extends BaseActivity {
                     startActivity(new Intent(MainActivity.this, StickyNavActivity.class));
                 } else {
                     setTitle(menuItem.getTitle());
-                    switch (menuItem.getItemId()) {
+                    switch(menuItem.getItemId()) {
                         case R.id.navigation_main_gridview:
                             mViewPager.setCurrentItem(0, false);
                             break;
@@ -99,17 +106,12 @@ public class MainActivity extends BaseActivity {
     protected void processLogic(Bundle savedInstanceState) {
         setSupportActionBar(mToolbar);
         setTitle(R.string.gridview_demo);
-
         setUpNavDrawer();
         setUpViewPager();
     }
 
     private void setUpNavDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout,
-                mToolbar,
-                R.string.app_name,
-                R.string.app_name);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
     }
@@ -133,7 +135,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private static class ContentViewPagerAdapter extends FragmentPagerAdapter {
-        private Class[] mFragments = new Class[]{RefreshGridViewFragment.class, RefreshListViewFragment.class, RefreshRecyclerViewFragment.class, RefreshSwipeListViewFragment.class, RefreshSwipeRecyclerViewFragment.class, RefreshStaggeredRecyclerViewFragment.class, RefreshScrollViewFragment.class, RefreshNormalViewFragment.class, RefreshWebViewFragment.class};
+
+        private Class[] mFragments = new Class[] { RefreshGridViewFragment.class, RefreshListViewFragment.class, RefreshRecyclerViewFragment.class, RefreshSwipeListViewFragment.class, RefreshSwipeRecyclerViewFragment.class, RefreshStaggeredRecyclerViewFragment.class, RefreshScrollViewFragment.class, RefreshNormalViewFragment.class, RefreshWebViewFragment.class };
+
         private Context mContext;
 
         public ContentViewPagerAdapter(FragmentManager fm, Context context) {
@@ -151,5 +155,4 @@ public class MainActivity extends BaseActivity {
             return mFragments.length;
         }
     }
-
 }

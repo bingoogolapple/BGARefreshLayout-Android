@@ -5,9 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
@@ -30,9 +28,13 @@ import retrofit2.Response;
  * 描述:
  */
 public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private RecyclerView mDataRv;
+
     private NormalRecyclerViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -53,7 +55,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mDataRv.addItemDecoration(new Divider(mApp));
-//        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
+        //        mDataRv.setLayoutManager(new GridLayoutManager(mApp, 2, GridLayoutManager.VERTICAL, false));
         mDataRv.setLayoutManager(new LinearLayoutManager(mApp, LinearLayoutManager.VERTICAL, false));
         mDataRv.setAdapter(mAdapter);
     }
@@ -63,6 +65,7 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -109,13 +112,14 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
             showToast("没有最新数据了");
             return;
         }
-
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endRefreshing();
@@ -142,13 +146,14 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
             showToast("没有更多数据了");
             return false;
         }
-
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endLoadingMore();
@@ -164,7 +169,6 @@ public class StickyNavRecyclerViewFragment extends BaseFragment implements BGAOn
                 dismissLoadingDialog();
             }
         });
-
         return true;
     }
 }

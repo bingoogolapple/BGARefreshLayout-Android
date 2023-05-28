@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.demo.R;
@@ -18,8 +17,11 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.MainActivity;
  * 描述:
  */
 public class RefreshScrollViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private static final String TAG = RefreshScrollViewFragment.class.getSimpleName();
+
     private BGARefreshLayout mRefreshLayout;
+
     private TextView mClickableLabelTv;
 
     @Override
@@ -32,8 +34,8 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mClickableLabelTv.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showToast("点击了测试文本");
@@ -47,9 +49,7 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
         stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
         stickinessRefreshViewHolder.setRotateImage(R.mipmap.bga_refresh_stickiness);
         mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
-
         mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
-
         mRefreshLayout.setPullDownRefreshEnable(false);
     }
 
@@ -109,5 +109,4 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
         }.execute();
         return true;
     }
-
 }

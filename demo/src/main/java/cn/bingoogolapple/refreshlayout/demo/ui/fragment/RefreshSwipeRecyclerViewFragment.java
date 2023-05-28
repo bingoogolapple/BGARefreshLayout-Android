@@ -5,9 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
@@ -31,10 +29,15 @@ import retrofit2.Response;
  * 描述:
  */
 public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener {
+
     private SwipeRecyclerViewAdapter mAdapter;
+
     private BGARefreshLayout mRefreshLayout;
+
     private RecyclerView mDataRv;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -47,14 +50,13 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mAdapter = new SwipeRecyclerViewAdapter(mDataRv);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
         mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) {
@@ -66,17 +68,14 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-//        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
+        //        mRefreshLayout.setCustomHeaderView(DataEngine.getCustomHeaderView(mApp), false);
         mAdapter.addHeaderView(DataEngine.getCustomHeaderView(mApp));
-
         BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(mApp, true);
         moocStyleRefreshViewHolder.setOriginalImage(R.mipmap.bga_refresh_moooc);
         moocStyleRefreshViewHolder.setUltimateColor(R.color.imoocstyle);
         mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
-
         mDataRv.addItemDecoration(new Divider(mApp));
         mDataRv.setLayoutManager(new LinearLayoutManager(mApp));
-
         mDataRv.setAdapter(mAdapter.getHeaderAndFooterAdapter());
     }
 
@@ -85,6 +84,7 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -105,9 +105,11 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
             return;
         }
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endRefreshing();
@@ -133,9 +135,11 @@ public class RefreshSwipeRecyclerViewFragment extends BaseFragment implements BG
             return false;
         }
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         mRefreshLayout.endLoadingMore();

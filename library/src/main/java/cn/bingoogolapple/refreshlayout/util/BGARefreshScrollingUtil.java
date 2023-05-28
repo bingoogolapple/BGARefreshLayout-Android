@@ -24,9 +24,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
-
 import java.lang.reflect.Field;
-
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,10 +68,8 @@ public class BGARefreshScrollingUtil {
             if (manager.getItemCount() == 0) {
                 return true;
             }
-
             if (manager instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
-
                 int firstChildTop = 0;
                 if (recyclerView.getChildCount() > 0) {
                     // 处理item高度超过一屏幕时的情况
@@ -85,21 +81,17 @@ public class BGARefreshScrollingUtil {
                             return !ViewCompat.canScrollVertically(recyclerView, -1);
                         }
                     }
-
                     // 如果RecyclerView的子控件数量不为0，获取第一个子控件的top
-
                     // 解决item的topMargin不为0时不能触发下拉刷新
                     View firstChild = recyclerView.getChildAt(0);
                     RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) firstChild.getLayoutParams();
                     firstChildTop = firstChild.getTop() - layoutParams.topMargin - getRecyclerViewItemTopInset(layoutParams) - recyclerView.getPaddingTop();
                 }
-
                 if (layoutManager.findFirstCompletelyVisibleItemPosition() < 1 && firstChildTop == 0) {
                     return true;
                 }
             } else if (manager instanceof StaggeredGridLayoutManager) {
                 StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
-
                 int[] out = layoutManager.findFirstCompletelyVisibleItemPositions(null);
                 if (out[0] < 1) {
                     return true;
@@ -132,7 +124,6 @@ public class BGARefreshScrollingUtil {
         return isScrollViewOrWebViewToTop(stickyNavLayout) && stickyNavLayout.isContentViewToTop();
     }
 
-
     public static boolean isWebViewToBottom(WebView webView) {
         return webView != null && webView.getContentHeight() * webView.getScale() == (webView.getScrollY() + webView.getMeasuredHeight());
     }
@@ -151,11 +142,9 @@ public class BGARefreshScrollingUtil {
     public static boolean isAbsListViewToBottom(AbsListView absListView) {
         if (absListView != null && absListView.getAdapter() != null && absListView.getChildCount() > 0 && absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1) {
             View lastChild = absListView.getChildAt(absListView.getChildCount() - 1);
-
             BGAStickyNavLayout stickyNavLayout = getStickyNavLayout(absListView);
             if (stickyNavLayout != null) {
                 // 处理BGAStickyNavLayout中lastChild.getBottom() <= absListView.getMeasuredHeight()失效问题
-
                 // 0表示x，1表示y
                 int[] location = new int[2];
                 lastChild.getLocationOnScreen(location);
@@ -176,7 +165,6 @@ public class BGARefreshScrollingUtil {
             if (manager == null || manager.getItemCount() == 0) {
                 return false;
             }
-
             if (manager instanceof LinearLayoutManager) {
                 // 处理item高度超过一屏幕时的情况
                 View lastVisibleChild = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
@@ -187,7 +175,6 @@ public class BGARefreshScrollingUtil {
                         return !ViewCompat.canScrollVertically(recyclerView, 1);
                     }
                 }
-
                 LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
                 if (layoutManager.findLastCompletelyVisibleItemPosition() == layoutManager.getItemCount() - 1) {
                     BGAStickyNavLayout stickyNavLayout = getStickyNavLayout(recyclerView);
@@ -211,7 +198,6 @@ public class BGARefreshScrollingUtil {
                 }
             } else if (manager instanceof StaggeredGridLayoutManager) {
                 StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
-
                 int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
                 int lastPosition = layoutManager.getItemCount() - 1;
                 for (int position : out) {
@@ -224,10 +210,10 @@ public class BGARefreshScrollingUtil {
         return false;
     }
 
-
     public static void scrollToBottom(final ScrollView scrollView) {
         if (scrollView != null) {
             scrollView.post(new Runnable() {
+
                 @Override
                 public void run() {
                     scrollView.fullScroll(ScrollView.FOCUS_DOWN);
@@ -240,6 +226,7 @@ public class BGARefreshScrollingUtil {
         if (absListView != null) {
             if (absListView.getAdapter() != null && absListView.getAdapter().getCount() > 0) {
                 absListView.post(new Runnable() {
+
                     @Override
                     public void run() {
                         absListView.setSelection(absListView.getAdapter().getCount() - 1);
@@ -253,6 +240,7 @@ public class BGARefreshScrollingUtil {
         if (recyclerView != null) {
             if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
                 recyclerView.post(new Runnable() {
+
                     @Override
                     public void run() {
                         recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);

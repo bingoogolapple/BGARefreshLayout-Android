@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 
 public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private BGARefreshLayout mRefreshLayout;
+
     private TextView mClickableLabelTv;
 
     @Override

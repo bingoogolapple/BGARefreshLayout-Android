@@ -1,7 +1,6 @@
 package cn.bingoogolapple.refreshlayout.demo.adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.demo.R;
@@ -13,6 +12,7 @@ import cn.bingoogolapple.refreshlayout.demo.model.RefreshModel;
  * 描述:
  */
 public class NormalRecyclerViewAdapter extends BGARecyclerViewAdapter<RefreshModel> {
+
     public NormalRecyclerViewAdapter(RecyclerView recyclerView) {
         super(recyclerView, R.layout.item_normal);
     }

@@ -2,7 +2,6 @@ package cn.bingoogolapple.refreshlayout.demo.util;
 
 import androidx.annotation.StringRes;
 import android.widget.Toast;
-
 import cn.bingoogolapple.refreshlayout.demo.App;
 
 /**
@@ -26,5 +25,4 @@ public class ToastUtil {
     public static void show(@StringRes int resId) {
         show(App.getInstance().getString(resId));
     }
-
 }

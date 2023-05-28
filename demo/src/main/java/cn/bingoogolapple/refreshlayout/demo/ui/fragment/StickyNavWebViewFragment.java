@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.demo.R;
 import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
@@ -16,6 +15,7 @@ import cn.bingoogolapple.refreshlayout.demo.ui.activity.ViewPagerActivity;
  * 描述:
  */
 public class StickyNavWebViewFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private WebView mContentWv;
 
     @Override
@@ -27,6 +27,7 @@ public class StickyNavWebViewFragment extends BaseFragment implements BGARefresh
     @Override
     protected void setListener() {
         mContentWv.setWebViewClient(new WebViewClient() {
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);

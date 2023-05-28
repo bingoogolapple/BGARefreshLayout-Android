@@ -26,9 +26,13 @@ import android.view.View;
  * 描述:
  */
 public class BGAMeiTuanRefreshViewHolder extends BGARefreshViewHolder {
+
     private BGAMeiTuanRefreshView mMeiTuanRefreshView;
+
     private int mPullDownImageResId = -1;
+
     private int mChangeToReleaseRefreshAnimResId = -1;
+
     private int mRefreshingAnimResId = -1;
 
     /**
@@ -77,7 +81,6 @@ public class BGAMeiTuanRefreshViewHolder extends BGARefreshViewHolder {
             if (mRefreshViewBackgroundDrawableRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundDrawableRes);
             }
-
             mMeiTuanRefreshView = (BGAMeiTuanRefreshView) mRefreshHeaderView.findViewById(R.id.meiTuanView);
             if (mPullDownImageResId != -1) {
                 mMeiTuanRefreshView.setPullDownImageResource(mPullDownImageResId);

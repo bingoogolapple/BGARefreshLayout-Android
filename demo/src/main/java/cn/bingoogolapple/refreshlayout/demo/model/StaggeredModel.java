@@ -6,6 +6,8 @@ package cn.bingoogolapple.refreshlayout.demo.model;
  * 描述:
  */
 public class StaggeredModel {
+
     public String icon;
+
     public String desc;
 }

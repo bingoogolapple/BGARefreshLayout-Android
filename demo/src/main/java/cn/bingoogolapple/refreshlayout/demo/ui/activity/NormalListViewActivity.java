@@ -5,9 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
@@ -20,10 +18,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NormalListViewActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private BGARefreshLayout mRefreshLayout;
+
     private ListView mDataLv;
+
     private NormalAdapterViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -36,14 +39,11 @@ public class NormalListViewActivity extends BaseActivity implements AdapterView.
     @Override
     protected void setListener() {
         mRefreshLayout.setDelegate(this);
-
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
-
         mAdapter = new NormalAdapterViewAdapter(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
-
         findViewById(R.id.retweet).setOnClickListener(this);
         findViewById(R.id.comment).setOnClickListener(this);
         findViewById(R.id.praise).setOnClickListener(this);
@@ -52,10 +52,9 @@ public class NormalListViewActivity extends BaseActivity implements AdapterView.
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(mApp, true));
-
         mDataLv.setAdapter(mAdapter);
-
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -113,8 +112,8 @@ public class NormalListViewActivity extends BaseActivity implements AdapterView.
             showToast("没有最新数据了");
             return;
         }
-
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endRefreshing();
@@ -136,8 +135,8 @@ public class NormalListViewActivity extends BaseActivity implements AdapterView.
             showToast("没有更多数据了");
             return false;
         }
-
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mRefreshLayout.endLoadingMore();

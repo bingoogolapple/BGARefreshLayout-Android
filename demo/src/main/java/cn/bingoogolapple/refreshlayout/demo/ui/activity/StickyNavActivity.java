@@ -3,7 +3,6 @@ package cn.bingoogolapple.refreshlayout.demo.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import cn.bingoogolapple.refreshlayout.demo.R;
 
 /**
@@ -11,7 +10,7 @@ import cn.bingoogolapple.refreshlayout.demo.R;
  * 创建时间:15/11/1 下午1:58
  * 描述:
  */
-public class StickyNavActivity  extends BaseActivity {
+public class StickyNavActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {

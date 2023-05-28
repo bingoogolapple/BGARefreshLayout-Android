@@ -5,9 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.List;
-
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
@@ -27,9 +25,13 @@ import retrofit2.Response;
  * 描述:
  */
 public class StickyNavListViewFragment extends BaseFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+
     private ListView mDataLv;
+
     private NormalAdapterViewAdapter mAdapter;
+
     private int mNewPageNumber = 0;
+
     private int mMorePageNumber = 0;
 
     @Override
@@ -42,7 +44,6 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
     protected void setListener() {
         mDataLv.setOnItemClickListener(this);
         mDataLv.setOnItemLongClickListener(this);
-
         mAdapter = new NormalAdapterViewAdapter(mApp);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnItemChildLongClickListener(this);
@@ -58,6 +59,7 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         mNewPageNumber = 0;
         mMorePageNumber = 0;
         mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mAdapter.setData(response.body());
@@ -106,10 +108,12 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         }
         showLoadingDialog();
         mEngine.loadNewData(mNewPageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endRefreshing();
@@ -136,10 +140,12 @@ public class StickyNavListViewFragment extends BaseFragment implements AdapterVi
         }
         showLoadingDialog();
         mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
+
             @Override
             public void onResponse(Call<List<RefreshModel>> call, final Response<List<RefreshModel>> response) {
                 // 数据放在七牛云上的比较快，这里加载完数据后模拟延时
                 ThreadUtil.runInUIThread(new Runnable() {
+
                     @Override
                     public void run() {
                         ((ViewPagerActivity) getActivity()).endLoadingMore();

@@ -6,7 +6,9 @@ package cn.bingoogolapple.refreshlayout.demo.model;
  * 描述:
  */
 public class RefreshModel {
+
     public String title;
+
     public String detail;
 
     public RefreshModel() {

@@ -28,8 +28,11 @@ import android.view.View;
  * 描述:慕课网下拉刷新风格
  */
 public class BGAMoocStyleRefreshViewHolder extends BGARefreshViewHolder {
+
     private BGAMoocStyleRefreshView mMoocRefreshView;
+
     private int mUltimateColorResId = -1;
+
     private int mOriginalImageResId = -1;
 
     public BGAMoocStyleRefreshViewHolder(Context context, boolean isLoadingMoreEnabled) {
@@ -47,7 +50,6 @@ public class BGAMoocStyleRefreshViewHolder extends BGARefreshViewHolder {
             if (mRefreshViewBackgroundDrawableRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundDrawableRes);
             }
-
             mMoocRefreshView = (BGAMoocStyleRefreshView) mRefreshHeaderView.findViewById(R.id.moocView);
             if (mOriginalImageResId != -1) {
                 mMoocRefreshView.setOriginalImage(mOriginalImageResId);
@@ -109,5 +111,4 @@ public class BGAMoocStyleRefreshViewHolder extends BGARefreshViewHolder {
     public void onEndRefreshing() {
         mMoocRefreshView.stopRefreshing();
     }
-
 }

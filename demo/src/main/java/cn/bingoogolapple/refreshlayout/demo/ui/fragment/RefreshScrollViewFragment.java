@@ -59,17 +59,12 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingDialog();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepAndReturnNull(params);
             }
 
             @Override
@@ -87,17 +82,12 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingDialog();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepAndReturnNull(params);
             }
 
             @Override
@@ -108,5 +98,18 @@ public class RefreshScrollViewFragment extends BaseFragment implements BGARefres
             }
         }.execute();
         return true;
+    }
+
+    private void displayLoadingDialog() {
+        showLoadingDialog();
+    }
+
+    private Void sleepAndReturnNull(Void... params) {
+        try {
+            Thread.sleep(MainActivity.LOADING_DURATION);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

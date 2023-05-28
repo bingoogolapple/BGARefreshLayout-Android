@@ -46,17 +46,12 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingPopup();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleException(params);
             }
 
             @Override
@@ -74,17 +69,12 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingPopup();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleException(params);
             }
 
             @Override
@@ -95,5 +85,18 @@ public class StickyNavScrollViewFragment extends BaseFragment implements BGARefr
             }
         }.execute();
         return true;
+    }
+
+    private void displayLoadingPopup() {
+        showLoadingDialog();
+    }
+
+    private Void sleepHandleException(Void... params) {
+        try {
+            Thread.sleep(MainActivity.LOADING_DURATION);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

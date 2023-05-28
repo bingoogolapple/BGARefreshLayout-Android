@@ -55,17 +55,12 @@ public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingMessage();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleReturn(params);
             }
 
             @Override
@@ -83,17 +78,12 @@ public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                displayLoadingMessage();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepHandleReturn(params);
             }
 
             @Override
@@ -104,5 +94,18 @@ public class ScrollViewActivity extends BaseActivity implements BGARefreshLayout
             }
         }.execute();
         return true;
+    }
+
+    private void displayLoadingMessage() {
+        showLoadingDialog();
+    }
+
+    private Void sleepHandleReturn(Void... params) {
+        try {
+            Thread.sleep(MainActivity.LOADING_DURATION);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

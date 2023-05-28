@@ -58,12 +58,7 @@ public class RefreshNormalViewFragment extends BaseFragment implements BGARefres
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepAndCatchException(params);
             }
 
             @Override
@@ -80,12 +75,7 @@ public class RefreshNormalViewFragment extends BaseFragment implements BGARefres
 
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(MainActivity.LOADING_DURATION);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return sleepAndCatchException(params);
             }
 
             @Override
@@ -95,5 +85,14 @@ public class RefreshNormalViewFragment extends BaseFragment implements BGARefres
             }
         }.execute();
         return true;
+    }
+
+    private Void sleepAndCatchException(Void... params) {
+        try {
+            Thread.sleep(MainActivity.LOADING_DURATION);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

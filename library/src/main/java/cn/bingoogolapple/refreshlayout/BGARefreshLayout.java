@@ -401,7 +401,20 @@ public class BGARefreshLayout extends LinearLayout {
                             return true;
                         }
                     }
+                }else{
+                    
+                    // 下拉刷新 正在刷新中的时候， 往上滑动。
+                    if (!mIsLoadingMore && mCurrentRefreshStatus == RefreshStatus.REFRESHING) {
+                        return true;
+                    }
+                    // 上拉加载 正在加载的时候， 往下滑动。
+                    if (mIsLoadingMore && mCurrentRefreshStatus == RefreshStatus.IDLE) {
+
+                        return true;
+                    }
+                    
                 }
+                
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
@@ -563,19 +576,40 @@ public class BGARefreshLayout extends LinearLayout {
      * @return true表示自己消耗掉该事件，false表示不消耗该事件
      */
     private boolean handleActionMove(MotionEvent event) {
-        if (mCurrentRefreshStatus == RefreshStatus.REFRESHING || mIsLoadingMore) {
-            return false;
-        }
-
-        if ((mCustomHeaderView == null || !mIsCustomHeaderViewScrollable) && mRefreshDownY == -1) {
+        
+        
+        
+         if ((mCustomHeaderView == null || !mIsCustomHeaderViewScrollable) && mRefreshDownY == -1) {
             mRefreshDownY = (int) event.getY();
         }
         if (mCustomHeaderView != null && mIsCustomHeaderViewScrollable && isCustomHeaderViewCompleteVisible() && mRefreshDownY == -1) {
             mRefreshDownY = (int) event.getY();
         }
 
+
         int refreshDiffY = (int) event.getY() - mRefreshDownY;
         refreshDiffY = (int) (refreshDiffY / mRefreshViewHolder.getPaddingTopScale());
+
+        if (mCurrentRefreshStatus == RefreshStatus.REFRESHING || mIsLoadingMore) {
+
+            if (mCurrentRefreshStatus == RefreshStatus.REFRESHING) {
+//              如果正在刷新中向上拉， 则结束刷新动画。 不消耗事件。 
+                if (refreshDiffY < 0) {
+                    endRefreshing();
+                }
+                return false;
+            }
+
+            if (mIsLoadingMore) {
+//              如果正在刷新中是向下拉，则结束加载中刷新，不消耗事件。 
+                if (refreshDiffY > 0) {
+                    endLoadingMore();
+                }
+                return false;
+            }
+
+            return false;
+        }
 
         // 如果是向下拉，并且当前可见的第一个条目的索引等于0，才处理整个头部控件的padding
         if (refreshDiffY > 0 && shouldHandleRefresh() && isCustomHeaderViewCompleteVisible()) {
@@ -726,22 +760,37 @@ public class BGARefreshLayout extends LinearLayout {
         }
     }
 
-    /**
+   /**
      * 结束下拉刷新
      */
     public void endRefreshing() {
         if (mCurrentRefreshStatus == RefreshStatus.REFRESHING) {
             mCurrentRefreshStatus = RefreshStatus.IDLE;
-            hiddenRefreshHeaderView();
-            handleRefreshStatusChanged();
+
             mRefreshViewHolder.onEndRefreshing();
+            hiddenRefreshHeaderView(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    handleRefreshStatusChanged();
+                }
+            });
+
         }
     }
+
 
     /**
      * 隐藏下拉刷新控件，带动画
      */
     private void hiddenRefreshHeaderView() {
+        hiddenRefreshHeaderView(null);
+    }
+
+    /**
+     * 隐藏下拉刷新控件，带动画
+     */
+    private void hiddenRefreshHeaderView(final AnimatorListenerAdapter animatorListenerAdapter) {
         ValueAnimator animator = ValueAnimator.ofInt(mWholeHeaderView.getPaddingTop(), mMinWholeHeaderViewPaddingTop);
         animator.setDuration(mRefreshViewHolder.getTopAnimDuration());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -750,9 +799,20 @@ public class BGARefreshLayout extends LinearLayout {
                 int paddingTop = (int) animation.getAnimatedValue();
                 mWholeHeaderView.setPadding(0, paddingTop, 0, 0);
             }
+
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (animatorListenerAdapter != null) {
+                    animatorListenerAdapter.onAnimationEnd(animation);
+                }
+            }
         });
         animator.start();
     }
+
 
     /**
      * 设置下拉刷新控件的paddingTop到0，带动画
